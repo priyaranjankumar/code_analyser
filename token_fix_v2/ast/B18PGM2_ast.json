@@ -1,0 +1,580 @@
+{
+  "programs": [
+    {
+      "name": "B18PGM2",
+      "type": "PROGRAM",
+      "start_line": 2,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 5,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 6,
+          "content": "INCLUDE USERSDCL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 8,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 9,
+          "content": "INCLUDE SQLCA"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 13,
+          "content": "05 LS-USER-ID    PIC X(06)."
+        },
+        {
+          "type": "STATEMENT",
+          "line": 14,
+          "content": "05 LS-USER-PASS  PIC X(06)."
+        },
+        {
+          "type": "STATEMENT",
+          "line": 15,
+          "content": "05 LS-VALID-FLAG PIC 9(01)."
+        },
+        {
+          "type": "STATEMENT",
+          "line": 20,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 21,
+          "content": "SELECT PASSWD INTO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 22,
+          "content": ":DB-PASSWD FROM USERS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 23,
+          "content": "WHERE USERID = :DB-USERID"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 25,
+          "content": "EVALUATE SQLCODE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 26,
+          "content": "WHEN 0"
+        },
+        {
+          "type": "PERFORM",
+          "line": 27,
+          "content": "PERFORM 2000-VERIFY-ID-PASS-PARA",
+          "target": "2000"
+        },
+        {
+          "type": "PERFORM",
+          "line": 28,
+          "content": "PERFORM 3000-END-PGM-PARA",
+          "target": "3000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 29,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "MOVE",
+          "line": 30,
+          "content": "MOVE 0 TO LS-VALID-FLAG",
+          "operands": "0 TO LS-VALID-FLAG"
+        },
+        {
+          "type": "IF",
+          "line": 33,
+          "content": "IF NOT ( DB-PASSWD = LOW-VALUES ) THEN",
+          "condition": "NOT ( DB-PASSWD = LOW-VALUES ) THEN"
+        },
+        {
+          "type": "IF",
+          "line": 34,
+          "content": "IF ( LS-USER-PASS = DB-PASSWD ) THEN",
+          "condition": "( LS-USER-PASS = DB-PASSWD ) THEN"
+        },
+        {
+          "type": "MOVE",
+          "line": 35,
+          "content": "MOVE 1 TO LS-VALID-FLAG",
+          "operands": "1 TO LS-VALID-FLAG"
+        },
+        {
+          "type": "ELSE",
+          "line": 36,
+          "content": "ELSE"
+        },
+        {
+          "type": "MOVE",
+          "line": 37,
+          "content": "MOVE 2 TO LS-VALID-FLAG",
+          "operands": "2 TO LS-VALID-FLAG"
+        },
+        {
+          "type": "END-IF",
+          "line": 38,
+          "content": "END-IF"
+        },
+        {
+          "type": "ELSE",
+          "line": 39,
+          "content": "ELSE"
+        },
+        {
+          "type": "MOVE",
+          "line": 40,
+          "content": "MOVE 3 TO LS-VALID-FLAG",
+          "operands": "3 TO LS-VALID-FLAG"
+        }
+      ],
+      "variables": [],
+      "procedures": [
+        {
+          "name": "EXEC",
+          "start_line": 7,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 8,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 9,
+              "content": "INCLUDE SQLCA"
+            }
+          ],
+          "end_line": 9
+        },
+        {
+          "name": "EXEC",
+          "start_line": 10,
+          "statements": [],
+          "end_line": 11
+        },
+        {
+          "name": "DFHCOMMAREA",
+          "start_line": 12,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 13,
+              "content": "05 LS-USER-ID    PIC X(06)."
+            },
+            {
+              "type": "STATEMENT",
+              "line": 14,
+              "content": "05 LS-USER-PASS  PIC X(06)."
+            },
+            {
+              "type": "STATEMENT",
+              "line": 15,
+              "content": "05 LS-VALID-FLAG PIC 9(01)."
+            }
+          ],
+          "end_line": 16
+        },
+        {
+          "name": "PARA",
+          "start_line": 17,
+          "statements": [],
+          "end_line": 17
+        },
+        {
+          "name": "REC",
+          "start_line": 18,
+          "statements": [],
+          "end_line": 18
+        },
+        {
+          "name": "USERID",
+          "start_line": 19,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 20,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 21,
+              "content": "SELECT PASSWD INTO"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 22,
+              "content": ":DB-PASSWD FROM USERS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 23,
+              "content": "WHERE USERID = :DB-USERID"
+            }
+          ],
+          "end_line": 23
+        },
+        {
+          "name": "EXEC",
+          "start_line": 24,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 25,
+              "content": "EVALUATE SQLCODE"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 26,
+              "content": "WHEN 0"
+            },
+            {
+              "type": "PERFORM",
+              "line": 27,
+              "content": "PERFORM 2000-VERIFY-ID-PASS-PARA",
+              "target": "2000"
+            },
+            {
+              "type": "PERFORM",
+              "line": 28,
+              "content": "PERFORM 3000-END-PGM-PARA",
+              "target": "3000"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 29,
+              "content": "WHEN OTHER"
+            },
+            {
+              "type": "MOVE",
+              "line": 30,
+              "content": "MOVE 0 TO LS-VALID-FLAG",
+              "operands": "0 TO LS-VALID-FLAG"
+            }
+          ],
+          "end_line": 30
+        },
+        {
+          "name": "EVALUATE",
+          "start_line": 31,
+          "statements": [],
+          "end_line": 31
+        },
+        {
+          "name": "PARA",
+          "start_line": 32,
+          "statements": [
+            {
+              "type": "IF",
+              "line": 33,
+              "content": "IF NOT ( DB-PASSWD = LOW-VALUES ) THEN",
+              "condition": "NOT ( DB-PASSWD = LOW-VALUES ) THEN"
+            },
+            {
+              "type": "IF",
+              "line": 34,
+              "content": "IF ( LS-USER-PASS = DB-PASSWD ) THEN",
+              "condition": "( LS-USER-PASS = DB-PASSWD ) THEN"
+            },
+            {
+              "type": "MOVE",
+              "line": 35,
+              "content": "MOVE 1 TO LS-VALID-FLAG",
+              "operands": "1 TO LS-VALID-FLAG"
+            },
+            {
+              "type": "ELSE",
+              "line": 36,
+              "content": "ELSE"
+            },
+            {
+              "type": "MOVE",
+              "line": 37,
+              "content": "MOVE 2 TO LS-VALID-FLAG",
+              "operands": "2 TO LS-VALID-FLAG"
+            },
+            {
+              "type": "END-IF",
+              "line": 38,
+              "content": "END-IF"
+            },
+            {
+              "type": "ELSE",
+              "line": 39,
+              "content": "ELSE"
+            },
+            {
+              "type": "MOVE",
+              "line": 40,
+              "content": "MOVE 3 TO LS-VALID-FLAG",
+              "operands": "3 TO LS-VALID-FLAG"
+            }
+          ],
+          "end_line": 40
+        },
+        {
+          "name": "IF",
+          "start_line": 41,
+          "statements": [],
+          "end_line": 41
+        },
+        {
+          "name": "PARA",
+          "start_line": 42,
+          "statements": [],
+          "end_line": 42
+        },
+        {
+          "name": "EXEC",
+          "start_line": 43,
+          "statements": [],
+          "end_line": 43
+        }
+      ],
+      "divisions": {},
+      "end_line": 102
+    }
+  ],
+  "divisions": {
+    "IDENTIFICATION": {
+      "start_line": 1,
+      "sections": {}
+    },
+    "DATA": {
+      "start_line": 3,
+      "sections": {
+        "WORKING-STORAGE": {
+          "start_line": 4
+        },
+        "LINKAGE": {
+          "start_line": 11
+        }
+      }
+    },
+    "PROCEDURE": {
+      "start_line": 16,
+      "sections": {}
+    }
+  },
+  "variables": [],
+  "procedures": [
+    {
+      "name": "EXEC",
+      "start_line": 7,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 8,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 9,
+          "content": "INCLUDE SQLCA"
+        }
+      ],
+      "end_line": 9
+    },
+    {
+      "name": "EXEC",
+      "start_line": 10,
+      "statements": [],
+      "end_line": 11
+    },
+    {
+      "name": "DFHCOMMAREA",
+      "start_line": 12,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 13,
+          "content": "05 LS-USER-ID    PIC X(06)."
+        },
+        {
+          "type": "STATEMENT",
+          "line": 14,
+          "content": "05 LS-USER-PASS  PIC X(06)."
+        },
+        {
+          "type": "STATEMENT",
+          "line": 15,
+          "content": "05 LS-VALID-FLAG PIC 9(01)."
+        }
+      ],
+      "end_line": 16
+    },
+    {
+      "name": "PARA",
+      "start_line": 17,
+      "statements": [],
+      "end_line": 17
+    },
+    {
+      "name": "REC",
+      "start_line": 18,
+      "statements": [],
+      "end_line": 18
+    },
+    {
+      "name": "USERID",
+      "start_line": 19,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 20,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 21,
+          "content": "SELECT PASSWD INTO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 22,
+          "content": ":DB-PASSWD FROM USERS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 23,
+          "content": "WHERE USERID = :DB-USERID"
+        }
+      ],
+      "end_line": 23
+    },
+    {
+      "name": "EXEC",
+      "start_line": 24,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 25,
+          "content": "EVALUATE SQLCODE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 26,
+          "content": "WHEN 0"
+        },
+        {
+          "type": "PERFORM",
+          "line": 27,
+          "content": "PERFORM 2000-VERIFY-ID-PASS-PARA",
+          "target": "2000"
+        },
+        {
+          "type": "PERFORM",
+          "line": 28,
+          "content": "PERFORM 3000-END-PGM-PARA",
+          "target": "3000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 29,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "MOVE",
+          "line": 30,
+          "content": "MOVE 0 TO LS-VALID-FLAG",
+          "operands": "0 TO LS-VALID-FLAG"
+        }
+      ],
+      "end_line": 30
+    },
+    {
+      "name": "EVALUATE",
+      "start_line": 31,
+      "statements": [],
+      "end_line": 31
+    },
+    {
+      "name": "PARA",
+      "start_line": 32,
+      "statements": [
+        {
+          "type": "IF",
+          "line": 33,
+          "content": "IF NOT ( DB-PASSWD = LOW-VALUES ) THEN",
+          "condition": "NOT ( DB-PASSWD = LOW-VALUES ) THEN"
+        },
+        {
+          "type": "IF",
+          "line": 34,
+          "content": "IF ( LS-USER-PASS = DB-PASSWD ) THEN",
+          "condition": "( LS-USER-PASS = DB-PASSWD ) THEN"
+        },
+        {
+          "type": "MOVE",
+          "line": 35,
+          "content": "MOVE 1 TO LS-VALID-FLAG",
+          "operands": "1 TO LS-VALID-FLAG"
+        },
+        {
+          "type": "ELSE",
+          "line": 36,
+          "content": "ELSE"
+        },
+        {
+          "type": "MOVE",
+          "line": 37,
+          "content": "MOVE 2 TO LS-VALID-FLAG",
+          "operands": "2 TO LS-VALID-FLAG"
+        },
+        {
+          "type": "END-IF",
+          "line": 38,
+          "content": "END-IF"
+        },
+        {
+          "type": "ELSE",
+          "line": 39,
+          "content": "ELSE"
+        },
+        {
+          "type": "MOVE",
+          "line": 40,
+          "content": "MOVE 3 TO LS-VALID-FLAG",
+          "operands": "3 TO LS-VALID-FLAG"
+        }
+      ],
+      "end_line": 40
+    },
+    {
+      "name": "IF",
+      "start_line": 41,
+      "statements": [],
+      "end_line": 41
+    },
+    {
+      "name": "PARA",
+      "start_line": 42,
+      "statements": [],
+      "end_line": 42
+    },
+    {
+      "name": "EXEC",
+      "start_line": 43,
+      "statements": [],
+      "end_line": 43
+    }
+  ],
+  "metadata": {
+    "file_path": "/home/ranjan/code/code_analyser/sample_cobol/B18PGM2.cbl",
+    "file_name": "B18PGM2.cbl",
+    "language": "cobol",
+    "content_length": 2010,
+    "preprocessed_length": 1056
+  }
+}

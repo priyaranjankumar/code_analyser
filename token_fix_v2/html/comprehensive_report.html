@@ -1,0 +1,1088 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legacy Code Analysis Report</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 30px;
+        }
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+        }
+        .section h2 {
+            margin-top: 0;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 10px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .stat-label {
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        .file-list {
+            list-style: none;
+            padding: 0;
+        }
+        .file-item {
+            background: white;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #28a745;
+        }
+        .file-name {
+            font-weight: bold;
+            color: #495057;
+        }
+        .file-info {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .program-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .program-card {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+        }
+        .program-name {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        .program-summary {
+            color: #6c757d;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .recommendations {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .recommendations h3 {
+            color: #856404;
+            margin-top: 0;
+        }
+        .recommendations ul {
+            color: #856404;
+            margin: 10px 0;
+        }
+        .recommendations li {
+            margin: 5px 0;
+        }
+        .footer {
+            background: #343a40;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        .nav-tabs {
+            display: flex;
+            border-bottom: 2px solid #dee2e6;
+            margin-bottom: 20px;
+        }
+        .nav-tab {
+            padding: 10px 20px;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px 6px 0 0;
+            margin-right: 5px;
+        }
+        .nav-tab.active {
+            background: #007bff;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .btn-primary {
+            background: #007bff;
+        }
+        .btn-secondary {
+            background: #6c757d;
+        }
+        .btn-small {
+            padding: 4px 8px;
+            font-size: 0.8em;
+        }
+        .program-stats {
+            margin: 10px 0;
+        }
+        .stat {
+            background: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-right: 10px;
+        }
+        .program-actions {
+            margin-top: 10px;
+        }
+        .file-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .file-section h3 {
+            color: #495057;
+            margin-top: 0;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 10px;
+        }
+        .program-summaries {
+            margin-top: 20px;
+        }
+        .program-summary-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid #007bff;
+        }
+        .program-summary-card h5 {
+            color: #495057;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .summary-content {
+            line-height: 1.6;
+            color: #495057;
+        }
+        .summary-content br {
+            margin-bottom: 8px;
+        }
+        .pattern-analysis {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .pattern-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .pattern-item {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .pattern-name {
+            font-weight: bold;
+            color: #495057;
+        }
+        .pattern-count {
+            background: #007bff;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+        }
+        .dependency-analysis {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .call-graph {
+            margin-top: 15px;
+        }
+        .program-deps {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border-left: 4px solid #007bff;
+        }
+        .call-item {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin: 0 5px;
+            font-size: 0.9em;
+        }
+        .call-more {
+            color: #6c757d;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .modal-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #495057;
+            margin: 0;
+        }
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .close:hover {
+            color: #000;
+        }
+        .modal-body {
+            line-height: 1.6;
+            color: #495057;
+        }
+        .modal-body p {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Legacy Code Analysis Report</h1>
+            <p>Comprehensive analysis of COBOL codebase</p>
+            <p>Generated on 2025-07-28 23:13:17</p>
+        </div>
+        
+        <div class="content">
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showTab('overview')">Overview</button>
+                <button class="nav-tab" onclick="showTab('files')">Files</button>
+                <button class="nav-tab" onclick="showTab('programs')">Programs</button>
+                <button class="nav-tab" onclick="showTab('architecture')">Architecture</button>
+                <button class="nav-tab" onclick="showTab('recommendations')">Recommendations</button>
+            </div>
+            
+            <!-- Overview Tab -->
+            <div id="overview" class="tab-content active">
+                <div class="section">
+                    <h2>Analysis Summary</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number">6</div>
+                            <div class="stat-label">Files Analyzed</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">6</div>
+                            <div class="stat-label">Programs Found</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Total Statements</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">4</div>
+                            <div class="stat-label">Variables</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2>Complexity Metrics</h2>
+                    <div class="chart-container">
+                        <canvas id="overviewComplexityChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Files Tab -->
+            <div id="files" class="tab-content">
+                <div class="section">
+                    <h2>Analyzed Files & Program Summaries</h2>
+                    
+                    <div class="file-section">
+                        <h3>B18PGM1.cbl</h3>
+                        <div class="file-info">
+                            Size: 5801 bytes | 
+                            Programs: 1 |
+                            <a href="/home/ranjan/code/code_analyser/token_fix_v2/ast/B18PGM1_ast.json" class="btn btn-small">View AST</a>
+                            <a href="/home/ranjan/code/code_analyser/token_fix_v2/summaries/B18PGM1_summary.txt" class="btn btn-small">View File Summary</a>
+                        </div>
+                        
+                        
+                        <div class="program-summaries">
+                            <h4>Program Summaries</h4>
+                            
+                            <div class="program-summary-card">
+                                <h5>B18PGM1</h5>
+                                <div class="summary-content">
+                                    1. **Purpose**: The B18PGM1 COBOL program appears to be a user authentication system. It likely checks user credentials before allowing access to certain procedures or functionalities. The program seems to be designed to validate user input, specifically user ID and password, ensuring they are not blank or filled with non-meaningful values. This is a common practice in systems where user access needs to be controlled and monitored.<br><br>2. **Key Operations**: The main business logic of the program involves validating user input and executing certain procedures based on that input. The MOVE and PERFORM statements are used to manipulate data and control the flow of the program. The IF statements are used to check the validity of the user ID and password. If the user ID and password are valid, the program will execute certain procedures. The EXEC statements are likely used to call external procedures or functionalities, possibly related to user access control or error messaging.<br><br>3. **Structure**: The program is structured around various procedures, with PARA procedures being the most common. These procedures are likely subroutines or sections of code designed to perform specific tasks within the program. The program flow seems to be controlled by the PERFORM and IF statements, which dictate which procedures are executed based on the validity of the user ID and password. The program also contains several EXEC statements, which may be used to call external procedures or functionalities. Overall, the program appears to be well-structured and modular, with a clear separation of concerns between different procedures.
+                                </div>
+                                
+                                <a href="/home/ranjan/code/code_analyser/token_fix_v2/flowcharts/B18PGM1_flowchart.html" class="btn btn-small" target="_blank">View Flowchart</a>
+                                
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="file-section">
+                        <h3>B18PGM2.cbl</h3>
+                        <div class="file-info">
+                            Size: 2067 bytes | 
+                            Programs: 1 |
+                            <a href="/home/ranjan/code/code_analyser/token_fix_v2/ast/B18PGM2_ast.json" class="btn btn-small">View AST</a>
+                            <a href="/home/ranjan/code/code_analyser/token_fix_v2/summaries/B18PGM2_summary.txt" class="btn btn-small">View File Summary</a>
+                        </div>
+                        
+                        
+                        <div class="program-summaries">
+                            <h4>Program Summaries</h4>
+                            
+                            <div class="program-summary-card">
+                                <h5>B18PGM2</h5>
+                                <div class="summary-content">
+                                    1. **Purpose**: The B18PGM2 program appears to be a user authentication system, designed to verify the identity of a user before granting access to further functionality. It does this by comparing the password input by the user against the password stored in the database. The program's primary goal is to ensure that only authorized individuals can access certain parts of the system, thereby maintaining the security and integrity of the data within.<br><br>2. **Key Operations**: The main business logic of the program revolves around the verification of the user's password. The program first checks if the password in the database is not set to its lowest possible value, which might indicate that no password has been set. If a password has indeed been set, the program then compares the user's input to the stored password. If the two match, the user is authenticated and can proceed. If not, the program ends, denying the user access.<br><br>3. **Structure**: The program is organized into several procedures, each handling a specific part of the authentication process. It starts with the 2000-VERIFY-ID-PASS-PARA procedure, which likely handles the initial input of the user's password. The program then moves on to the 3000-END-PGM-PARA procedure, which likely handles the termination of the program if the user fails to authenticate. The program uses conditional statements (IF) to guide its flow, making decisions based on the results of the password verification process. The program's structure is designed for efficiency and security, ensuring a quick and secure authentication process.
+                                </div>
+                                
+                                <a href="/home/ranjan/code/code_analyser/token_fix_v2/flowcharts/B18PGM2_flowchart.html" class="btn btn-small" target="_blank">View Flowchart</a>
+                                
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="file-section">
+                        <h3>B18PGM3.cbl</h3>
+                        <div class="file-info">
+                            Size: 16886 bytes | 
+                            Programs: 1 |
+                            <a href="/home/ranjan/code/code_analyser/token_fix_v2/ast/B18PGM3_ast.json" class="btn btn-small">View AST</a>
+                            <a href="/home/ranjan/code/code_analyser/token_fix_v2/summaries/B18PGM3_summary.txt" class="btn btn-small">View File Summary</a>
+                        </div>
+                        
+                        
+                        <div class="program-summaries">
+                            <h4>Program Summaries</h4>
+                            
+                            <div class="program-summary-card">
+                                <h5>B18PGM3</h5>
+                                <div class="summary-content">
+                                    Without the specific details of the COBOL program, such as the statement structure, variable structure, and procedures, it's impossible to provide a detailed analysis. However, I can provide a general analysis based on the information given.<br><br>The B18PGM3 program, given its size of 324 statements and 96 procedures, appears to be a medium-sized COBOL program. COBOL, being a language primarily used for business and finance, this program likely performs some form of data processing or business logic operation. The low number of variables suggests that the program is not complex in terms of data manipulation, but rather focuses on executing a series of procedures.<br><br>The key operations of this program would likely involve reading from and writing to databases or files, performing calculations, and making decisions based on those calculations. The business logic could involve anything from calculating financial transactions to processing employee records or inventory management. The exact nature of the operations would depend on the specific business needs that the program was designed to meet.<br><br>In terms of structure, COBOL programs are typically divided into four divisions: Identification, Environment, Data, and Procedure. The Identification Division provides information about the program, such as its name and author. The Environment Division describes the computer system where the program will run, including the source and destination of any data files. The Data Division defines all data items used in the program. Finally, the Procedure Division contains the actual code that performs the program's tasks. The flow of the program is likely to be sequential, with procedures being executed in the order they are written, although there may be some conditional or iterative structures to control the flow based on the program's business logic.
+                                </div>
+                                
+                                <a href="/home/ranjan/code/code_analyser/token_fix_v2/flowcharts/B18PGM3_flowchart.html" class="btn btn-small" target="_blank">View Flowchart</a>
+                                
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="file-section">
+                        <h3>B18PGM4.cbl</h3>
+                        <div class="file-info">
+                            Size: 17057 bytes | 
+                            Programs: 1 |
+                            <a href="/home/ranjan/code/code_analyser/token_fix_v2/ast/B18PGM4_ast.json" class="btn btn-small">View AST</a>
+                            <a href="/home/ranjan/code/code_analyser/token_fix_v2/summaries/B18PGM4_summary.txt" class="btn btn-small">View File Summary</a>
+                        </div>
+                        
+                        
+                        <div class="program-summaries">
+                            <h4>Program Summaries</h4>
+                            
+                            <div class="program-summary-card">
+                                <h5>B18PGM4</h5>
+                                <div class="summary-content">
+                                    Without the actual COBOL code, it's impossible to provide a detailed analysis of the program's purpose, key operations, and structure. However, based on the provided information, we can make some general observations.<br><br>The program, B18PGM4, seems to be a relatively large program with 302 statements and 59 procedures. However, it's noted that there are zero variables, which is unusual for a program of this size. This could indicate that the program is primarily procedural, performing actions rather than manipulating data.<br><br>The large number of procedures suggests that the program is likely to be complex, with a variety of different operations. These could range from data processing tasks to business logic implementation. The lack of variables might mean that the program is heavily reliant on hardcoded values or constant data, which could limit its flexibility and adaptability.<br><br>The structure of the program, with its many procedures, suggests a modular design. This means that each procedure is likely to perform a specific task, and the overall program flow is determined by the order in which these procedures are called. This kind of structure is common in business applications, as it allows for easier maintenance and modification of the program. However, without the actual code, it's impossible to provide a more detailed analysis.
+                                </div>
+                                
+                                <a href="/home/ranjan/code/code_analyser/token_fix_v2/flowcharts/B18PGM4_flowchart.html" class="btn btn-small" target="_blank">View Flowchart</a>
+                                
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="file-section">
+                        <h3>B18PGM5.cbl</h3>
+                        <div class="file-info">
+                            Size: 16716 bytes | 
+                            Programs: 1 |
+                            <a href="/home/ranjan/code/code_analyser/token_fix_v2/ast/B18PGM5_ast.json" class="btn btn-small">View AST</a>
+                            <a href="/home/ranjan/code/code_analyser/token_fix_v2/summaries/B18PGM5_summary.txt" class="btn btn-small">View File Summary</a>
+                        </div>
+                        
+                        
+                        <div class="program-summaries">
+                            <h4>Program Summaries</h4>
+                            
+                            <div class="program-summary-card">
+                                <h5>B18PGM5</h5>
+                                <div class="summary-content">
+                                    Without the actual code, it's impossible to provide an accurate analysis of the COBOL program B18PGM5. The information provided doesn't include any details about the program's purpose, key operations, or structure. The program consists of 294 statements and 59 procedures, but there are no variables listed, which is unusual for a COBOL program. <br><br>Typically, a COBOL program is used for business and administrative purposes, such as data processing, and it's structured in a hierarchical manner, with procedures and statements nested within divisions. The program's purpose could range from managing a database, processing financial transactions, to generating reports. The key operations would involve executing these tasks based on the logic defined in the procedures and statements.<br><br>The structure of the program would generally follow the standard COBOL program structure, starting with the Identification Division, followed by the Environment Division, Data Division, and finally the Procedure Division. The flow of the program would be determined by the logic defined in the procedures and statements. However, without the actual code or a more detailed description of the program, it's impossible to provide a more specific analysis.
+                                </div>
+                                
+                                <a href="/home/ranjan/code/code_analyser/token_fix_v2/flowcharts/B18PGM5_flowchart.html" class="btn btn-small" target="_blank">View Flowchart</a>
+                                
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="file-section">
+                        <h3>B18PGM6.cbl</h3>
+                        <div class="file-info">
+                            Size: 17212 bytes | 
+                            Programs: 1 |
+                            <a href="/home/ranjan/code/code_analyser/token_fix_v2/ast/B18PGM6_ast.json" class="btn btn-small">View AST</a>
+                            <a href="/home/ranjan/code/code_analyser/token_fix_v2/summaries/B18PGM6_summary.txt" class="btn btn-small">View File Summary</a>
+                        </div>
+                        
+                        
+                        <div class="program-summaries">
+                            <h4>Program Summaries</h4>
+                            
+                            <div class="program-summary-card">
+                                <h5>B18PGM6</h5>
+                                <div class="summary-content">
+                                    Without the actual code, it's impossible to provide a detailed analysis of the COBOL program B18PGM6. However, based on the information given, we can infer some general points about the program.<br><br>1. **Purpose**: The purpose of the program cannot be determined without the actual code. However, given that it contains 305 statements and 59 procedures, it's clear that this is a moderately complex program likely designed to perform a variety of tasks. The fact that it has no variables is unusual and suggests that it may be a highly procedural program, perhaps focused on controlling the flow of execution rather than manipulating data.<br><br>2. **Key Operations**: Again, without the actual code, it's impossible to identify the specific business logic and data processing operations of the program. However, the presence of 59 procedures suggests that the program is divided into many different tasks or functions, each of which is likely responsible for a specific operation. The lack of variables suggests that these operations may not involve much data manipulation, but rather control flow, input/output, or interfacing with other systems or programs.<br><br>3. **Structure**: The program appears to be highly structured, with a large number of procedures. This suggests that it follows a modular design, with each procedure performing a specific task. This kind of structure is common in business applications, as it makes the program easier to understand, maintain, and modify. The flow of the program is likely controlled by the order in which these procedures are called, although without the actual code, it's impossible to say for certain.
+                                </div>
+                                
+                                <a href="/home/ranjan/code/code_analyser/token_fix_v2/flowcharts/B18PGM6_flowchart.html" class="btn btn-small" target="_blank">View Flowchart</a>
+                                
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <!-- Programs Tab -->
+            <div id="programs" class="tab-content">
+                <div class="section">
+                    <h2>Programs Overview</h2>
+                    <div class="program-list">
+                        
+                        <div class="program-card">
+                            <div class="program-name">B18PGM1</div>
+                            <div class="program-stats">
+                                <span class="stat">File: B18PGM1.cbl</span>
+                                <span class="stat">Type: PROGRAM</span>
+                            </div>
+                            <div class="program-actions">
+                                
+                                <a href="/home/ranjan/code/code_analyser/token_fix_v2/flowcharts/B18PGM1_flowchart.html" class="btn btn-primary" target="_blank">View Flowchart</a>
+                                
+                                <button class="btn btn-secondary" onclick="showProgramSummary('B18PGM1')">View Summary</button>
+                            </div>
+                        </div>
+                        
+                        <div class="program-card">
+                            <div class="program-name">B18PGM2</div>
+                            <div class="program-stats">
+                                <span class="stat">File: B18PGM2.cbl</span>
+                                <span class="stat">Type: PROGRAM</span>
+                            </div>
+                            <div class="program-actions">
+                                
+                                <a href="/home/ranjan/code/code_analyser/token_fix_v2/flowcharts/B18PGM2_flowchart.html" class="btn btn-primary" target="_blank">View Flowchart</a>
+                                
+                                <button class="btn btn-secondary" onclick="showProgramSummary('B18PGM2')">View Summary</button>
+                            </div>
+                        </div>
+                        
+                        <div class="program-card">
+                            <div class="program-name">B18PGM3</div>
+                            <div class="program-stats">
+                                <span class="stat">File: B18PGM3.cbl</span>
+                                <span class="stat">Type: PROGRAM</span>
+                            </div>
+                            <div class="program-actions">
+                                
+                                <a href="/home/ranjan/code/code_analyser/token_fix_v2/flowcharts/B18PGM3_flowchart.html" class="btn btn-primary" target="_blank">View Flowchart</a>
+                                
+                                <button class="btn btn-secondary" onclick="showProgramSummary('B18PGM3')">View Summary</button>
+                            </div>
+                        </div>
+                        
+                        <div class="program-card">
+                            <div class="program-name">B18PGM4</div>
+                            <div class="program-stats">
+                                <span class="stat">File: B18PGM4.cbl</span>
+                                <span class="stat">Type: PROGRAM</span>
+                            </div>
+                            <div class="program-actions">
+                                
+                                <a href="/home/ranjan/code/code_analyser/token_fix_v2/flowcharts/B18PGM4_flowchart.html" class="btn btn-primary" target="_blank">View Flowchart</a>
+                                
+                                <button class="btn btn-secondary" onclick="showProgramSummary('B18PGM4')">View Summary</button>
+                            </div>
+                        </div>
+                        
+                        <div class="program-card">
+                            <div class="program-name">B18PGM5</div>
+                            <div class="program-stats">
+                                <span class="stat">File: B18PGM5.cbl</span>
+                                <span class="stat">Type: PROGRAM</span>
+                            </div>
+                            <div class="program-actions">
+                                
+                                <a href="/home/ranjan/code/code_analyser/token_fix_v2/flowcharts/B18PGM5_flowchart.html" class="btn btn-primary" target="_blank">View Flowchart</a>
+                                
+                                <button class="btn btn-secondary" onclick="showProgramSummary('B18PGM5')">View Summary</button>
+                            </div>
+                        </div>
+                        
+                        <div class="program-card">
+                            <div class="program-name">B18PGM6</div>
+                            <div class="program-stats">
+                                <span class="stat">File: B18PGM6.cbl</span>
+                                <span class="stat">Type: PROGRAM</span>
+                            </div>
+                            <div class="program-actions">
+                                
+                                <a href="/home/ranjan/code/code_analyser/token_fix_v2/flowcharts/B18PGM6_flowchart.html" class="btn btn-primary" target="_blank">View Flowchart</a>
+                                
+                                <button class="btn btn-secondary" onclick="showProgramSummary('B18PGM6')">View Summary</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Architecture Tab -->
+            <div id="architecture" class="tab-content">
+                
+                <div class="section">
+                    <h2>Architecture Summary</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number">6</div>
+                            <div class="stat-label">Total Programs</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">1336</div>
+                            <div class="stat-label">Total Statements</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">222.7</div>
+                            <div class="stat-label">Avg Statements/Program</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">316</div>
+                            <div class="stat-label">Total Procedures</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2>Common Patterns</h2>
+                    <div class="pattern-analysis">
+                        <h3>Most Common Statement Types</h3>
+                        <div class="pattern-list">
+                            
+                            
+                            <div class="pattern-item">
+                                <span class="pattern-name">STATEMENT</span>
+                                <span class="pattern-count">863</span>
+                            </div>
+                            
+                            
+                            
+                            <div class="pattern-item">
+                                <span class="pattern-name">MOVE</span>
+                                <span class="pattern-count">309</span>
+                            </div>
+                            
+                            
+                            
+                            <div class="pattern-item">
+                                <span class="pattern-name">PERFORM</span>
+                                <span class="pattern-count">100</span>
+                            </div>
+                            
+                            
+                            
+                            <div class="pattern-item">
+                                <span class="pattern-name">IF</span>
+                                <span class="pattern-count">16</span>
+                            </div>
+                            
+                            
+                            
+                            <div class="pattern-item">
+                                <span class="pattern-name">ELSE</span>
+                                <span class="pattern-count">19</span>
+                            </div>
+                            
+                            
+                            
+                            <div class="pattern-item">
+                                <span class="pattern-name">END-IF</span>
+                                <span class="pattern-count">23</span>
+                            </div>
+                            
+                            
+                            
+                            
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2>Program Dependencies</h2>
+                    <div class="dependency-analysis">
+                        
+                        <h3>Call Graph</h3>
+                        <div class="call-graph">
+                            
+                            <div class="program-deps">
+                                <strong>B18PGM1</strong> calls:
+                                
+                                <span class="call-item">2000</span>
+                                
+                                <span class="call-item">3000</span>
+                                
+                                <span class="call-item">2000</span>
+                                
+                                <span class="call-item">2000</span>
+                                
+                                <span class="call-item">2000</span>
+                                
+                                
+                                <span class="call-more">... and 5 more</span>
+                                
+                            </div>
+                            
+                            <div class="program-deps">
+                                <strong>B18PGM2</strong> calls:
+                                
+                                <span class="call-item">2000</span>
+                                
+                                <span class="call-item">3000</span>
+                                
+                                
+                            </div>
+                            
+                            <div class="program-deps">
+                                <strong>B18PGM3</strong> calls:
+                                
+                                <span class="call-item">2000</span>
+                                
+                                <span class="call-item">3000</span>
+                                
+                                <span class="call-item">2000</span>
+                                
+                                <span class="call-item">5000</span>
+                                
+                                <span class="call-item">5100</span>
+                                
+                                
+                                <span class="call-more">... and 29 more</span>
+                                
+                            </div>
+                            
+                            <div class="program-deps">
+                                <strong>B18PGM4</strong> calls:
+                                
+                                <span class="call-item">2000</span>
+                                
+                                <span class="call-item">3000</span>
+                                
+                                <span class="call-item">2000</span>
+                                
+                                <span class="call-item">5000</span>
+                                
+                                <span class="call-item">5100</span>
+                                
+                                
+                                <span class="call-more">... and 13 more</span>
+                                
+                            </div>
+                            
+                            <div class="program-deps">
+                                <strong>B18PGM5</strong> calls:
+                                
+                                <span class="call-item">2000</span>
+                                
+                                <span class="call-item">3000</span>
+                                
+                                <span class="call-item">2000</span>
+                                
+                                <span class="call-item">5000</span>
+                                
+                                <span class="call-item">5100</span>
+                                
+                                
+                                <span class="call-more">... and 13 more</span>
+                                
+                            </div>
+                            
+                            <div class="program-deps">
+                                <strong>B18PGM6</strong> calls:
+                                
+                                <span class="call-item">2000</span>
+                                
+                                <span class="call-item">3000</span>
+                                
+                                <span class="call-item">2000</span>
+                                
+                                <span class="call-item">5000</span>
+                                
+                                <span class="call-item">5100</span>
+                                
+                                
+                                <span class="call-more">... and 13 more</span>
+                                
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2>Complexity Analysis</h2>
+                    <div class="chart-container">
+                        <canvas id="complexityChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2>Statement Type Distribution</h2>
+                    <div class="chart-container">
+                        <canvas id="patternChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Recommendations Tab -->
+            <div id="recommendations" class="tab-content">
+                <div class="section">
+                    <h2>Modernization Recommendations</h2>
+                    <div class="recommendations">
+                        <h3>Key Recommendations</h3>
+                        <ul>
+                            
+                            <li>Consider implementing unit tests for critical business logic</li>
+                            
+                            <li>Document business rules and data flow for better maintainability</li>
+                            
+                            <li>Review variable naming conventions for consistency</li>
+                            
+                            <li>Consider implementing error handling and logging mechanisms</li>
+                            
+                            <li>Evaluate opportunities for code modernization and refactoring</li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Summary Modal -->
+        <div id="summaryModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalTitle">Program Summary</h2>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Summary content will be inserted here -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Generated by Legacy Code Analyzer v1.0.0</p>
+            <p>Analysis completed in 208.64 seconds</p>
+        </div>
+    </div>
+
+    <script>
+        // Tab functionality
+        function showTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Remove active class from all nav tabs
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked nav tab
+            event.target.classList.add('active');
+        }
+        
+        // Charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Overview Complexity Chart
+            const overviewComplexityCtx = document.getElementById('overviewComplexityChart');
+            if (overviewComplexityCtx) {
+                new Chart(overviewComplexityCtx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Low', 'Medium', 'High', 'Very High'],
+                        datasets: [{
+                            label: 'Programs by Complexity',
+                            data: [0, 1, 0, 5],
+                            backgroundColor: ['#28a745', '#ffc107', '#fd7e14', '#dc3545']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Architecture Complexity Chart
+            const complexityCtx = document.getElementById('complexityChart');
+            if (complexityCtx) {
+                new Chart(complexityCtx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Low', 'Medium', 'High', 'Very High'],
+                        datasets: [{
+                            label: 'Programs by Complexity',
+                            data: [0, 1, 0, 5],
+                            backgroundColor: ['#28a745', '#ffc107', '#fd7e14', '#dc3545']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Pattern Chart
+            const patternCtx = document.getElementById('patternChart');
+            if (patternCtx) {
+                new Chart(patternCtx.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['STATEMENT', 'MOVE', 'PERFORM', 'END-IF', 'ELSE', 'IF', 'OPEN', 'CLOSE'],
+                        datasets: [{
+                            data: [863, 309, 100, 23, 19, 16, 3, 3],
+                            backgroundColor: [
+                                '#007bff', '#28a745', '#ffc107', '#dc3545',
+                                '#6f42c1', '#fd7e14', '#20c997', '#6c757d'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true
+                    }
+                });
+            }
+        });
+        
+        // Program summary data
+        const programSummaries = {
+            
+            'B18PGM1': `1. **Purpose**: The B18PGM1 COBOL program appears to be a user authentication system. It likely checks user credentials before allowing access to certain procedures or functionalities. The program seems to be designed to validate user input, specifically user ID and password, ensuring they are not blank or filled with non-meaningful values. This is a common practice in systems where user access needs to be controlled and monitored.
+
+2. **Key Operations**: The main business logic of the program involves validating user input and executing certain procedures based on that input. The MOVE and PERFORM statements are used to manipulate data and control the flow of the program. The IF statements are used to check the validity of the user ID and password. If the user ID and password are valid, the program will execute certain procedures. The EXEC statements are likely used to call external procedures or functionalities, possibly related to user access control or error messaging.
+
+3. **Structure**: The program is structured around various procedures, with PARA procedures being the most common. These procedures are likely subroutines or sections of code designed to perform specific tasks within the program. The program flow seems to be controlled by the PERFORM and IF statements, which dictate which procedures are executed based on the validity of the user ID and password. The program also contains several EXEC statements, which may be used to call external procedures or functionalities. Overall, the program appears to be well-structured and modular, with a clear separation of concerns between different procedures.`,
+            
+            'B18PGM2': `1. **Purpose**: The B18PGM2 program appears to be a user authentication system, designed to verify the identity of a user before granting access to further functionality. It does this by comparing the password input by the user against the password stored in the database. The program's primary goal is to ensure that only authorized individuals can access certain parts of the system, thereby maintaining the security and integrity of the data within.
+
+2. **Key Operations**: The main business logic of the program revolves around the verification of the user's password. The program first checks if the password in the database is not set to its lowest possible value, which might indicate that no password has been set. If a password has indeed been set, the program then compares the user's input to the stored password. If the two match, the user is authenticated and can proceed. If not, the program ends, denying the user access.
+
+3. **Structure**: The program is organized into several procedures, each handling a specific part of the authentication process. It starts with the 2000-VERIFY-ID-PASS-PARA procedure, which likely handles the initial input of the user's password. The program then moves on to the 3000-END-PGM-PARA procedure, which likely handles the termination of the program if the user fails to authenticate. The program uses conditional statements (IF) to guide its flow, making decisions based on the results of the password verification process. The program's structure is designed for efficiency and security, ensuring a quick and secure authentication process.`,
+            
+            'B18PGM3': `Without the specific details of the COBOL program, such as the statement structure, variable structure, and procedures, it's impossible to provide a detailed analysis. However, I can provide a general analysis based on the information given.
+
+The B18PGM3 program, given its size of 324 statements and 96 procedures, appears to be a medium-sized COBOL program. COBOL, being a language primarily used for business and finance, this program likely performs some form of data processing or business logic operation. The low number of variables suggests that the program is not complex in terms of data manipulation, but rather focuses on executing a series of procedures.
+
+The key operations of this program would likely involve reading from and writing to databases or files, performing calculations, and making decisions based on those calculations. The business logic could involve anything from calculating financial transactions to processing employee records or inventory management. The exact nature of the operations would depend on the specific business needs that the program was designed to meet.
+
+In terms of structure, COBOL programs are typically divided into four divisions: Identification, Environment, Data, and Procedure. The Identification Division provides information about the program, such as its name and author. The Environment Division describes the computer system where the program will run, including the source and destination of any data files. The Data Division defines all data items used in the program. Finally, the Procedure Division contains the actual code that performs the program's tasks. The flow of the program is likely to be sequential, with procedures being executed in the order they are written, although there may be some conditional or iterative structures to control the flow based on the program's business logic.`,
+            
+            'B18PGM4': `Without the actual COBOL code, it's impossible to provide a detailed analysis of the program's purpose, key operations, and structure. However, based on the provided information, we can make some general observations.
+
+The program, B18PGM4, seems to be a relatively large program with 302 statements and 59 procedures. However, it's noted that there are zero variables, which is unusual for a program of this size. This could indicate that the program is primarily procedural, performing actions rather than manipulating data.
+
+The large number of procedures suggests that the program is likely to be complex, with a variety of different operations. These could range from data processing tasks to business logic implementation. The lack of variables might mean that the program is heavily reliant on hardcoded values or constant data, which could limit its flexibility and adaptability.
+
+The structure of the program, with its many procedures, suggests a modular design. This means that each procedure is likely to perform a specific task, and the overall program flow is determined by the order in which these procedures are called. This kind of structure is common in business applications, as it allows for easier maintenance and modification of the program. However, without the actual code, it's impossible to provide a more detailed analysis.`,
+            
+            'B18PGM5': `Without the actual code, it's impossible to provide an accurate analysis of the COBOL program B18PGM5. The information provided doesn't include any details about the program's purpose, key operations, or structure. The program consists of 294 statements and 59 procedures, but there are no variables listed, which is unusual for a COBOL program. 
+
+Typically, a COBOL program is used for business and administrative purposes, such as data processing, and it's structured in a hierarchical manner, with procedures and statements nested within divisions. The program's purpose could range from managing a database, processing financial transactions, to generating reports. The key operations would involve executing these tasks based on the logic defined in the procedures and statements.
+
+The structure of the program would generally follow the standard COBOL program structure, starting with the Identification Division, followed by the Environment Division, Data Division, and finally the Procedure Division. The flow of the program would be determined by the logic defined in the procedures and statements. However, without the actual code or a more detailed description of the program, it's impossible to provide a more specific analysis.`,
+            
+            'B18PGM6': `Without the actual code, it's impossible to provide a detailed analysis of the COBOL program B18PGM6. However, based on the information given, we can infer some general points about the program.
+
+1. **Purpose**: The purpose of the program cannot be determined without the actual code. However, given that it contains 305 statements and 59 procedures, it's clear that this is a moderately complex program likely designed to perform a variety of tasks. The fact that it has no variables is unusual and suggests that it may be a highly procedural program, perhaps focused on controlling the flow of execution rather than manipulating data.
+
+2. **Key Operations**: Again, without the actual code, it's impossible to identify the specific business logic and data processing operations of the program. However, the presence of 59 procedures suggests that the program is divided into many different tasks or functions, each of which is likely responsible for a specific operation. The lack of variables suggests that these operations may not involve much data manipulation, but rather control flow, input/output, or interfacing with other systems or programs.
+
+3. **Structure**: The program appears to be highly structured, with a large number of procedures. This suggests that it follows a modular design, with each procedure performing a specific task. This kind of structure is common in business applications, as it makes the program easier to understand, maintain, and modify. The flow of the program is likely controlled by the order in which these procedures are called, although without the actual code, it's impossible to say for certain.`,
+            
+        };
+        
+        function showProgramSummary(programName) {
+            const summary = programSummaries[programName];
+            if (summary) {
+                document.getElementById('modalTitle').textContent = `${programName} Summary`;
+                document.getElementById('modalBody').innerHTML = summary.replace(/\n/g, '<br>');
+                document.getElementById('summaryModal').style.display = 'block';
+            } else {
+                alert('Summary not available for this program.');
+            }
+        }
+        
+        function closeModal() {
+            document.getElementById('summaryModal').style.display = 'none';
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('summaryModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
+        

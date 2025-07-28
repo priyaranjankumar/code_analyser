@@ -1,0 +1,593 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B18PGM2 - Flowchart</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .header h1 {
+            color: #333;
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .header p {
+            color: #666;
+            margin: 10px 0 0 0;
+            font-size: 1.1em;
+        }
+        .flow-description {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #007bff;
+        }
+        .flow-description h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+        .flow-description p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        .flowchart-container {
+            width: 100%;
+            height: 700px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #fafafa;
+        }
+        .node {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .node:hover {
+            filter: brightness(1.1);
+        }
+        .node-text {
+            font-size: 11px;
+            font-weight: bold;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            fill: white;
+            pointer-events: none;
+        }
+        .node-description {
+            font-size: 10px;
+            fill: #333;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            pointer-events: none;
+        }
+        .link {
+            stroke: #666;
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#arrowhead);
+        }
+        .link-label {
+            font-size: 10px;
+            fill: #666;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            pointer-events: none;
+        }
+        .controls {
+            margin: 20px 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #6c757d;
+        }
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+        .btn-success {
+            background: #28a745;
+        }
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+        .zoom-info {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 1000;
+        }
+        .fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            background: white;
+        }
+        .fullscreen .container {
+            max-width: none;
+            height: 100vh;
+            margin: 0;
+            border-radius: 0;
+        }
+        .fullscreen .flowchart-container {
+            height: calc(100vh - 200px);
+        }
+        .fullscreen .controls {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            z-index: 1000;
+        }
+        .legend {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .legend h4 {
+            margin-top: 0;
+            color: #495057;
+        }
+        .legend-item {
+            display: inline-block;
+            margin: 5px 15px 5px 0;
+            font-size: 12px;
+        }
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 1000;
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>B18PGM2</h1>
+            <p>Program Flowchart - Interactive Visualization</p>
+        </div>
+        
+        
+        <div class="flow-description">
+            <h3>Program Flow Overview</h3>
+            <p><strong>Main Flow:</strong> Program flow analysis from LLM</p>
+            
+            <p><strong>Key Decision Points:</strong> Key decision points identified</p>
+            
+            
+            <p><strong>Loops and Iterations:</strong> Loop structures found</p>
+            
+            
+            <p><strong>Error Handling:</strong> Error handling mechanisms</p>
+            
+        </div>
+        
+        
+        <div class="legend">
+            <h4>Node Types</h4>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #28a745;"></span>
+                <span>Start/End</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #007bff;"></span>
+                <span>Process</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #ffc107;"></span>
+                <span>Decision</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #fd7e14;"></span>
+                <span>Input/Output</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #6f42c1;"></span>
+                <span>Procedure Call</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #20c997;"></span>
+                <span>Loop</span>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <h4>Interactive Controls</h4>
+            <div style="font-size: 12px; color: #666; line-height: 1.6;">
+                <strong>Mouse:</strong> Drag to pan, Scroll wheel to zoom<br>
+                <strong>Keyboard:</strong> +/= (zoom in), - (zoom out), 0 (reset), F (fit to screen), Esc (exit fullscreen)<br>
+                <strong>Hover:</strong> Over nodes to see detailed information
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn btn-secondary" onclick="zoomIn()">🔍 Zoom In</button>
+            <button class="btn btn-secondary" onclick="zoomOut()">🔍 Zoom Out</button>
+            <button class="btn btn-secondary" onclick="resetZoom()">🔄 Reset</button>
+            <button class="btn btn-success" onclick="fitToScreen()">📐 Fit to Screen</button>
+            <button class="btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+            <button class="btn btn-secondary" onclick="downloadSVG()">💾 Download SVG</button>
+        </div>
+        
+        <div class="zoom-info" id="zoomInfo" style="display: none;">
+            Zoom: <span id="zoomLevel">100%</span>
+        </div>
+        
+        <div class="flowchart-container" id="flowchart"></div>
+    </div>
+    
+    <div class="tooltip" id="tooltip" style="display: none;"></div>
+    
+    <script>
+        // Flowchart data
+        const flowchartData = {"nodes": [{"id": "node_0", "label": "START", "type": "START", "description": "Program initialization", "business_logic": "Program entry point", "line_number": 1}, {"id": "node_1", "label": "2000-VERIF", "type": "CALL", "description": "PERFORM 2000-VERIFY-ID-PASS-PARA", "business_logic": "Execute business logic procedure", "line_number": 27}, {"id": "node_2", "label": "3000-END-P", "type": "CALL", "description": "PERFORM 3000-END-PGM-PARA", "business_logic": "Execute business logic procedure", "line_number": 28}, {"id": "node_3", "label": "MOVE", "type": "PROCESS", "description": "MOVE 0 TO LS-VALID-FLAG", "business_logic": "Assign data to variable", "line_number": 30}, {"id": "node_4", "label": "IF", "type": "DECISION", "description": "IF NOT ( DB-PASSWD = LOW-VALUES ) THEN", "business_logic": "Validate data or make business decision", "line_number": 33}, {"id": "node_5", "label": "Decision", "type": "DECISION", "description": "IF: NOT ( DB-PASSWD = LOW-VALUES ) THEN", "business_logic": "Business logic decision point", "line_number": 33}, {"id": "node_6", "label": "IF", "type": "DECISION", "description": "IF ( LS-USER-PASS = DB-PASSWD ) THEN", "business_logic": "Validate data or make business decision", "line_number": 34}, {"id": "node_7", "label": "Decision", "type": "DECISION", "description": "IF: ( LS-USER-PASS = DB-PASSWD ) THEN", "business_logic": "Business logic decision point", "line_number": 34}, {"id": "node_8", "label": "MOVE", "type": "PROCESS", "description": "MOVE 1 TO LS-VALID-FLAG", "business_logic": "Assign data to variable", "line_number": 35}, {"id": "node_9", "label": "ELSE", "type": "PROCESS", "description": "ELSE", "business_logic": "Process data", "line_number": 36}, {"id": "node_10", "label": "MOVE", "type": "PROCESS", "description": "MOVE 2 TO LS-VALID-FLAG", "business_logic": "Assign data to variable", "line_number": 37}, {"id": "node_11", "label": "END-IF", "type": "PROCESS", "description": "END-IF", "business_logic": "Process data", "line_number": 38}, {"id": "node_12", "label": "ELSE", "type": "PROCESS", "description": "ELSE", "business_logic": "Process data", "line_number": 39}, {"id": "node_13", "label": "MOVE", "type": "PROCESS", "description": "MOVE 3 TO LS-VALID-FLAG", "business_logic": "Assign data to variable", "line_number": 40}, {"id": "node_14", "label": "END", "type": "END", "description": "Program completion", "business_logic": "Program termination", "line_number": 26}], "links": [{"source": "node_0", "target": "node_1", "label": "", "type": "NORMAL"}, {"source": "node_1", "target": "node_2", "label": "", "type": "NORMAL"}, {"source": "node_2", "target": "node_3", "label": "", "type": "NORMAL"}, {"source": "node_3", "target": "node_4", "label": "", "type": "NORMAL"}, {"source": "node_4", "target": "node_5", "label": "True", "type": "CONDITION_TRUE"}, {"source": "node_5", "target": "node_6", "label": "", "type": "NORMAL"}, {"source": "node_6", "target": "node_7", "label": "True", "type": "CONDITION_TRUE"}, {"source": "node_7", "target": "node_8", "label": "", "type": "NORMAL"}, {"source": "node_8", "target": "node_9", "label": "", "type": "NORMAL"}, {"source": "node_9", "target": "node_10", "label": "", "type": "NORMAL"}, {"source": "node_10", "target": "node_11", "label": "", "type": "NORMAL"}, {"source": "node_11", "target": "node_12", "label": "", "type": "NORMAL"}, {"source": "node_12", "target": "node_13", "label": "", "type": "NORMAL"}, {"source": "node_13", "target": "node_14", "label": "", "type": "NORMAL"}]};
+        
+        // Global variables for zoom and fullscreen
+        let currentZoom = 1;
+        let isFullscreen = false;
+        
+        // Set up SVG
+        const container = document.getElementById('flowchart');
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        
+        const svg = d3.select('#flowchart')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height);
+        
+        // Create a group for zooming
+        const g = svg.append('g');
+        
+        // Add zoom behavior
+        const zoom = d3.zoom()
+            .scaleExtent([0.1, 5])
+            .on('zoom', (event) => {
+                g.attr('transform', event.transform);
+                currentZoom = event.transform.k;
+                updateZoomInfo();
+            });
+        
+        svg.call(zoom);
+        
+        // Mouse wheel zoom
+        svg.on('wheel', (event) => {
+            event.preventDefault();
+            const zoomLevel = event.deltaY > 0 ? 0.9 : 1.1;
+            const newZoom = currentZoom * zoomLevel;
+            
+            if (newZoom >= 0.1 && newZoom <= 5) {
+                const transform = d3.zoomTransform(svg.node());
+                const newTransform = transform.scale(newZoom);
+                svg.transition().duration(200).call(zoom.transform, newTransform);
+            }
+        });
+        
+        // Add arrow marker
+        svg.append('defs').append('marker')
+            .attr('id', 'arrowhead')
+            .attr('viewBox', '0 -5 10 10')
+            .attr('refX', 20)
+            .attr('refY', 0)
+            .attr('markerWidth', 6)
+            .attr('markerHeight', 6)
+            .attr('orient', 'auto')
+            .append('path')
+            .attr('d', 'M0,-5L10,0L0,5')
+            .attr('fill', '#666');
+        
+        // Create force simulation
+        const simulation = d3.forceSimulation(flowchartData.nodes)
+            .force('link', d3.forceLink(flowchartData.links).id(d => d.id).distance(120))
+            .force('charge', d3.forceManyBody().strength(-300))
+            .force('center', d3.forceCenter(width / 2, height / 2))
+            .force('collision', d3.forceCollide().radius(40));
+        
+        // Create links
+        const link = g.append('g')
+            .selectAll('line')
+            .data(flowchartData.links)
+            .enter().append('line')
+            .attr('class', 'link');
+        
+        // Create link labels
+        const linkLabel = g.append('g')
+            .selectAll('text')
+            .data(flowchartData.links)
+            .enter().append('text')
+            .attr('class', 'link-label')
+            .text(d => d.label || '');
+        
+        // Create nodes
+        const node = g.append('g')
+            .selectAll('g')
+            .data(flowchartData.nodes)
+            .enter().append('g')
+            .attr('class', 'node')
+            .call(d3.drag()
+                .on('start', dragstarted)
+                .on('drag', dragged)
+                .on('end', dragended));
+        
+        // Add node circles
+        node.append('circle')
+            .attr('r', d => d.type === 'DECISION' ? 25 : 20)
+            .attr('fill', d => getNodeColor(d.type));
+        
+        // Add node labels
+        node.append('text')
+            .attr('class', 'node-text')
+            .attr('dy', d => d.type === 'DECISION' ? 0 : 0)
+            .text(d => d.label);
+        
+        // Add node descriptions (smaller text below)
+        node.append('text')
+            .attr('class', 'node-description')
+            .attr('dy', d => d.type === 'DECISION' ? 35 : 30)
+            .text(d => d.description ? d.description.substring(0, 15) + '...' : '');
+        
+        // Add tooltip
+        node.on('mouseover', function(event, d) {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.innerHTML = `
+                <strong>${d.label}</strong><br>
+                ${d.description || ''}<br>
+                ${d.business_logic ? '<br><strong>Business Logic:</strong> ' + d.business_logic : ''}
+                ${d.line_number ? '<br><strong>Line:</strong> ' + d.line_number : ''}
+            `;
+            tooltip.style.display = 'block';
+            tooltip.style.left = event.pageX + 10 + 'px';
+            tooltip.style.top = event.pageY - 10 + 'px';
+        })
+        .on('mouseout', function() {
+            document.getElementById('tooltip').style.display = 'none';
+        });
+        
+        // Update positions on simulation tick
+        simulation.on('tick', () => {
+            link
+                .attr('x1', d => d.source.x)
+                .attr('y1', d => d.source.y)
+                .attr('x2', d => d.target.x)
+                .attr('y2', d => d.target.y);
+            
+            linkLabel
+                .attr('x', d => (d.source.x + d.target.x) / 2)
+                .attr('y', d => (d.source.y + d.target.y) / 2);
+            
+            node
+                .attr('transform', d => `translate(${d.x},${d.y})`);
+        });
+        
+        // Drag functions
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+        
+        // Utility functions
+        function getNodeColor(type) {
+            const colors = {
+                'START': '#28a745',
+                'END': '#28a745',
+                'PROCESS': '#007bff',
+                'DECISION': '#ffc107',
+                'IO': '#fd7e14',
+                'CALL': '#6f42c1',
+                'LOOP': '#20c997'
+            };
+            return colors[type] || '#6c757d';
+        }
+        
+        function updateZoomInfo() {
+            const zoomInfo = document.getElementById('zoomInfo');
+            const zoomLevel = document.getElementById('zoomLevel');
+            if (zoomInfo && zoomLevel) {
+                zoomLevel.textContent = Math.round(currentZoom * 100) + '%';
+                zoomInfo.style.display = currentZoom !== 1 ? 'block' : 'none';
+            }
+        }
+        
+        function zoomIn() {
+            const newZoom = Math.min(currentZoom * 1.2, 5);
+            const transform = d3.zoomTransform(svg.node());
+            const newTransform = transform.scale(newZoom);
+            svg.transition().duration(300).call(zoom.transform, newTransform);
+        }
+        
+        function zoomOut() {
+            const newZoom = Math.max(currentZoom / 1.2, 0.1);
+            const transform = d3.zoomTransform(svg.node());
+            const newTransform = transform.scale(newZoom);
+            svg.transition().duration(300).call(zoom.transform, newTransform);
+        }
+        
+        function resetZoom() {
+            svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity);
+            simulation.alpha(1).restart();
+        }
+        
+        function fitToScreen() {
+            // Get the bounds of all nodes
+            const nodes = flowchartData.nodes;
+            if (nodes.length === 0) return;
+            
+            let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+            
+            nodes.forEach(node => {
+                if (node.x !== undefined && node.y !== undefined) {
+                    minX = Math.min(minX, node.x);
+                    minY = Math.min(minY, node.y);
+                    maxX = Math.max(maxX, node.x);
+                    maxY = Math.max(maxY, node.y);
+                }
+            });
+            
+            // Add padding
+            const padding = 50;
+            minX -= padding;
+            minY -= padding;
+            maxX += padding;
+            maxY += padding;
+            
+            // Calculate scale and translation
+            const graphWidth = maxX - minX;
+            const graphHeight = maxY - minY;
+            const scale = Math.min(width / graphWidth, height / graphHeight) * 0.8;
+            
+            const transform = d3.zoomIdentity
+                .translate(width / 2 - (minX + graphWidth / 2) * scale, 
+                          height / 2 - (minY + graphHeight / 2) * scale)
+                .scale(scale);
+            
+            svg.transition().duration(500).call(zoom.transform, transform);
+        }
+        
+        function toggleFullscreen() {
+            const container = document.querySelector('.container');
+            const flowchartContainer = document.getElementById('flowchart');
+            
+            if (!isFullscreen) {
+                // Enter fullscreen
+                container.classList.add('fullscreen');
+                isFullscreen = true;
+                
+                // Update SVG size
+                const newWidth = window.innerWidth;
+                const newHeight = window.innerHeight - 200;
+                svg.attr('width', newWidth).attr('height', newHeight);
+                
+                // Update simulation center
+                simulation.force('center', d3.forceCenter(newWidth / 2, newHeight / 2));
+                simulation.alpha(1).restart();
+                
+                // Update button text
+                event.target.textContent = '⛶ Exit Fullscreen';
+            } else {
+                // Exit fullscreen
+                container.classList.remove('fullscreen');
+                isFullscreen = false;
+                
+                // Restore original size
+                const originalWidth = container.clientWidth;
+                const originalHeight = 700;
+                svg.attr('width', originalWidth).attr('height', originalHeight);
+                
+                // Update simulation center
+                simulation.force('center', d3.forceCenter(originalWidth / 2, originalHeight / 2));
+                simulation.alpha(1).restart();
+                
+                // Update button text
+                event.target.textContent = '⛶ Fullscreen';
+            }
+        }
+        
+        function downloadSVG() {
+            const svgElement = document.querySelector('#flowchart svg');
+            const svgData = new XMLSerializer().serializeToString(svgElement);
+            const svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+            const svgUrl = URL.createObjectURL(svgBlob);
+            const downloadLink = document.createElement('a');
+            downloadLink.href = svgUrl;
+            downloadLink.download = 'B18PGM2_flowchart.svg';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (event) => {
+            if (event.key === '+' || event.key === '=') {
+                event.preventDefault();
+                zoomIn();
+            } else if (event.key === '-') {
+                event.preventDefault();
+                zoomOut();
+            } else if (event.key === '0') {
+                event.preventDefault();
+                resetZoom();
+            } else if (event.key === 'f') {
+                event.preventDefault();
+                fitToScreen();
+            } else if (event.key === 'Escape' && isFullscreen) {
+                toggleFullscreen();
+            }
+        });
+    </script>
+</body>
+</html>
+        

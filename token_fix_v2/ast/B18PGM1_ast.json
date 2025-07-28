@@ -1,0 +1,1812 @@
+{
+  "programs": [
+    {
+      "name": "B18PGM1",
+      "type": "PROGRAM",
+      "start_line": 2,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 5,
+          "content": "01 WS-END-MSG      PIC X(27) VALUE 'PROGRAM ENDED THANK YOU   '."
+        },
+        {
+          "type": "STATEMENT",
+          "line": 11,
+          "content": "05 WS-ID       PIC X(06)."
+        },
+        {
+          "type": "STATEMENT",
+          "line": 12,
+          "content": "05 WS-PASS     PIC X(06)."
+        },
+        {
+          "type": "MOVE",
+          "line": 20,
+          "content": "MOVE -1 TO USERIDL",
+          "operands": "-1 TO USERIDL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 21,
+          "content": "EVALUATE EIBCALEN"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 22,
+          "content": "WHEN 0"
+        },
+        {
+          "type": "PERFORM",
+          "line": 23,
+          "content": "PERFORM 2000-SEND-MAP-PARA",
+          "target": "2000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 24,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "PERFORM",
+          "line": 25,
+          "content": "PERFORM 3000-KEY-VALIDATION-PARA",
+          "target": "3000"
+        },
+        {
+          "type": "PERFORM",
+          "line": 26,
+          "content": "PERFORM 2000-SEND-MAP-PARA",
+          "target": "2000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 31,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 32,
+          "content": "SEND MAP('LOGIN')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 33,
+          "content": "MAPSET('B18MPS1')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 34,
+          "content": "CURSOR"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 35,
+          "content": "ERASE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 38,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 39,
+          "content": "RECEIVE MAP('LOGIN')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 40,
+          "content": "MAPSET('B18MPS1')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 41,
+          "content": "RESP(WS-RESP)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 43,
+          "content": "EVALUATE WS-RESP"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 44,
+          "content": "WHEN DFHRESP(NORMAL)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 45,
+          "content": "CONTINUE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 46,
+          "content": "WHEN DFHRESP(MAPFAIL)"
+        },
+        {
+          "type": "MOVE",
+          "line": 47,
+          "content": "MOVE 'PLEASE ENTER ONLY AFTER ENTERING DATA'",
+          "operands": "'PLEASE ENTER ONLY AFTER ENTERING DATA'"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 48,
+          "content": "TO MSGO"
+        },
+        {
+          "type": "PERFORM",
+          "line": 49,
+          "content": "PERFORM 2000-SEND-MAP-PARA",
+          "target": "2000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 50,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "MOVE",
+          "line": 51,
+          "content": "MOVE 'MAP IS FAILED, PLEASE OPEN AGAIN' TO MSGO",
+          "operands": "'MAP IS FAILED, PLEASE OPEN AGAIN' TO MSGO"
+        },
+        {
+          "type": "PERFORM",
+          "line": 52,
+          "content": "PERFORM 2000-SEND-MAP-PARA",
+          "target": "2000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 55,
+          "content": "EVALUATE EIBAID"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 56,
+          "content": "WHEN DFHPF2"
+        },
+        {
+          "type": "PERFORM",
+          "line": 57,
+          "content": "PERFORM 2100-RECEIVE-MAP-PARA",
+          "target": "2100"
+        },
+        {
+          "type": "PERFORM",
+          "line": 58,
+          "content": "PERFORM 3100-CHECK-ID-PASS-PARA",
+          "target": "3100"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 59,
+          "content": "WHEN DFHPF3"
+        },
+        {
+          "type": "PERFORM",
+          "line": 60,
+          "content": "PERFORM 4200-PROGRAM-END-MSG",
+          "target": "4200"
+        },
+        {
+          "type": "PERFORM",
+          "line": 61,
+          "content": "PERFORM 4000-END-PROGRAM-PARA",
+          "target": "4000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 62,
+          "content": "WHEN DFHPF12"
+        },
+        {
+          "type": "MOVE",
+          "line": 63,
+          "content": "MOVE LOW-VALUES TO LOGINO",
+          "operands": "LOW-VALUES TO LOGINO"
+        },
+        {
+          "type": "MOVE",
+          "line": 64,
+          "content": "MOVE -1 TO USERIDL",
+          "operands": "-1 TO USERIDL"
+        },
+        {
+          "type": "PERFORM",
+          "line": 65,
+          "content": "PERFORM 2000-SEND-MAP-PARA",
+          "target": "2000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 66,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "MOVE",
+          "line": 67,
+          "content": "MOVE 'INVALID KEY PRESSED' TO MSGO",
+          "operands": "'INVALID KEY PRESSED' TO MSGO"
+        },
+        {
+          "type": "IF",
+          "line": 70,
+          "content": "IF NOT ( USERIDI = LOW-VALUES OR USERIDI = SPACES ) THEN",
+          "condition": "NOT ( USERIDI = LOW-VALUES OR USERIDI = SPACES ) THEN"
+        },
+        {
+          "type": "IF",
+          "line": 71,
+          "content": "IF NOT ( PASSWDI = LOW-VALUES OR PASSWDI = SPACES ) THEN",
+          "condition": "NOT ( PASSWDI = LOW-VALUES OR PASSWDI = SPACES ) THEN"
+        },
+        {
+          "type": "MOVE",
+          "line": 72,
+          "content": "MOVE USERIDI TO WS-ID",
+          "operands": "USERIDI TO WS-ID"
+        },
+        {
+          "type": "MOVE",
+          "line": 73,
+          "content": "MOVE PASSWDI TO WS-PASS",
+          "operands": "PASSWDI TO WS-PASS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 74,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 75,
+          "content": "LINK PROGRAM('B18PGM2')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 76,
+          "content": "COMMAREA(WS-COMMAREA1)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 77,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 78,
+          "content": "EVALUATE WS-FLAG"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 79,
+          "content": "WHEN 1"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 80,
+          "content": "EXEC CICS XCTL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 81,
+          "content": "PROGRAM('B18PGM3')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 82,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 83,
+          "content": "WHEN 2"
+        },
+        {
+          "type": "MOVE",
+          "line": 84,
+          "content": "MOVE 'WRONG PASSWORD' TO MSGO",
+          "operands": "'WRONG PASSWORD' TO MSGO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 85,
+          "content": "WHEN 3"
+        },
+        {
+          "type": "MOVE",
+          "line": 86,
+          "content": "MOVE 'USER NOT IN REGISTERED' TO MSGO",
+          "operands": "'USER NOT IN REGISTERED' TO MSGO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 87,
+          "content": "END-EVALUATE"
+        },
+        {
+          "type": "ELSE",
+          "line": 88,
+          "content": "ELSE"
+        },
+        {
+          "type": "MOVE",
+          "line": 89,
+          "content": "MOVE 'ALL FIELDS ARE MANDATORY - PLEASE ENTER PASSWORD'",
+          "operands": "'ALL FIELDS ARE MANDATORY - PLEASE ENTER PASSWORD'"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 90,
+          "content": "TO MSGO"
+        },
+        {
+          "type": "MOVE",
+          "line": 91,
+          "content": "MOVE -1 TO USERIDL",
+          "operands": "-1 TO USERIDL"
+        },
+        {
+          "type": "END-IF",
+          "line": 92,
+          "content": "END-IF"
+        },
+        {
+          "type": "ELSE",
+          "line": 93,
+          "content": "ELSE"
+        },
+        {
+          "type": "MOVE",
+          "line": 94,
+          "content": "MOVE 'ALL FIELDS ARE MANDATORY - PLEASE ENTER USERID'",
+          "operands": "'ALL FIELDS ARE MANDATORY - PLEASE ENTER USERID'"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 95,
+          "content": "TO MSGO"
+        },
+        {
+          "type": "MOVE",
+          "line": 96,
+          "content": "MOVE -1 TO USERIDL",
+          "operands": "-1 TO USERIDL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 99,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 100,
+          "content": "RETURN"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 103,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 104,
+          "content": "RETURN TRANSID('B181')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 105,
+          "content": "COMMAREA(WS-COMMAREA)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 108,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 109,
+          "content": "SEND FROM(WS-END-MSG)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 110,
+          "content": "LENGTH(WS-END-MSG-LEN)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 111,
+          "content": "ERASE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 114,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 115,
+          "content": "ASKTIME"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 116,
+          "content": "ABSTIME(WS-DATE-TIME)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 118,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 119,
+          "content": "FORMATTIME"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 120,
+          "content": "DDMMYYYY(DATEO)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 121,
+          "content": "DATESEP('/')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 122,
+          "content": "ABSTIME(WS-DATE-TIME)"
+        }
+      ],
+      "variables": [
+        {
+          "level": 5,
+          "name": "DUMMY",
+          "pic": "9 VALUE 0.",
+          "line": 8
+        }
+      ],
+      "procedures": [
+        {
+          "name": "27",
+          "start_line": 6,
+          "statements": [],
+          "end_line": 6
+        },
+        {
+          "name": "COMMAREA",
+          "start_line": 7,
+          "statements": [],
+          "end_line": 8
+        },
+        {
+          "name": "COMP",
+          "start_line": 9,
+          "statements": [],
+          "end_line": 9
+        },
+        {
+          "name": "COMMAREA1",
+          "start_line": 10,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 11,
+              "content": "05 WS-ID       PIC X(06)."
+            },
+            {
+              "type": "STATEMENT",
+              "line": 12,
+              "content": "05 WS-PASS     PIC X(06)."
+            }
+          ],
+          "end_line": 12
+        },
+        {
+          "name": "0",
+          "start_line": 13,
+          "statements": [],
+          "end_line": 13
+        },
+        {
+          "name": "3",
+          "start_line": 14,
+          "statements": [],
+          "end_line": 14
+        },
+        {
+          "name": "B18MPS1",
+          "start_line": 15,
+          "statements": [],
+          "end_line": 15
+        },
+        {
+          "name": "DFHAID",
+          "start_line": 16,
+          "statements": [],
+          "end_line": 17
+        },
+        {
+          "name": "PARA",
+          "start_line": 18,
+          "statements": [],
+          "end_line": 18
+        },
+        {
+          "name": "LOGINO",
+          "start_line": 19,
+          "statements": [
+            {
+              "type": "MOVE",
+              "line": 20,
+              "content": "MOVE -1 TO USERIDL",
+              "operands": "-1 TO USERIDL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 21,
+              "content": "EVALUATE EIBCALEN"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 22,
+              "content": "WHEN 0"
+            },
+            {
+              "type": "PERFORM",
+              "line": 23,
+              "content": "PERFORM 2000-SEND-MAP-PARA",
+              "target": "2000"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 24,
+              "content": "WHEN OTHER"
+            },
+            {
+              "type": "PERFORM",
+              "line": 25,
+              "content": "PERFORM 3000-KEY-VALIDATION-PARA",
+              "target": "3000"
+            },
+            {
+              "type": "PERFORM",
+              "line": 26,
+              "content": "PERFORM 2000-SEND-MAP-PARA",
+              "target": "2000"
+            }
+          ],
+          "end_line": 26
+        },
+        {
+          "name": "EVALUATE",
+          "start_line": 27,
+          "statements": [],
+          "end_line": 27
+        },
+        {
+          "name": "PARA",
+          "start_line": 28,
+          "statements": [],
+          "end_line": 28
+        },
+        {
+          "name": "PARA",
+          "start_line": 29,
+          "statements": [],
+          "end_line": 29
+        },
+        {
+          "name": "PARA",
+          "start_line": 30,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 31,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 32,
+              "content": "SEND MAP('LOGIN')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 33,
+              "content": "MAPSET('B18MPS1')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 34,
+              "content": "CURSOR"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 35,
+              "content": "ERASE"
+            }
+          ],
+          "end_line": 35
+        },
+        {
+          "name": "EXEC",
+          "start_line": 36,
+          "statements": [],
+          "end_line": 36
+        },
+        {
+          "name": "PARA",
+          "start_line": 37,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 38,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 39,
+              "content": "RECEIVE MAP('LOGIN')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 40,
+              "content": "MAPSET('B18MPS1')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 41,
+              "content": "RESP(WS-RESP)"
+            }
+          ],
+          "end_line": 41
+        },
+        {
+          "name": "EXEC",
+          "start_line": 42,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 43,
+              "content": "EVALUATE WS-RESP"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 44,
+              "content": "WHEN DFHRESP(NORMAL)"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 45,
+              "content": "CONTINUE"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 46,
+              "content": "WHEN DFHRESP(MAPFAIL)"
+            },
+            {
+              "type": "MOVE",
+              "line": 47,
+              "content": "MOVE 'PLEASE ENTER ONLY AFTER ENTERING DATA'",
+              "operands": "'PLEASE ENTER ONLY AFTER ENTERING DATA'"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 48,
+              "content": "TO MSGO"
+            },
+            {
+              "type": "PERFORM",
+              "line": 49,
+              "content": "PERFORM 2000-SEND-MAP-PARA",
+              "target": "2000"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 50,
+              "content": "WHEN OTHER"
+            },
+            {
+              "type": "MOVE",
+              "line": 51,
+              "content": "MOVE 'MAP IS FAILED, PLEASE OPEN AGAIN' TO MSGO",
+              "operands": "'MAP IS FAILED, PLEASE OPEN AGAIN' TO MSGO"
+            },
+            {
+              "type": "PERFORM",
+              "line": 52,
+              "content": "PERFORM 2000-SEND-MAP-PARA",
+              "target": "2000"
+            }
+          ],
+          "end_line": 52
+        },
+        {
+          "name": "EVALUATE",
+          "start_line": 53,
+          "statements": [],
+          "end_line": 53
+        },
+        {
+          "name": "PARA",
+          "start_line": 54,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 55,
+              "content": "EVALUATE EIBAID"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 56,
+              "content": "WHEN DFHPF2"
+            },
+            {
+              "type": "PERFORM",
+              "line": 57,
+              "content": "PERFORM 2100-RECEIVE-MAP-PARA",
+              "target": "2100"
+            },
+            {
+              "type": "PERFORM",
+              "line": 58,
+              "content": "PERFORM 3100-CHECK-ID-PASS-PARA",
+              "target": "3100"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 59,
+              "content": "WHEN DFHPF3"
+            },
+            {
+              "type": "PERFORM",
+              "line": 60,
+              "content": "PERFORM 4200-PROGRAM-END-MSG",
+              "target": "4200"
+            },
+            {
+              "type": "PERFORM",
+              "line": 61,
+              "content": "PERFORM 4000-END-PROGRAM-PARA",
+              "target": "4000"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 62,
+              "content": "WHEN DFHPF12"
+            },
+            {
+              "type": "MOVE",
+              "line": 63,
+              "content": "MOVE LOW-VALUES TO LOGINO",
+              "operands": "LOW-VALUES TO LOGINO"
+            },
+            {
+              "type": "MOVE",
+              "line": 64,
+              "content": "MOVE -1 TO USERIDL",
+              "operands": "-1 TO USERIDL"
+            },
+            {
+              "type": "PERFORM",
+              "line": 65,
+              "content": "PERFORM 2000-SEND-MAP-PARA",
+              "target": "2000"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 66,
+              "content": "WHEN OTHER"
+            },
+            {
+              "type": "MOVE",
+              "line": 67,
+              "content": "MOVE 'INVALID KEY PRESSED' TO MSGO",
+              "operands": "'INVALID KEY PRESSED' TO MSGO"
+            }
+          ],
+          "end_line": 67
+        },
+        {
+          "name": "EVALUATE",
+          "start_line": 68,
+          "statements": [],
+          "end_line": 68
+        },
+        {
+          "name": "PARA",
+          "start_line": 69,
+          "statements": [
+            {
+              "type": "IF",
+              "line": 70,
+              "content": "IF NOT ( USERIDI = LOW-VALUES OR USERIDI = SPACES ) THEN",
+              "condition": "NOT ( USERIDI = LOW-VALUES OR USERIDI = SPACES ) THEN"
+            },
+            {
+              "type": "IF",
+              "line": 71,
+              "content": "IF NOT ( PASSWDI = LOW-VALUES OR PASSWDI = SPACES ) THEN",
+              "condition": "NOT ( PASSWDI = LOW-VALUES OR PASSWDI = SPACES ) THEN"
+            },
+            {
+              "type": "MOVE",
+              "line": 72,
+              "content": "MOVE USERIDI TO WS-ID",
+              "operands": "USERIDI TO WS-ID"
+            },
+            {
+              "type": "MOVE",
+              "line": 73,
+              "content": "MOVE PASSWDI TO WS-PASS",
+              "operands": "PASSWDI TO WS-PASS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 74,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 75,
+              "content": "LINK PROGRAM('B18PGM2')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 76,
+              "content": "COMMAREA(WS-COMMAREA1)"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 77,
+              "content": "END-EXEC"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 78,
+              "content": "EVALUATE WS-FLAG"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 79,
+              "content": "WHEN 1"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 80,
+              "content": "EXEC CICS XCTL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 81,
+              "content": "PROGRAM('B18PGM3')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 82,
+              "content": "END-EXEC"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 83,
+              "content": "WHEN 2"
+            },
+            {
+              "type": "MOVE",
+              "line": 84,
+              "content": "MOVE 'WRONG PASSWORD' TO MSGO",
+              "operands": "'WRONG PASSWORD' TO MSGO"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 85,
+              "content": "WHEN 3"
+            },
+            {
+              "type": "MOVE",
+              "line": 86,
+              "content": "MOVE 'USER NOT IN REGISTERED' TO MSGO",
+              "operands": "'USER NOT IN REGISTERED' TO MSGO"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 87,
+              "content": "END-EVALUATE"
+            },
+            {
+              "type": "ELSE",
+              "line": 88,
+              "content": "ELSE"
+            },
+            {
+              "type": "MOVE",
+              "line": 89,
+              "content": "MOVE 'ALL FIELDS ARE MANDATORY - PLEASE ENTER PASSWORD'",
+              "operands": "'ALL FIELDS ARE MANDATORY - PLEASE ENTER PASSWORD'"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 90,
+              "content": "TO MSGO"
+            },
+            {
+              "type": "MOVE",
+              "line": 91,
+              "content": "MOVE -1 TO USERIDL",
+              "operands": "-1 TO USERIDL"
+            },
+            {
+              "type": "END-IF",
+              "line": 92,
+              "content": "END-IF"
+            },
+            {
+              "type": "ELSE",
+              "line": 93,
+              "content": "ELSE"
+            },
+            {
+              "type": "MOVE",
+              "line": 94,
+              "content": "MOVE 'ALL FIELDS ARE MANDATORY - PLEASE ENTER USERID'",
+              "operands": "'ALL FIELDS ARE MANDATORY - PLEASE ENTER USERID'"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 95,
+              "content": "TO MSGO"
+            },
+            {
+              "type": "MOVE",
+              "line": 96,
+              "content": "MOVE -1 TO USERIDL",
+              "operands": "-1 TO USERIDL"
+            }
+          ],
+          "end_line": 96
+        },
+        {
+          "name": "IF",
+          "start_line": 97,
+          "statements": [],
+          "end_line": 97
+        },
+        {
+          "name": "PARA",
+          "start_line": 98,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 99,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 100,
+              "content": "RETURN"
+            }
+          ],
+          "end_line": 100
+        },
+        {
+          "name": "EXEC",
+          "start_line": 101,
+          "statements": [],
+          "end_line": 101
+        },
+        {
+          "name": "PARA",
+          "start_line": 102,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 103,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 104,
+              "content": "RETURN TRANSID('B181')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 105,
+              "content": "COMMAREA(WS-COMMAREA)"
+            }
+          ],
+          "end_line": 105
+        },
+        {
+          "name": "EXEC",
+          "start_line": 106,
+          "statements": [],
+          "end_line": 106
+        },
+        {
+          "name": "MSG",
+          "start_line": 107,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 108,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 109,
+              "content": "SEND FROM(WS-END-MSG)"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 110,
+              "content": "LENGTH(WS-END-MSG-LEN)"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 111,
+              "content": "ERASE"
+            }
+          ],
+          "end_line": 111
+        },
+        {
+          "name": "EXEC",
+          "start_line": 112,
+          "statements": [],
+          "end_line": 112
+        },
+        {
+          "name": "PARA",
+          "start_line": 113,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 114,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 115,
+              "content": "ASKTIME"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 116,
+              "content": "ABSTIME(WS-DATE-TIME)"
+            }
+          ],
+          "end_line": 116
+        },
+        {
+          "name": "EXEC",
+          "start_line": 117,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 118,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 119,
+              "content": "FORMATTIME"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 120,
+              "content": "DDMMYYYY(DATEO)"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 121,
+              "content": "DATESEP('/')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 122,
+              "content": "ABSTIME(WS-DATE-TIME)"
+            }
+          ],
+          "end_line": 122
+        },
+        {
+          "name": "EXEC",
+          "start_line": 123,
+          "statements": [],
+          "end_line": 123
+        }
+      ],
+      "divisions": {},
+      "end_line": 102
+    }
+  ],
+  "divisions": {
+    "IDENTIFICATION": {
+      "start_line": 1,
+      "sections": {}
+    },
+    "DATA": {
+      "start_line": 3,
+      "sections": {
+        "WORKING-STORAGE": {
+          "start_line": 4
+        }
+      }
+    },
+    "PROCEDURE": {
+      "start_line": 17,
+      "sections": {}
+    }
+  },
+  "variables": [
+    {
+      "level": 5,
+      "name": "DUMMY",
+      "pic": "9 VALUE 0.",
+      "line": 8
+    }
+  ],
+  "procedures": [
+    {
+      "name": "27",
+      "start_line": 6,
+      "statements": [],
+      "end_line": 6
+    },
+    {
+      "name": "COMMAREA",
+      "start_line": 7,
+      "statements": [],
+      "end_line": 8
+    },
+    {
+      "name": "COMP",
+      "start_line": 9,
+      "statements": [],
+      "end_line": 9
+    },
+    {
+      "name": "COMMAREA1",
+      "start_line": 10,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 11,
+          "content": "05 WS-ID       PIC X(06)."
+        },
+        {
+          "type": "STATEMENT",
+          "line": 12,
+          "content": "05 WS-PASS     PIC X(06)."
+        }
+      ],
+      "end_line": 12
+    },
+    {
+      "name": "0",
+      "start_line": 13,
+      "statements": [],
+      "end_line": 13
+    },
+    {
+      "name": "3",
+      "start_line": 14,
+      "statements": [],
+      "end_line": 14
+    },
+    {
+      "name": "B18MPS1",
+      "start_line": 15,
+      "statements": [],
+      "end_line": 15
+    },
+    {
+      "name": "DFHAID",
+      "start_line": 16,
+      "statements": [],
+      "end_line": 17
+    },
+    {
+      "name": "PARA",
+      "start_line": 18,
+      "statements": [],
+      "end_line": 18
+    },
+    {
+      "name": "LOGINO",
+      "start_line": 19,
+      "statements": [
+        {
+          "type": "MOVE",
+          "line": 20,
+          "content": "MOVE -1 TO USERIDL",
+          "operands": "-1 TO USERIDL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 21,
+          "content": "EVALUATE EIBCALEN"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 22,
+          "content": "WHEN 0"
+        },
+        {
+          "type": "PERFORM",
+          "line": 23,
+          "content": "PERFORM 2000-SEND-MAP-PARA",
+          "target": "2000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 24,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "PERFORM",
+          "line": 25,
+          "content": "PERFORM 3000-KEY-VALIDATION-PARA",
+          "target": "3000"
+        },
+        {
+          "type": "PERFORM",
+          "line": 26,
+          "content": "PERFORM 2000-SEND-MAP-PARA",
+          "target": "2000"
+        }
+      ],
+      "end_line": 26
+    },
+    {
+      "name": "EVALUATE",
+      "start_line": 27,
+      "statements": [],
+      "end_line": 27
+    },
+    {
+      "name": "PARA",
+      "start_line": 28,
+      "statements": [],
+      "end_line": 28
+    },
+    {
+      "name": "PARA",
+      "start_line": 29,
+      "statements": [],
+      "end_line": 29
+    },
+    {
+      "name": "PARA",
+      "start_line": 30,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 31,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 32,
+          "content": "SEND MAP('LOGIN')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 33,
+          "content": "MAPSET('B18MPS1')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 34,
+          "content": "CURSOR"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 35,
+          "content": "ERASE"
+        }
+      ],
+      "end_line": 35
+    },
+    {
+      "name": "EXEC",
+      "start_line": 36,
+      "statements": [],
+      "end_line": 36
+    },
+    {
+      "name": "PARA",
+      "start_line": 37,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 38,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 39,
+          "content": "RECEIVE MAP('LOGIN')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 40,
+          "content": "MAPSET('B18MPS1')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 41,
+          "content": "RESP(WS-RESP)"
+        }
+      ],
+      "end_line": 41
+    },
+    {
+      "name": "EXEC",
+      "start_line": 42,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 43,
+          "content": "EVALUATE WS-RESP"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 44,
+          "content": "WHEN DFHRESP(NORMAL)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 45,
+          "content": "CONTINUE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 46,
+          "content": "WHEN DFHRESP(MAPFAIL)"
+        },
+        {
+          "type": "MOVE",
+          "line": 47,
+          "content": "MOVE 'PLEASE ENTER ONLY AFTER ENTERING DATA'",
+          "operands": "'PLEASE ENTER ONLY AFTER ENTERING DATA'"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 48,
+          "content": "TO MSGO"
+        },
+        {
+          "type": "PERFORM",
+          "line": 49,
+          "content": "PERFORM 2000-SEND-MAP-PARA",
+          "target": "2000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 50,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "MOVE",
+          "line": 51,
+          "content": "MOVE 'MAP IS FAILED, PLEASE OPEN AGAIN' TO MSGO",
+          "operands": "'MAP IS FAILED, PLEASE OPEN AGAIN' TO MSGO"
+        },
+        {
+          "type": "PERFORM",
+          "line": 52,
+          "content": "PERFORM 2000-SEND-MAP-PARA",
+          "target": "2000"
+        }
+      ],
+      "end_line": 52
+    },
+    {
+      "name": "EVALUATE",
+      "start_line": 53,
+      "statements": [],
+      "end_line": 53
+    },
+    {
+      "name": "PARA",
+      "start_line": 54,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 55,
+          "content": "EVALUATE EIBAID"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 56,
+          "content": "WHEN DFHPF2"
+        },
+        {
+          "type": "PERFORM",
+          "line": 57,
+          "content": "PERFORM 2100-RECEIVE-MAP-PARA",
+          "target": "2100"
+        },
+        {
+          "type": "PERFORM",
+          "line": 58,
+          "content": "PERFORM 3100-CHECK-ID-PASS-PARA",
+          "target": "3100"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 59,
+          "content": "WHEN DFHPF3"
+        },
+        {
+          "type": "PERFORM",
+          "line": 60,
+          "content": "PERFORM 4200-PROGRAM-END-MSG",
+          "target": "4200"
+        },
+        {
+          "type": "PERFORM",
+          "line": 61,
+          "content": "PERFORM 4000-END-PROGRAM-PARA",
+          "target": "4000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 62,
+          "content": "WHEN DFHPF12"
+        },
+        {
+          "type": "MOVE",
+          "line": 63,
+          "content": "MOVE LOW-VALUES TO LOGINO",
+          "operands": "LOW-VALUES TO LOGINO"
+        },
+        {
+          "type": "MOVE",
+          "line": 64,
+          "content": "MOVE -1 TO USERIDL",
+          "operands": "-1 TO USERIDL"
+        },
+        {
+          "type": "PERFORM",
+          "line": 65,
+          "content": "PERFORM 2000-SEND-MAP-PARA",
+          "target": "2000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 66,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "MOVE",
+          "line": 67,
+          "content": "MOVE 'INVALID KEY PRESSED' TO MSGO",
+          "operands": "'INVALID KEY PRESSED' TO MSGO"
+        }
+      ],
+      "end_line": 67
+    },
+    {
+      "name": "EVALUATE",
+      "start_line": 68,
+      "statements": [],
+      "end_line": 68
+    },
+    {
+      "name": "PARA",
+      "start_line": 69,
+      "statements": [
+        {
+          "type": "IF",
+          "line": 70,
+          "content": "IF NOT ( USERIDI = LOW-VALUES OR USERIDI = SPACES ) THEN",
+          "condition": "NOT ( USERIDI = LOW-VALUES OR USERIDI = SPACES ) THEN"
+        },
+        {
+          "type": "IF",
+          "line": 71,
+          "content": "IF NOT ( PASSWDI = LOW-VALUES OR PASSWDI = SPACES ) THEN",
+          "condition": "NOT ( PASSWDI = LOW-VALUES OR PASSWDI = SPACES ) THEN"
+        },
+        {
+          "type": "MOVE",
+          "line": 72,
+          "content": "MOVE USERIDI TO WS-ID",
+          "operands": "USERIDI TO WS-ID"
+        },
+        {
+          "type": "MOVE",
+          "line": 73,
+          "content": "MOVE PASSWDI TO WS-PASS",
+          "operands": "PASSWDI TO WS-PASS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 74,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 75,
+          "content": "LINK PROGRAM('B18PGM2')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 76,
+          "content": "COMMAREA(WS-COMMAREA1)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 77,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 78,
+          "content": "EVALUATE WS-FLAG"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 79,
+          "content": "WHEN 1"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 80,
+          "content": "EXEC CICS XCTL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 81,
+          "content": "PROGRAM('B18PGM3')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 82,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 83,
+          "content": "WHEN 2"
+        },
+        {
+          "type": "MOVE",
+          "line": 84,
+          "content": "MOVE 'WRONG PASSWORD' TO MSGO",
+          "operands": "'WRONG PASSWORD' TO MSGO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 85,
+          "content": "WHEN 3"
+        },
+        {
+          "type": "MOVE",
+          "line": 86,
+          "content": "MOVE 'USER NOT IN REGISTERED' TO MSGO",
+          "operands": "'USER NOT IN REGISTERED' TO MSGO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 87,
+          "content": "END-EVALUATE"
+        },
+        {
+          "type": "ELSE",
+          "line": 88,
+          "content": "ELSE"
+        },
+        {
+          "type": "MOVE",
+          "line": 89,
+          "content": "MOVE 'ALL FIELDS ARE MANDATORY - PLEASE ENTER PASSWORD'",
+          "operands": "'ALL FIELDS ARE MANDATORY - PLEASE ENTER PASSWORD'"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 90,
+          "content": "TO MSGO"
+        },
+        {
+          "type": "MOVE",
+          "line": 91,
+          "content": "MOVE -1 TO USERIDL",
+          "operands": "-1 TO USERIDL"
+        },
+        {
+          "type": "END-IF",
+          "line": 92,
+          "content": "END-IF"
+        },
+        {
+          "type": "ELSE",
+          "line": 93,
+          "content": "ELSE"
+        },
+        {
+          "type": "MOVE",
+          "line": 94,
+          "content": "MOVE 'ALL FIELDS ARE MANDATORY - PLEASE ENTER USERID'",
+          "operands": "'ALL FIELDS ARE MANDATORY - PLEASE ENTER USERID'"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 95,
+          "content": "TO MSGO"
+        },
+        {
+          "type": "MOVE",
+          "line": 96,
+          "content": "MOVE -1 TO USERIDL",
+          "operands": "-1 TO USERIDL"
+        }
+      ],
+      "end_line": 96
+    },
+    {
+      "name": "IF",
+      "start_line": 97,
+      "statements": [],
+      "end_line": 97
+    },
+    {
+      "name": "PARA",
+      "start_line": 98,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 99,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 100,
+          "content": "RETURN"
+        }
+      ],
+      "end_line": 100
+    },
+    {
+      "name": "EXEC",
+      "start_line": 101,
+      "statements": [],
+      "end_line": 101
+    },
+    {
+      "name": "PARA",
+      "start_line": 102,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 103,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 104,
+          "content": "RETURN TRANSID('B181')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 105,
+          "content": "COMMAREA(WS-COMMAREA)"
+        }
+      ],
+      "end_line": 105
+    },
+    {
+      "name": "EXEC",
+      "start_line": 106,
+      "statements": [],
+      "end_line": 106
+    },
+    {
+      "name": "MSG",
+      "start_line": 107,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 108,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 109,
+          "content": "SEND FROM(WS-END-MSG)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 110,
+          "content": "LENGTH(WS-END-MSG-LEN)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 111,
+          "content": "ERASE"
+        }
+      ],
+      "end_line": 111
+    },
+    {
+      "name": "EXEC",
+      "start_line": 112,
+      "statements": [],
+      "end_line": 112
+    },
+    {
+      "name": "PARA",
+      "start_line": 113,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 114,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 115,
+          "content": "ASKTIME"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 116,
+          "content": "ABSTIME(WS-DATE-TIME)"
+        }
+      ],
+      "end_line": 116
+    },
+    {
+      "name": "EXEC",
+      "start_line": 117,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 118,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 119,
+          "content": "FORMATTIME"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 120,
+          "content": "DDMMYYYY(DATEO)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 121,
+          "content": "DATESEP('/')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 122,
+          "content": "ABSTIME(WS-DATE-TIME)"
+        }
+      ],
+      "end_line": 122
+    },
+    {
+      "name": "EXEC",
+      "start_line": 123,
+      "statements": [],
+      "end_line": 123
+    }
+  ],
+  "metadata": {
+    "file_path": "/home/ranjan/code/code_analyser/sample_cobol/B18PGM1.cbl",
+    "file_name": "B18PGM1.cbl",
+    "language": "cobol",
+    "content_length": 5645,
+    "preprocessed_length": 3486
+  }
+}

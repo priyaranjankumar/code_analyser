@@ -1,0 +1,6450 @@
+{
+  "programs": [
+    {
+      "name": "B18PGM3",
+      "type": "PROGRAM",
+      "start_line": 2,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 5,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 6,
+          "content": "INCLUDE PATDCL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 8,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 9,
+          "content": "INCLUDE DOCDCL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 11,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 12,
+          "content": "INCLUDE DONDCL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 14,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 15,
+          "content": "INCLUDE SQLCA"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 17,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 18,
+          "content": "DECLARE CR1 SCROLL CURSOR FOR"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 19,
+          "content": "SELECT  PATIENT_ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 20,
+          "content": "PATIENT_NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 21,
+          "content": "PATIENT_GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 22,
+          "content": "PATIENT_CONTACT_NUM"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 23,
+          "content": "FROM PATIENT_DETAIL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 25,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 26,
+          "content": "DECLARE CR2 SCROLL CURSOR FOR"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 27,
+          "content": "SELECT  DOCTOR_ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 28,
+          "content": "DOCTOR_NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 29,
+          "content": "DOCTOR_GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 30,
+          "content": "DOCTOR_CONTACT_NUM"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 31,
+          "content": "FROM DOCTOR_DETAIL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 33,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 34,
+          "content": "DECLARE CR3 SCROLL CURSOR FOR"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 35,
+          "content": "SELECT  DONOR_ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 36,
+          "content": "DONOR_NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 37,
+          "content": "DONOR_GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 38,
+          "content": "DONOR_CONTACT_NUM"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 39,
+          "content": "FROM DONOR_DETAIL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 42,
+          "content": "01 WS-END-MSG      PIC X(27) VALUE 'PROGRAM ENDED PLEASE CLEAR'."
+        },
+        {
+          "type": "STATEMENT",
+          "line": 50,
+          "content": "01 WS-ID-TEMP      PIC X(18)."
+        },
+        {
+          "type": "STATEMENT",
+          "line": 52,
+          "content": "05 WS-ID          PIC X(15)."
+        },
+        {
+          "type": "STATEMENT",
+          "line": 54,
+          "content": "05 WS-NAME        PIC X(30)."
+        },
+        {
+          "type": "STATEMENT",
+          "line": 56,
+          "content": "05 WS-GENDER      PIC X(10)."
+        },
+        {
+          "type": "STATEMENT",
+          "line": 58,
+          "content": "05 WS-CONTACT     PIC X(10)."
+        },
+        {
+          "type": "STATEMENT",
+          "line": 73,
+          "content": "EVALUATE EIBCALEN"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 74,
+          "content": "WHEN 0"
+        },
+        {
+          "type": "PERFORM",
+          "line": 75,
+          "content": "PERFORM 2000-SEND-MAP-PARA",
+          "target": "2000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 76,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "PERFORM",
+          "line": 77,
+          "content": "PERFORM 3000-KEY-VALIDATION-PARA",
+          "target": "3000"
+        },
+        {
+          "type": "PERFORM",
+          "line": 78,
+          "content": "PERFORM 2000-SEND-MAP-PARA",
+          "target": "2000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 83,
+          "content": "EVALUATE  WS-REPORT-TYPE-FLAG"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 84,
+          "content": "WHEN 4"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 85,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 86,
+          "content": "SEND MAP ('PATREPT')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 87,
+          "content": "MAPSET ('B18MPS1')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 88,
+          "content": "ERASE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 89,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 90,
+          "content": "WHEN 5"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 91,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 92,
+          "content": "SEND MAP ('DOCREPT')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 93,
+          "content": "MAPSET ('B18MPS1')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 94,
+          "content": "ERASE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 95,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 96,
+          "content": "WHEN 6"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 97,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 98,
+          "content": "SEND MAP ('DONREPT')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 99,
+          "content": "MAPSET ('B18MPS1')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 100,
+          "content": "ERASE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 101,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 102,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 103,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 104,
+          "content": "SEND MAP ('MENU')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 105,
+          "content": "MAPSET ('B18MPS1')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 106,
+          "content": "CURSOR"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 107,
+          "content": "ERASE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 108,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 111,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 112,
+          "content": "RECEIVE MAP('MENU')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 113,
+          "content": "MAPSET ('B18MPS1')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 114,
+          "content": "RESP(WS-RESP)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 116,
+          "content": "EVALUATE WS-RESP"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 117,
+          "content": "WHEN DFHRESP(NORMAL)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 118,
+          "content": "CONTINUE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 119,
+          "content": "WHEN DFHRESP(MAPFAIL)"
+        },
+        {
+          "type": "PERFORM",
+          "line": 120,
+          "content": "PERFORM 5000-MAP-FAILED-PARA",
+          "target": "5000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 121,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "PERFORM",
+          "line": 122,
+          "content": "PERFORM 5100-ERROR-MSG-PARA",
+          "target": "5100"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 125,
+          "content": "EVALUATE EIBAID"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 126,
+          "content": "WHEN DFHPF2"
+        },
+        {
+          "type": "PERFORM",
+          "line": 127,
+          "content": "PERFORM 2100-RECEIVE-MAP-PARA",
+          "target": "2100"
+        },
+        {
+          "type": "PERFORM",
+          "line": 128,
+          "content": "PERFORM 3100-CHECK-OPTION-PARA",
+          "target": "3100"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 129,
+          "content": "WHEN DFHPF3"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 130,
+          "content": "IF( WS-REPORT-READ-FLAG = 0) THEN"
+        },
+        {
+          "type": "PERFORM",
+          "line": 131,
+          "content": "PERFORM 4200-PROGRAM-END-MSG",
+          "target": "4200"
+        },
+        {
+          "type": "PERFORM",
+          "line": 132,
+          "content": "PERFORM 4000-END-PROGRAM-PARA",
+          "target": "4000"
+        },
+        {
+          "type": "ELSE",
+          "line": 133,
+          "content": "ELSE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 134,
+          "content": "EXEC CICS XCTL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 135,
+          "content": "PROGRAM('B18PGM3')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 136,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "END-IF",
+          "line": 137,
+          "content": "END-IF"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 138,
+          "content": "WHEN DFHPF12"
+        },
+        {
+          "type": "MOVE",
+          "line": 139,
+          "content": "MOVE LOW-VALUES TO MENUO",
+          "operands": "LOW-VALUES TO MENUO"
+        },
+        {
+          "type": "MOVE",
+          "line": 140,
+          "content": "MOVE -1 TO MOPTL",
+          "operands": "-1 TO MOPTL"
+        },
+        {
+          "type": "PERFORM",
+          "line": 141,
+          "content": "PERFORM 2000-SEND-MAP-PARA",
+          "target": "2000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 142,
+          "content": "WHEN DFHPF7"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 143,
+          "content": "IF( WS-REPORT-READ-FLAG = 0)"
+        },
+        {
+          "type": "MOVE",
+          "line": 144,
+          "content": "MOVE 'PLEASE SELECT THE REPORT FIRST' TO MMSGO",
+          "operands": "'PLEASE SELECT THE REPORT FIRST' TO MMSGO"
+        },
+        {
+          "type": "ELSE",
+          "line": 145,
+          "content": "ELSE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 146,
+          "content": "EVALUATE WS-REPORT-TYPE-FLAG"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 147,
+          "content": "WHEN 4"
+        },
+        {
+          "type": "MOVE",
+          "line": 148,
+          "content": "MOVE LOW-VALUES TO PATREPTO",
+          "operands": "LOW-VALUES TO PATREPTO"
+        },
+        {
+          "type": "MOVE",
+          "line": 149,
+          "content": "MOVE -5 TO WS-POS",
+          "operands": "-5 TO WS-POS"
+        },
+        {
+          "type": "PERFORM",
+          "line": 150,
+          "content": "PERFORM 6000-PATIENT-REPORT-PARA",
+          "target": "6000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 151,
+          "content": "WHEN 5"
+        },
+        {
+          "type": "MOVE",
+          "line": 152,
+          "content": "MOVE LOW-VALUES TO PATREPTO",
+          "operands": "LOW-VALUES TO PATREPTO"
+        },
+        {
+          "type": "MOVE",
+          "line": 153,
+          "content": "MOVE -5 TO WS-POS",
+          "operands": "-5 TO WS-POS"
+        },
+        {
+          "type": "PERFORM",
+          "line": 154,
+          "content": "PERFORM 6100-DOCTOR-REPORT-PARA",
+          "target": "6100"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 155,
+          "content": "WHEN 6"
+        },
+        {
+          "type": "MOVE",
+          "line": 156,
+          "content": "MOVE LOW-VALUES TO PATREPTO",
+          "operands": "LOW-VALUES TO PATREPTO"
+        },
+        {
+          "type": "MOVE",
+          "line": 157,
+          "content": "MOVE -5 TO WS-POS",
+          "operands": "-5 TO WS-POS"
+        },
+        {
+          "type": "PERFORM",
+          "line": 158,
+          "content": "PERFORM 6200-DONOR-REPORT-PARA",
+          "target": "6200"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 159,
+          "content": "END-EVALUATE"
+        },
+        {
+          "type": "END-IF",
+          "line": 160,
+          "content": "END-IF"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 161,
+          "content": "WHEN DFHPF8"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 162,
+          "content": "IF( WS-REPORT-READ-FLAG = 0)"
+        },
+        {
+          "type": "MOVE",
+          "line": 163,
+          "content": "MOVE 'PLEASE SELECT THE REPORT FIRST' TO MMSGO",
+          "operands": "'PLEASE SELECT THE REPORT FIRST' TO MMSGO"
+        },
+        {
+          "type": "ELSE",
+          "line": 164,
+          "content": "ELSE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 165,
+          "content": "EVALUATE WS-REPORT-TYPE-FLAG"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 166,
+          "content": "WHEN 4"
+        },
+        {
+          "type": "MOVE",
+          "line": 167,
+          "content": "MOVE LOW-VALUES TO PATREPTO",
+          "operands": "LOW-VALUES TO PATREPTO"
+        },
+        {
+          "type": "MOVE",
+          "line": 168,
+          "content": "MOVE 5 TO WS-POS",
+          "operands": "5 TO WS-POS"
+        },
+        {
+          "type": "PERFORM",
+          "line": 169,
+          "content": "PERFORM 6000-PATIENT-REPORT-PARA",
+          "target": "6000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 170,
+          "content": "WHEN 5"
+        },
+        {
+          "type": "MOVE",
+          "line": 171,
+          "content": "MOVE LOW-VALUES TO DOCREPTO",
+          "operands": "LOW-VALUES TO DOCREPTO"
+        },
+        {
+          "type": "MOVE",
+          "line": 172,
+          "content": "MOVE 5 TO WS-POS",
+          "operands": "5 TO WS-POS"
+        },
+        {
+          "type": "PERFORM",
+          "line": 173,
+          "content": "PERFORM 6100-DOCTOR-REPORT-PARA",
+          "target": "6100"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 174,
+          "content": "WHEN 6"
+        },
+        {
+          "type": "MOVE",
+          "line": 175,
+          "content": "MOVE LOW-VALUES TO DONREPTO",
+          "operands": "LOW-VALUES TO DONREPTO"
+        },
+        {
+          "type": "MOVE",
+          "line": 176,
+          "content": "MOVE 5 TO WS-POS",
+          "operands": "5 TO WS-POS"
+        },
+        {
+          "type": "PERFORM",
+          "line": 177,
+          "content": "PERFORM 6200-DONOR-REPORT-PARA",
+          "target": "6200"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 178,
+          "content": "END-EVALUATE"
+        },
+        {
+          "type": "END-IF",
+          "line": 179,
+          "content": "END-IF"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 180,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "MOVE",
+          "line": 181,
+          "content": "MOVE 'INVALID KEY PRESSED' TO MMSGO",
+          "operands": "'INVALID KEY PRESSED' TO MMSGO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 184,
+          "content": "EVALUATE MOPTI"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 185,
+          "content": "WHEN 1"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 186,
+          "content": "EXEC CICS XCTL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 187,
+          "content": "PROGRAM('B18PGM4')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 188,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 189,
+          "content": "WHEN 2"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 190,
+          "content": "EXEC CICS XCTL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 191,
+          "content": "PROGRAM('B18PGM5')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 192,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 193,
+          "content": "WHEN 3"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 194,
+          "content": "EXEC CICS XCTL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 195,
+          "content": "PROGRAM('B18PGM6')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 196,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 197,
+          "content": "WHEN 4"
+        },
+        {
+          "type": "MOVE",
+          "line": 198,
+          "content": "MOVE 1 TO WS-REPORT-READ-FLAG",
+          "operands": "1 TO WS-REPORT-READ-FLAG"
+        },
+        {
+          "type": "MOVE",
+          "line": 199,
+          "content": "MOVE 4 TO WS-REPORT-TYPE-FLAG",
+          "operands": "4 TO WS-REPORT-TYPE-FLAG"
+        },
+        {
+          "type": "MOVE",
+          "line": 200,
+          "content": "MOVE LOW-VALUES TO PATREPTO",
+          "operands": "LOW-VALUES TO PATREPTO"
+        },
+        {
+          "type": "PERFORM",
+          "line": 201,
+          "content": "PERFORM 6000-PATIENT-REPORT-PARA",
+          "target": "6000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 202,
+          "content": "WHEN 5"
+        },
+        {
+          "type": "MOVE",
+          "line": 203,
+          "content": "MOVE 1 TO WS-REPORT-READ-FLAG",
+          "operands": "1 TO WS-REPORT-READ-FLAG"
+        },
+        {
+          "type": "MOVE",
+          "line": 204,
+          "content": "MOVE 5 TO WS-REPORT-TYPE-FLAG",
+          "operands": "5 TO WS-REPORT-TYPE-FLAG"
+        },
+        {
+          "type": "MOVE",
+          "line": 205,
+          "content": "MOVE LOW-VALUES TO DOCREPTO",
+          "operands": "LOW-VALUES TO DOCREPTO"
+        },
+        {
+          "type": "PERFORM",
+          "line": 206,
+          "content": "PERFORM 6100-DOCTOR-REPORT-PARA",
+          "target": "6100"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 207,
+          "content": "WHEN 6"
+        },
+        {
+          "type": "MOVE",
+          "line": 208,
+          "content": "MOVE 1 TO WS-REPORT-READ-FLAG",
+          "operands": "1 TO WS-REPORT-READ-FLAG"
+        },
+        {
+          "type": "MOVE",
+          "line": 209,
+          "content": "MOVE 6 TO WS-REPORT-TYPE-FLAG",
+          "operands": "6 TO WS-REPORT-TYPE-FLAG"
+        },
+        {
+          "type": "MOVE",
+          "line": 210,
+          "content": "MOVE LOW-VALUES TO DONREPTO",
+          "operands": "LOW-VALUES TO DONREPTO"
+        },
+        {
+          "type": "PERFORM",
+          "line": 211,
+          "content": "PERFORM 6200-DONOR-REPORT-PARA",
+          "target": "6200"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 212,
+          "content": "WHEN LOW-VALUES"
+        },
+        {
+          "type": "MOVE",
+          "line": 213,
+          "content": "MOVE 'OPTION CANNOT BE BLANK' TO MMSGO",
+          "operands": "'OPTION CANNOT BE BLANK' TO MMSGO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 214,
+          "content": "WHEN SPACES"
+        },
+        {
+          "type": "MOVE",
+          "line": 215,
+          "content": "MOVE 'OPTION CANNOT BE BLANK' TO MMSGO",
+          "operands": "'OPTION CANNOT BE BLANK' TO MMSGO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 216,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "MOVE",
+          "line": 217,
+          "content": "MOVE 'ENTER A VALID OPTION'   TO MMSGO",
+          "operands": "'ENTER A VALID OPTION'   TO MMSGO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 220,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 221,
+          "content": "RETURN"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 224,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 225,
+          "content": "RETURN TRANSID('B183')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 226,
+          "content": "COMMAREA(WS-COMMAREA)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 229,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 230,
+          "content": "SEND FROM(WS-END-MSG)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 231,
+          "content": "LENGTH(WS-END-MSG-LEN)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 232,
+          "content": "ERASE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 235,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 236,
+          "content": "ASKTIME"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 237,
+          "content": "ABSTIME(WS-DATE-TIME)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 239,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 240,
+          "content": "FORMATTIME"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 241,
+          "content": "DDMMYYYY(MDATEO)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 242,
+          "content": "DATESEP('/')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 243,
+          "content": "ABSTIME(WS-DATE-TIME)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 247,
+          "content": "IF( WS-CURSOR-FLAG = 0) THEN"
+        },
+        {
+          "type": "PERFORM",
+          "line": 248,
+          "content": "PERFORM FETCH-PATIENT-PARA 5 TIMES",
+          "target": "FETCH"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 249,
+          "content": "ADD 1 TO WS-CURSOR-FLAG"
+        },
+        {
+          "type": "ELSE",
+          "line": 250,
+          "content": "ELSE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 251,
+          "content": "IF( WS-POS > 0)"
+        },
+        {
+          "type": "PERFORM",
+          "line": 252,
+          "content": "PERFORM SKIP-PATIENT-PARA WS-CURSOR-FLAG TIMES",
+          "target": "SKIP"
+        },
+        {
+          "type": "IF",
+          "line": 253,
+          "content": "IF ( SQLCODE NOT = 100)",
+          "condition": "( SQLCODE NOT = 100)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 254,
+          "content": "ADD 1 TO WS-CURSOR-FLAG"
+        },
+        {
+          "type": "END-IF",
+          "line": 255,
+          "content": "END-IF"
+        },
+        {
+          "type": "PERFORM",
+          "line": 256,
+          "content": "PERFORM FETCH-PATIENT-PARA 5 TIMES",
+          "target": "FETCH"
+        },
+        {
+          "type": "ELSE",
+          "line": 257,
+          "content": "ELSE"
+        },
+        {
+          "type": "MOVE",
+          "line": 258,
+          "content": "MOVE 5 TO WS-POS",
+          "operands": "5 TO WS-POS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 259,
+          "content": "SUBTRACT 1 FROM WS-CURSOR-FLAG"
+        },
+        {
+          "type": "PERFORM",
+          "line": 260,
+          "content": "PERFORM SKIP-PATIENT-PARA WS-CURSOR-FLAG TIMES",
+          "target": "SKIP"
+        },
+        {
+          "type": "PERFORM",
+          "line": 261,
+          "content": "PERFORM FETCH-PATIENT-PARA 5 TIMES",
+          "target": "FETCH"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 265,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 266,
+          "content": "FETCH RELATIVE :WS-POS CR1"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 267,
+          "content": "INTO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 268,
+          "content": ":DB-PATIENT-ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 269,
+          "content": ":DB-PATIENT-NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 270,
+          "content": ":DB-PATIENT-GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 271,
+          "content": ":DB-PATIENT-CONTACT-NUM"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 274,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 275,
+          "content": "FETCH CR1"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 276,
+          "content": "INTO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 277,
+          "content": ":DB-PATIENT-ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 278,
+          "content": ":DB-PATIENT-NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 279,
+          "content": ":DB-PATIENT-GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 280,
+          "content": ":DB-PATIENT-CONTACT-NUM"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 282,
+          "content": "EVALUATE SQLCODE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 283,
+          "content": "WHEN 0"
+        },
+        {
+          "type": "MOVE",
+          "line": 284,
+          "content": "MOVE DB-PATIENT-ID TO  WS-ID-TEMP",
+          "operands": "DB-PATIENT-ID TO  WS-ID-TEMP"
+        },
+        {
+          "type": "MOVE",
+          "line": 285,
+          "content": "MOVE WS-ID-TEMP(4:) TO WS-ID",
+          "operands": "WS-ID-TEMP(4:) TO WS-ID"
+        },
+        {
+          "type": "MOVE",
+          "line": 286,
+          "content": "MOVE DB-PATIENT-NAME TO  WS-NAME",
+          "operands": "DB-PATIENT-NAME TO  WS-NAME"
+        },
+        {
+          "type": "MOVE",
+          "line": 287,
+          "content": "MOVE DB-PATIENT-GENDER TO  WS-GENDER",
+          "operands": "DB-PATIENT-GENDER TO  WS-GENDER"
+        },
+        {
+          "type": "MOVE",
+          "line": 288,
+          "content": "MOVE DB-PATIENT-CONTACT-NUM TO  WS-CONTACT",
+          "operands": "DB-PATIENT-CONTACT-NUM TO  WS-CONTACT"
+        },
+        {
+          "type": "MOVE",
+          "line": 289,
+          "content": "MOVE WS-MAP-DATA TO PATLINEO(WS-CTR)",
+          "operands": "WS-MAP-DATA TO PATLINEO(WS-CTR)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 290,
+          "content": "ADD 1 TO WS-CTR"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 291,
+          "content": "WHEN 100"
+        },
+        {
+          "type": "MOVE",
+          "line": 292,
+          "content": "MOVE 'END OF RECORD' TO PATREPMO",
+          "operands": "'END OF RECORD' TO PATREPMO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 293,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "MOVE",
+          "line": 294,
+          "content": "MOVE 'ERROR WHILE READING DATA' TO PATREPMO",
+          "operands": "'ERROR WHILE READING DATA' TO PATREPMO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 297,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "OPEN",
+          "line": 298,
+          "content": "OPEN CR1",
+          "file": "CR1"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 301,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "CLOSE",
+          "line": 302,
+          "content": "CLOSE CR1",
+          "file": "CR1"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 306,
+          "content": "IF( WS-CURSOR-FLAG = 0) THEN"
+        },
+        {
+          "type": "PERFORM",
+          "line": 307,
+          "content": "PERFORM FETCH-DOCTOR-PARA 5 TIMES",
+          "target": "FETCH"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 308,
+          "content": "ADD 1 TO WS-CURSOR-FLAG"
+        },
+        {
+          "type": "ELSE",
+          "line": 309,
+          "content": "ELSE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 310,
+          "content": "IF( WS-POS > 0)"
+        },
+        {
+          "type": "PERFORM",
+          "line": 311,
+          "content": "PERFORM SKIP-DOCTOR-PARA WS-CURSOR-FLAG TIMES",
+          "target": "SKIP"
+        },
+        {
+          "type": "IF",
+          "line": 312,
+          "content": "IF ( SQLCODE NOT = 100)",
+          "condition": "( SQLCODE NOT = 100)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 313,
+          "content": "ADD 1 TO WS-CURSOR-FLAG"
+        },
+        {
+          "type": "END-IF",
+          "line": 314,
+          "content": "END-IF"
+        },
+        {
+          "type": "PERFORM",
+          "line": 315,
+          "content": "PERFORM FETCH-DOCTOR-PARA 5 TIMES",
+          "target": "FETCH"
+        },
+        {
+          "type": "ELSE",
+          "line": 316,
+          "content": "ELSE"
+        },
+        {
+          "type": "MOVE",
+          "line": 317,
+          "content": "MOVE 5 TO WS-POS",
+          "operands": "5 TO WS-POS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 318,
+          "content": "SUBTRACT 1 FROM WS-CURSOR-FLAG"
+        },
+        {
+          "type": "PERFORM",
+          "line": 319,
+          "content": "PERFORM SKIP-DOCTOR-PARA WS-CURSOR-FLAG TIMES",
+          "target": "SKIP"
+        },
+        {
+          "type": "PERFORM",
+          "line": 320,
+          "content": "PERFORM FETCH-DOCTOR-PARA 5 TIMES",
+          "target": "FETCH"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 324,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 325,
+          "content": "FETCH RELATIVE :WS-POS CR2"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 326,
+          "content": "INTO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 327,
+          "content": ":DB-DOCTOR-ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 328,
+          "content": ":DB-DOCTOR-NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 329,
+          "content": ":DB-DOCTOR-GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 330,
+          "content": ":DB-DOCTOR-CONTACT-NUM"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 333,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 334,
+          "content": "FETCH CR2"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 335,
+          "content": "INTO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 336,
+          "content": ":DB-DOCTOR-ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 337,
+          "content": ":DB-DOCTOR-NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 338,
+          "content": ":DB-DOCTOR-GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 339,
+          "content": ":DB-DOCTOR-CONTACT-NUM"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 341,
+          "content": "EVALUATE SQLCODE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 342,
+          "content": "WHEN 0"
+        },
+        {
+          "type": "MOVE",
+          "line": 343,
+          "content": "MOVE DB-DOCTOR-ID TO   WS-ID-TEMP",
+          "operands": "DB-DOCTOR-ID TO   WS-ID-TEMP"
+        },
+        {
+          "type": "MOVE",
+          "line": 344,
+          "content": "MOVE WS-ID-TEMP(4:) TO WS-ID",
+          "operands": "WS-ID-TEMP(4:) TO WS-ID"
+        },
+        {
+          "type": "MOVE",
+          "line": 345,
+          "content": "MOVE DB-DOCTOR-NAME TO   WS-NAME",
+          "operands": "DB-DOCTOR-NAME TO   WS-NAME"
+        },
+        {
+          "type": "MOVE",
+          "line": 346,
+          "content": "MOVE DB-DOCTOR-GENDER TO   WS-GENDER",
+          "operands": "DB-DOCTOR-GENDER TO   WS-GENDER"
+        },
+        {
+          "type": "MOVE",
+          "line": 347,
+          "content": "MOVE DB-DOCTOR-CONTACT-NUM TO   WS-CONTACT",
+          "operands": "DB-DOCTOR-CONTACT-NUM TO   WS-CONTACT"
+        },
+        {
+          "type": "MOVE",
+          "line": 348,
+          "content": "MOVE WS-MAP-DATA TO DOCLINEO(WS-CTR)",
+          "operands": "WS-MAP-DATA TO DOCLINEO(WS-CTR)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 349,
+          "content": "ADD 1 TO WS-CTR"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 350,
+          "content": "WHEN 100"
+        },
+        {
+          "type": "MOVE",
+          "line": 351,
+          "content": "MOVE 'END OF RECORD' TO DOCREPMO",
+          "operands": "'END OF RECORD' TO DOCREPMO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 352,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "MOVE",
+          "line": 353,
+          "content": "MOVE 'ERROR WHILE READING DATA' TO DOCREPMO",
+          "operands": "'ERROR WHILE READING DATA' TO DOCREPMO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 356,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "OPEN",
+          "line": 357,
+          "content": "OPEN CR2",
+          "file": "CR2"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 360,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "CLOSE",
+          "line": 361,
+          "content": "CLOSE CR2",
+          "file": "CR2"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 365,
+          "content": "IF( WS-CURSOR-FLAG = 0) THEN"
+        },
+        {
+          "type": "PERFORM",
+          "line": 366,
+          "content": "PERFORM FETCH-DONOR-PARA 5 TIMES",
+          "target": "FETCH"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 367,
+          "content": "ADD 1 TO WS-CURSOR-FLAG"
+        },
+        {
+          "type": "ELSE",
+          "line": 368,
+          "content": "ELSE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 369,
+          "content": "IF( WS-POS > 0)"
+        },
+        {
+          "type": "PERFORM",
+          "line": 370,
+          "content": "PERFORM SKIP-DONOR-PARA WS-CURSOR-FLAG TIMES",
+          "target": "SKIP"
+        },
+        {
+          "type": "IF",
+          "line": 371,
+          "content": "IF ( SQLCODE NOT = 100)",
+          "condition": "( SQLCODE NOT = 100)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 372,
+          "content": "ADD 1 TO WS-CURSOR-FLAG"
+        },
+        {
+          "type": "END-IF",
+          "line": 373,
+          "content": "END-IF"
+        },
+        {
+          "type": "PERFORM",
+          "line": 374,
+          "content": "PERFORM FETCH-DONOR-PARA 5 TIMES",
+          "target": "FETCH"
+        },
+        {
+          "type": "ELSE",
+          "line": 375,
+          "content": "ELSE"
+        },
+        {
+          "type": "MOVE",
+          "line": 376,
+          "content": "MOVE 5 TO WS-POS",
+          "operands": "5 TO WS-POS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 377,
+          "content": "SUBTRACT 1 FROM WS-CURSOR-FLAG"
+        },
+        {
+          "type": "PERFORM",
+          "line": 378,
+          "content": "PERFORM SKIP-DONOR-PARA WS-CURSOR-FLAG TIMES",
+          "target": "SKIP"
+        },
+        {
+          "type": "PERFORM",
+          "line": 379,
+          "content": "PERFORM FETCH-DONOR-PARA 5 TIMES",
+          "target": "FETCH"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 383,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 384,
+          "content": "FETCH RELATIVE :WS-POS CR3"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 385,
+          "content": "INTO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 386,
+          "content": ":DB-DONOR-ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 387,
+          "content": ":DB-DONOR-NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 388,
+          "content": ":DB-DONOR-GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 389,
+          "content": ":DB-DONOR-CONTACT-NUM"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 392,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 393,
+          "content": "FETCH CR3"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 394,
+          "content": "INTO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 395,
+          "content": ":DB-DONOR-ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 396,
+          "content": ":DB-DONOR-NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 397,
+          "content": ":DB-DONOR-GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 398,
+          "content": ":DB-DONOR-CONTACT-NUM"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 400,
+          "content": "EVALUATE SQLCODE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 401,
+          "content": "WHEN 0"
+        },
+        {
+          "type": "MOVE",
+          "line": 402,
+          "content": "MOVE DB-DONOR-ID TO    WS-ID-TEMP",
+          "operands": "DB-DONOR-ID TO    WS-ID-TEMP"
+        },
+        {
+          "type": "MOVE",
+          "line": 403,
+          "content": "MOVE WS-ID-TEMP(4:) TO WS-ID",
+          "operands": "WS-ID-TEMP(4:) TO WS-ID"
+        },
+        {
+          "type": "MOVE",
+          "line": 404,
+          "content": "MOVE DB-DONOR-NAME TO    WS-NAME",
+          "operands": "DB-DONOR-NAME TO    WS-NAME"
+        },
+        {
+          "type": "MOVE",
+          "line": 405,
+          "content": "MOVE DB-DONOR-GENDER TO    WS-GENDER",
+          "operands": "DB-DONOR-GENDER TO    WS-GENDER"
+        },
+        {
+          "type": "MOVE",
+          "line": 406,
+          "content": "MOVE DB-DONOR-CONTACT-NUM TO    WS-CONTACT",
+          "operands": "DB-DONOR-CONTACT-NUM TO    WS-CONTACT"
+        },
+        {
+          "type": "MOVE",
+          "line": 407,
+          "content": "MOVE WS-MAP-DATA TO DONLINEO(WS-CTR)",
+          "operands": "WS-MAP-DATA TO DONLINEO(WS-CTR)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 408,
+          "content": "ADD 1 TO WS-CTR"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 409,
+          "content": "WHEN 100"
+        },
+        {
+          "type": "MOVE",
+          "line": 410,
+          "content": "MOVE 'END OF RECORD' TO DONREPMO",
+          "operands": "'END OF RECORD' TO DONREPMO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 411,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "MOVE",
+          "line": 412,
+          "content": "MOVE 'ERROR WHILE READING DATA' TO DONREPMO",
+          "operands": "'ERROR WHILE READING DATA' TO DONREPMO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 415,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "OPEN",
+          "line": 416,
+          "content": "OPEN CR3",
+          "file": "CR3"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 419,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "CLOSE",
+          "line": 420,
+          "content": "CLOSE CR3",
+          "file": "CR3"
+        }
+      ],
+      "variables": [
+        {
+          "level": 5,
+          "name": "FILLER",
+          "pic": "X(02) VALUE SPACES.",
+          "line": 53
+        },
+        {
+          "level": 5,
+          "name": "FILLER",
+          "pic": "X(02) VALUE SPACES.",
+          "line": 55
+        },
+        {
+          "level": 5,
+          "name": "FILLER",
+          "pic": "X(02) VALUE SPACES.",
+          "line": 57
+        }
+      ],
+      "procedures": [
+        {
+          "name": "EXEC",
+          "start_line": 7,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 8,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 9,
+              "content": "INCLUDE DOCDCL"
+            }
+          ],
+          "end_line": 9
+        },
+        {
+          "name": "EXEC",
+          "start_line": 10,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 11,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 12,
+              "content": "INCLUDE DONDCL"
+            }
+          ],
+          "end_line": 12
+        },
+        {
+          "name": "EXEC",
+          "start_line": 13,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 14,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 15,
+              "content": "INCLUDE SQLCA"
+            }
+          ],
+          "end_line": 15
+        },
+        {
+          "name": "EXEC",
+          "start_line": 16,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 17,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 18,
+              "content": "DECLARE CR1 SCROLL CURSOR FOR"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 19,
+              "content": "SELECT  PATIENT_ID,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 20,
+              "content": "PATIENT_NAME,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 21,
+              "content": "PATIENT_GENDER,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 22,
+              "content": "PATIENT_CONTACT_NUM"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 23,
+              "content": "FROM PATIENT_DETAIL"
+            }
+          ],
+          "end_line": 23
+        },
+        {
+          "name": "EXEC",
+          "start_line": 24,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 25,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 26,
+              "content": "DECLARE CR2 SCROLL CURSOR FOR"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 27,
+              "content": "SELECT  DOCTOR_ID,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 28,
+              "content": "DOCTOR_NAME,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 29,
+              "content": "DOCTOR_GENDER,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 30,
+              "content": "DOCTOR_CONTACT_NUM"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 31,
+              "content": "FROM DOCTOR_DETAIL"
+            }
+          ],
+          "end_line": 31
+        },
+        {
+          "name": "EXEC",
+          "start_line": 32,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 33,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 34,
+              "content": "DECLARE CR3 SCROLL CURSOR FOR"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 35,
+              "content": "SELECT  DONOR_ID,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 36,
+              "content": "DONOR_NAME,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 37,
+              "content": "DONOR_GENDER,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 38,
+              "content": "DONOR_CONTACT_NUM"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 39,
+              "content": "FROM DONOR_DETAIL"
+            }
+          ],
+          "end_line": 39
+        },
+        {
+          "name": "EXEC",
+          "start_line": 40,
+          "statements": [],
+          "end_line": 40
+        },
+        {
+          "name": "3",
+          "start_line": 41,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 42,
+              "content": "01 WS-END-MSG      PIC X(27) VALUE 'PROGRAM ENDED PLEASE CLEAR'."
+            }
+          ],
+          "end_line": 42
+        },
+        {
+          "name": "27",
+          "start_line": 43,
+          "statements": [],
+          "end_line": 43
+        },
+        {
+          "name": "COMMAREA",
+          "start_line": 44,
+          "statements": [],
+          "end_line": 44
+        },
+        {
+          "name": "0",
+          "start_line": 45,
+          "statements": [],
+          "end_line": 45
+        },
+        {
+          "name": "0",
+          "start_line": 46,
+          "statements": [],
+          "end_line": 46
+        },
+        {
+          "name": "0",
+          "start_line": 47,
+          "statements": [],
+          "end_line": 47
+        },
+        {
+          "name": "COMP",
+          "start_line": 48,
+          "statements": [],
+          "end_line": 48
+        },
+        {
+          "name": "0",
+          "start_line": 49,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 50,
+              "content": "01 WS-ID-TEMP      PIC X(18)."
+            }
+          ],
+          "end_line": 50
+        },
+        {
+          "name": "DATA",
+          "start_line": 51,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 52,
+              "content": "05 WS-ID          PIC X(15)."
+            },
+            {
+              "type": "STATEMENT",
+              "line": 54,
+              "content": "05 WS-NAME        PIC X(30)."
+            },
+            {
+              "type": "STATEMENT",
+              "line": 56,
+              "content": "05 WS-GENDER      PIC X(10)."
+            },
+            {
+              "type": "STATEMENT",
+              "line": 58,
+              "content": "05 WS-CONTACT     PIC X(10)."
+            }
+          ],
+          "end_line": 58
+        },
+        {
+          "name": "1",
+          "start_line": 59,
+          "statements": [],
+          "end_line": 59
+        },
+        {
+          "name": "B18MPS1",
+          "start_line": 60,
+          "statements": [],
+          "end_line": 60
+        },
+        {
+          "name": "DFHAID",
+          "start_line": 61,
+          "statements": [],
+          "end_line": 61
+        },
+        {
+          "name": "DFHBMSCA",
+          "start_line": 62,
+          "statements": [],
+          "end_line": 63
+        },
+        {
+          "name": "DFHCOMMAREA",
+          "start_line": 64,
+          "statements": [],
+          "end_line": 64
+        },
+        {
+          "name": "9",
+          "start_line": 65,
+          "statements": [],
+          "end_line": 65
+        },
+        {
+          "name": "9",
+          "start_line": 66,
+          "statements": [],
+          "end_line": 66
+        },
+        {
+          "name": "9",
+          "start_line": 67,
+          "statements": [],
+          "end_line": 68
+        },
+        {
+          "name": "MAIN",
+          "start_line": 69,
+          "statements": [],
+          "end_line": 69
+        },
+        {
+          "name": "COMMAREA",
+          "start_line": 70,
+          "statements": [],
+          "end_line": 70
+        },
+        {
+          "name": "MENUO",
+          "start_line": 71,
+          "statements": [],
+          "end_line": 71
+        },
+        {
+          "name": "MOPTL",
+          "start_line": 72,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 73,
+              "content": "EVALUATE EIBCALEN"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 74,
+              "content": "WHEN 0"
+            },
+            {
+              "type": "PERFORM",
+              "line": 75,
+              "content": "PERFORM 2000-SEND-MAP-PARA",
+              "target": "2000"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 76,
+              "content": "WHEN OTHER"
+            },
+            {
+              "type": "PERFORM",
+              "line": 77,
+              "content": "PERFORM 3000-KEY-VALIDATION-PARA",
+              "target": "3000"
+            },
+            {
+              "type": "PERFORM",
+              "line": 78,
+              "content": "PERFORM 2000-SEND-MAP-PARA",
+              "target": "2000"
+            }
+          ],
+          "end_line": 78
+        },
+        {
+          "name": "EVALUATE",
+          "start_line": 79,
+          "statements": [],
+          "end_line": 79
+        },
+        {
+          "name": "PARA",
+          "start_line": 80,
+          "statements": [],
+          "end_line": 80
+        },
+        {
+          "name": "PARA",
+          "start_line": 81,
+          "statements": [],
+          "end_line": 81
+        },
+        {
+          "name": "PARA",
+          "start_line": 82,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 83,
+              "content": "EVALUATE  WS-REPORT-TYPE-FLAG"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 84,
+              "content": "WHEN 4"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 85,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 86,
+              "content": "SEND MAP ('PATREPT')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 87,
+              "content": "MAPSET ('B18MPS1')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 88,
+              "content": "ERASE"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 89,
+              "content": "END-EXEC"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 90,
+              "content": "WHEN 5"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 91,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 92,
+              "content": "SEND MAP ('DOCREPT')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 93,
+              "content": "MAPSET ('B18MPS1')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 94,
+              "content": "ERASE"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 95,
+              "content": "END-EXEC"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 96,
+              "content": "WHEN 6"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 97,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 98,
+              "content": "SEND MAP ('DONREPT')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 99,
+              "content": "MAPSET ('B18MPS1')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 100,
+              "content": "ERASE"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 101,
+              "content": "END-EXEC"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 102,
+              "content": "WHEN OTHER"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 103,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 104,
+              "content": "SEND MAP ('MENU')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 105,
+              "content": "MAPSET ('B18MPS1')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 106,
+              "content": "CURSOR"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 107,
+              "content": "ERASE"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 108,
+              "content": "END-EXEC"
+            }
+          ],
+          "end_line": 108
+        },
+        {
+          "name": "EVALUATE",
+          "start_line": 109,
+          "statements": [],
+          "end_line": 109
+        },
+        {
+          "name": "PARA",
+          "start_line": 110,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 111,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 112,
+              "content": "RECEIVE MAP('MENU')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 113,
+              "content": "MAPSET ('B18MPS1')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 114,
+              "content": "RESP(WS-RESP)"
+            }
+          ],
+          "end_line": 114
+        },
+        {
+          "name": "EXEC",
+          "start_line": 115,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 116,
+              "content": "EVALUATE WS-RESP"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 117,
+              "content": "WHEN DFHRESP(NORMAL)"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 118,
+              "content": "CONTINUE"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 119,
+              "content": "WHEN DFHRESP(MAPFAIL)"
+            },
+            {
+              "type": "PERFORM",
+              "line": 120,
+              "content": "PERFORM 5000-MAP-FAILED-PARA",
+              "target": "5000"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 121,
+              "content": "WHEN OTHER"
+            },
+            {
+              "type": "PERFORM",
+              "line": 122,
+              "content": "PERFORM 5100-ERROR-MSG-PARA",
+              "target": "5100"
+            }
+          ],
+          "end_line": 122
+        },
+        {
+          "name": "EVALUATE",
+          "start_line": 123,
+          "statements": [],
+          "end_line": 123
+        },
+        {
+          "name": "PARA",
+          "start_line": 124,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 125,
+              "content": "EVALUATE EIBAID"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 126,
+              "content": "WHEN DFHPF2"
+            },
+            {
+              "type": "PERFORM",
+              "line": 127,
+              "content": "PERFORM 2100-RECEIVE-MAP-PARA",
+              "target": "2100"
+            },
+            {
+              "type": "PERFORM",
+              "line": 128,
+              "content": "PERFORM 3100-CHECK-OPTION-PARA",
+              "target": "3100"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 129,
+              "content": "WHEN DFHPF3"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 130,
+              "content": "IF( WS-REPORT-READ-FLAG = 0) THEN"
+            },
+            {
+              "type": "PERFORM",
+              "line": 131,
+              "content": "PERFORM 4200-PROGRAM-END-MSG",
+              "target": "4200"
+            },
+            {
+              "type": "PERFORM",
+              "line": 132,
+              "content": "PERFORM 4000-END-PROGRAM-PARA",
+              "target": "4000"
+            },
+            {
+              "type": "ELSE",
+              "line": 133,
+              "content": "ELSE"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 134,
+              "content": "EXEC CICS XCTL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 135,
+              "content": "PROGRAM('B18PGM3')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 136,
+              "content": "END-EXEC"
+            },
+            {
+              "type": "END-IF",
+              "line": 137,
+              "content": "END-IF"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 138,
+              "content": "WHEN DFHPF12"
+            },
+            {
+              "type": "MOVE",
+              "line": 139,
+              "content": "MOVE LOW-VALUES TO MENUO",
+              "operands": "LOW-VALUES TO MENUO"
+            },
+            {
+              "type": "MOVE",
+              "line": 140,
+              "content": "MOVE -1 TO MOPTL",
+              "operands": "-1 TO MOPTL"
+            },
+            {
+              "type": "PERFORM",
+              "line": 141,
+              "content": "PERFORM 2000-SEND-MAP-PARA",
+              "target": "2000"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 142,
+              "content": "WHEN DFHPF7"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 143,
+              "content": "IF( WS-REPORT-READ-FLAG = 0)"
+            },
+            {
+              "type": "MOVE",
+              "line": 144,
+              "content": "MOVE 'PLEASE SELECT THE REPORT FIRST' TO MMSGO",
+              "operands": "'PLEASE SELECT THE REPORT FIRST' TO MMSGO"
+            },
+            {
+              "type": "ELSE",
+              "line": 145,
+              "content": "ELSE"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 146,
+              "content": "EVALUATE WS-REPORT-TYPE-FLAG"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 147,
+              "content": "WHEN 4"
+            },
+            {
+              "type": "MOVE",
+              "line": 148,
+              "content": "MOVE LOW-VALUES TO PATREPTO",
+              "operands": "LOW-VALUES TO PATREPTO"
+            },
+            {
+              "type": "MOVE",
+              "line": 149,
+              "content": "MOVE -5 TO WS-POS",
+              "operands": "-5 TO WS-POS"
+            },
+            {
+              "type": "PERFORM",
+              "line": 150,
+              "content": "PERFORM 6000-PATIENT-REPORT-PARA",
+              "target": "6000"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 151,
+              "content": "WHEN 5"
+            },
+            {
+              "type": "MOVE",
+              "line": 152,
+              "content": "MOVE LOW-VALUES TO PATREPTO",
+              "operands": "LOW-VALUES TO PATREPTO"
+            },
+            {
+              "type": "MOVE",
+              "line": 153,
+              "content": "MOVE -5 TO WS-POS",
+              "operands": "-5 TO WS-POS"
+            },
+            {
+              "type": "PERFORM",
+              "line": 154,
+              "content": "PERFORM 6100-DOCTOR-REPORT-PARA",
+              "target": "6100"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 155,
+              "content": "WHEN 6"
+            },
+            {
+              "type": "MOVE",
+              "line": 156,
+              "content": "MOVE LOW-VALUES TO PATREPTO",
+              "operands": "LOW-VALUES TO PATREPTO"
+            },
+            {
+              "type": "MOVE",
+              "line": 157,
+              "content": "MOVE -5 TO WS-POS",
+              "operands": "-5 TO WS-POS"
+            },
+            {
+              "type": "PERFORM",
+              "line": 158,
+              "content": "PERFORM 6200-DONOR-REPORT-PARA",
+              "target": "6200"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 159,
+              "content": "END-EVALUATE"
+            },
+            {
+              "type": "END-IF",
+              "line": 160,
+              "content": "END-IF"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 161,
+              "content": "WHEN DFHPF8"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 162,
+              "content": "IF( WS-REPORT-READ-FLAG = 0)"
+            },
+            {
+              "type": "MOVE",
+              "line": 163,
+              "content": "MOVE 'PLEASE SELECT THE REPORT FIRST' TO MMSGO",
+              "operands": "'PLEASE SELECT THE REPORT FIRST' TO MMSGO"
+            },
+            {
+              "type": "ELSE",
+              "line": 164,
+              "content": "ELSE"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 165,
+              "content": "EVALUATE WS-REPORT-TYPE-FLAG"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 166,
+              "content": "WHEN 4"
+            },
+            {
+              "type": "MOVE",
+              "line": 167,
+              "content": "MOVE LOW-VALUES TO PATREPTO",
+              "operands": "LOW-VALUES TO PATREPTO"
+            },
+            {
+              "type": "MOVE",
+              "line": 168,
+              "content": "MOVE 5 TO WS-POS",
+              "operands": "5 TO WS-POS"
+            },
+            {
+              "type": "PERFORM",
+              "line": 169,
+              "content": "PERFORM 6000-PATIENT-REPORT-PARA",
+              "target": "6000"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 170,
+              "content": "WHEN 5"
+            },
+            {
+              "type": "MOVE",
+              "line": 171,
+              "content": "MOVE LOW-VALUES TO DOCREPTO",
+              "operands": "LOW-VALUES TO DOCREPTO"
+            },
+            {
+              "type": "MOVE",
+              "line": 172,
+              "content": "MOVE 5 TO WS-POS",
+              "operands": "5 TO WS-POS"
+            },
+            {
+              "type": "PERFORM",
+              "line": 173,
+              "content": "PERFORM 6100-DOCTOR-REPORT-PARA",
+              "target": "6100"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 174,
+              "content": "WHEN 6"
+            },
+            {
+              "type": "MOVE",
+              "line": 175,
+              "content": "MOVE LOW-VALUES TO DONREPTO",
+              "operands": "LOW-VALUES TO DONREPTO"
+            },
+            {
+              "type": "MOVE",
+              "line": 176,
+              "content": "MOVE 5 TO WS-POS",
+              "operands": "5 TO WS-POS"
+            },
+            {
+              "type": "PERFORM",
+              "line": 177,
+              "content": "PERFORM 6200-DONOR-REPORT-PARA",
+              "target": "6200"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 178,
+              "content": "END-EVALUATE"
+            },
+            {
+              "type": "END-IF",
+              "line": 179,
+              "content": "END-IF"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 180,
+              "content": "WHEN OTHER"
+            },
+            {
+              "type": "MOVE",
+              "line": 181,
+              "content": "MOVE 'INVALID KEY PRESSED' TO MMSGO",
+              "operands": "'INVALID KEY PRESSED' TO MMSGO"
+            }
+          ],
+          "end_line": 181
+        },
+        {
+          "name": "EVALUATE",
+          "start_line": 182,
+          "statements": [],
+          "end_line": 182
+        },
+        {
+          "name": "PARA",
+          "start_line": 183,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 184,
+              "content": "EVALUATE MOPTI"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 185,
+              "content": "WHEN 1"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 186,
+              "content": "EXEC CICS XCTL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 187,
+              "content": "PROGRAM('B18PGM4')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 188,
+              "content": "END-EXEC"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 189,
+              "content": "WHEN 2"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 190,
+              "content": "EXEC CICS XCTL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 191,
+              "content": "PROGRAM('B18PGM5')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 192,
+              "content": "END-EXEC"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 193,
+              "content": "WHEN 3"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 194,
+              "content": "EXEC CICS XCTL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 195,
+              "content": "PROGRAM('B18PGM6')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 196,
+              "content": "END-EXEC"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 197,
+              "content": "WHEN 4"
+            },
+            {
+              "type": "MOVE",
+              "line": 198,
+              "content": "MOVE 1 TO WS-REPORT-READ-FLAG",
+              "operands": "1 TO WS-REPORT-READ-FLAG"
+            },
+            {
+              "type": "MOVE",
+              "line": 199,
+              "content": "MOVE 4 TO WS-REPORT-TYPE-FLAG",
+              "operands": "4 TO WS-REPORT-TYPE-FLAG"
+            },
+            {
+              "type": "MOVE",
+              "line": 200,
+              "content": "MOVE LOW-VALUES TO PATREPTO",
+              "operands": "LOW-VALUES TO PATREPTO"
+            },
+            {
+              "type": "PERFORM",
+              "line": 201,
+              "content": "PERFORM 6000-PATIENT-REPORT-PARA",
+              "target": "6000"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 202,
+              "content": "WHEN 5"
+            },
+            {
+              "type": "MOVE",
+              "line": 203,
+              "content": "MOVE 1 TO WS-REPORT-READ-FLAG",
+              "operands": "1 TO WS-REPORT-READ-FLAG"
+            },
+            {
+              "type": "MOVE",
+              "line": 204,
+              "content": "MOVE 5 TO WS-REPORT-TYPE-FLAG",
+              "operands": "5 TO WS-REPORT-TYPE-FLAG"
+            },
+            {
+              "type": "MOVE",
+              "line": 205,
+              "content": "MOVE LOW-VALUES TO DOCREPTO",
+              "operands": "LOW-VALUES TO DOCREPTO"
+            },
+            {
+              "type": "PERFORM",
+              "line": 206,
+              "content": "PERFORM 6100-DOCTOR-REPORT-PARA",
+              "target": "6100"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 207,
+              "content": "WHEN 6"
+            },
+            {
+              "type": "MOVE",
+              "line": 208,
+              "content": "MOVE 1 TO WS-REPORT-READ-FLAG",
+              "operands": "1 TO WS-REPORT-READ-FLAG"
+            },
+            {
+              "type": "MOVE",
+              "line": 209,
+              "content": "MOVE 6 TO WS-REPORT-TYPE-FLAG",
+              "operands": "6 TO WS-REPORT-TYPE-FLAG"
+            },
+            {
+              "type": "MOVE",
+              "line": 210,
+              "content": "MOVE LOW-VALUES TO DONREPTO",
+              "operands": "LOW-VALUES TO DONREPTO"
+            },
+            {
+              "type": "PERFORM",
+              "line": 211,
+              "content": "PERFORM 6200-DONOR-REPORT-PARA",
+              "target": "6200"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 212,
+              "content": "WHEN LOW-VALUES"
+            },
+            {
+              "type": "MOVE",
+              "line": 213,
+              "content": "MOVE 'OPTION CANNOT BE BLANK' TO MMSGO",
+              "operands": "'OPTION CANNOT BE BLANK' TO MMSGO"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 214,
+              "content": "WHEN SPACES"
+            },
+            {
+              "type": "MOVE",
+              "line": 215,
+              "content": "MOVE 'OPTION CANNOT BE BLANK' TO MMSGO",
+              "operands": "'OPTION CANNOT BE BLANK' TO MMSGO"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 216,
+              "content": "WHEN OTHER"
+            },
+            {
+              "type": "MOVE",
+              "line": 217,
+              "content": "MOVE 'ENTER A VALID OPTION'   TO MMSGO",
+              "operands": "'ENTER A VALID OPTION'   TO MMSGO"
+            }
+          ],
+          "end_line": 217
+        },
+        {
+          "name": "EVALUATE",
+          "start_line": 218,
+          "statements": [],
+          "end_line": 218
+        },
+        {
+          "name": "PARA",
+          "start_line": 219,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 220,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 221,
+              "content": "RETURN"
+            }
+          ],
+          "end_line": 221
+        },
+        {
+          "name": "EXEC",
+          "start_line": 222,
+          "statements": [],
+          "end_line": 222
+        },
+        {
+          "name": "PARA",
+          "start_line": 223,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 224,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 225,
+              "content": "RETURN TRANSID('B183')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 226,
+              "content": "COMMAREA(WS-COMMAREA)"
+            }
+          ],
+          "end_line": 226
+        },
+        {
+          "name": "EXEC",
+          "start_line": 227,
+          "statements": [],
+          "end_line": 227
+        },
+        {
+          "name": "MSG",
+          "start_line": 228,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 229,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 230,
+              "content": "SEND FROM(WS-END-MSG)"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 231,
+              "content": "LENGTH(WS-END-MSG-LEN)"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 232,
+              "content": "ERASE"
+            }
+          ],
+          "end_line": 232
+        },
+        {
+          "name": "EXEC",
+          "start_line": 233,
+          "statements": [],
+          "end_line": 233
+        },
+        {
+          "name": "PARA",
+          "start_line": 234,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 235,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 236,
+              "content": "ASKTIME"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 237,
+              "content": "ABSTIME(WS-DATE-TIME)"
+            }
+          ],
+          "end_line": 237
+        },
+        {
+          "name": "EXEC",
+          "start_line": 238,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 239,
+              "content": "EXEC CICS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 240,
+              "content": "FORMATTIME"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 241,
+              "content": "DDMMYYYY(MDATEO)"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 242,
+              "content": "DATESEP('/')"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 243,
+              "content": "ABSTIME(WS-DATE-TIME)"
+            }
+          ],
+          "end_line": 243
+        },
+        {
+          "name": "EXEC",
+          "start_line": 244,
+          "statements": [],
+          "end_line": 244
+        },
+        {
+          "name": "PARA",
+          "start_line": 245,
+          "statements": [],
+          "end_line": 245
+        },
+        {
+          "name": "CURSOR",
+          "start_line": 246,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 247,
+              "content": "IF( WS-CURSOR-FLAG = 0) THEN"
+            },
+            {
+              "type": "PERFORM",
+              "line": 248,
+              "content": "PERFORM FETCH-PATIENT-PARA 5 TIMES",
+              "target": "FETCH"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 249,
+              "content": "ADD 1 TO WS-CURSOR-FLAG"
+            },
+            {
+              "type": "ELSE",
+              "line": 250,
+              "content": "ELSE"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 251,
+              "content": "IF( WS-POS > 0)"
+            },
+            {
+              "type": "PERFORM",
+              "line": 252,
+              "content": "PERFORM SKIP-PATIENT-PARA WS-CURSOR-FLAG TIMES",
+              "target": "SKIP"
+            },
+            {
+              "type": "IF",
+              "line": 253,
+              "content": "IF ( SQLCODE NOT = 100)",
+              "condition": "( SQLCODE NOT = 100)"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 254,
+              "content": "ADD 1 TO WS-CURSOR-FLAG"
+            },
+            {
+              "type": "END-IF",
+              "line": 255,
+              "content": "END-IF"
+            },
+            {
+              "type": "PERFORM",
+              "line": 256,
+              "content": "PERFORM FETCH-PATIENT-PARA 5 TIMES",
+              "target": "FETCH"
+            },
+            {
+              "type": "ELSE",
+              "line": 257,
+              "content": "ELSE"
+            },
+            {
+              "type": "MOVE",
+              "line": 258,
+              "content": "MOVE 5 TO WS-POS",
+              "operands": "5 TO WS-POS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 259,
+              "content": "SUBTRACT 1 FROM WS-CURSOR-FLAG"
+            },
+            {
+              "type": "PERFORM",
+              "line": 260,
+              "content": "PERFORM SKIP-PATIENT-PARA WS-CURSOR-FLAG TIMES",
+              "target": "SKIP"
+            },
+            {
+              "type": "PERFORM",
+              "line": 261,
+              "content": "PERFORM FETCH-PATIENT-PARA 5 TIMES",
+              "target": "FETCH"
+            }
+          ],
+          "end_line": 261
+        },
+        {
+          "name": "IF",
+          "start_line": 262,
+          "statements": [],
+          "end_line": 262
+        },
+        {
+          "name": "CURSOR",
+          "start_line": 263,
+          "statements": [],
+          "end_line": 263
+        },
+        {
+          "name": "PARA",
+          "start_line": 264,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 265,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 266,
+              "content": "FETCH RELATIVE :WS-POS CR1"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 267,
+              "content": "INTO"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 268,
+              "content": ":DB-PATIENT-ID,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 269,
+              "content": ":DB-PATIENT-NAME,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 270,
+              "content": ":DB-PATIENT-GENDER,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 271,
+              "content": ":DB-PATIENT-CONTACT-NUM"
+            }
+          ],
+          "end_line": 271
+        },
+        {
+          "name": "EXEC",
+          "start_line": 272,
+          "statements": [],
+          "end_line": 272
+        },
+        {
+          "name": "PARA",
+          "start_line": 273,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 274,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 275,
+              "content": "FETCH CR1"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 276,
+              "content": "INTO"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 277,
+              "content": ":DB-PATIENT-ID,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 278,
+              "content": ":DB-PATIENT-NAME,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 279,
+              "content": ":DB-PATIENT-GENDER,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 280,
+              "content": ":DB-PATIENT-CONTACT-NUM"
+            }
+          ],
+          "end_line": 280
+        },
+        {
+          "name": "EXEC",
+          "start_line": 281,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 282,
+              "content": "EVALUATE SQLCODE"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 283,
+              "content": "WHEN 0"
+            },
+            {
+              "type": "MOVE",
+              "line": 284,
+              "content": "MOVE DB-PATIENT-ID TO  WS-ID-TEMP",
+              "operands": "DB-PATIENT-ID TO  WS-ID-TEMP"
+            },
+            {
+              "type": "MOVE",
+              "line": 285,
+              "content": "MOVE WS-ID-TEMP(4:) TO WS-ID",
+              "operands": "WS-ID-TEMP(4:) TO WS-ID"
+            },
+            {
+              "type": "MOVE",
+              "line": 286,
+              "content": "MOVE DB-PATIENT-NAME TO  WS-NAME",
+              "operands": "DB-PATIENT-NAME TO  WS-NAME"
+            },
+            {
+              "type": "MOVE",
+              "line": 287,
+              "content": "MOVE DB-PATIENT-GENDER TO  WS-GENDER",
+              "operands": "DB-PATIENT-GENDER TO  WS-GENDER"
+            },
+            {
+              "type": "MOVE",
+              "line": 288,
+              "content": "MOVE DB-PATIENT-CONTACT-NUM TO  WS-CONTACT",
+              "operands": "DB-PATIENT-CONTACT-NUM TO  WS-CONTACT"
+            },
+            {
+              "type": "MOVE",
+              "line": 289,
+              "content": "MOVE WS-MAP-DATA TO PATLINEO(WS-CTR)",
+              "operands": "WS-MAP-DATA TO PATLINEO(WS-CTR)"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 290,
+              "content": "ADD 1 TO WS-CTR"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 291,
+              "content": "WHEN 100"
+            },
+            {
+              "type": "MOVE",
+              "line": 292,
+              "content": "MOVE 'END OF RECORD' TO PATREPMO",
+              "operands": "'END OF RECORD' TO PATREPMO"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 293,
+              "content": "WHEN OTHER"
+            },
+            {
+              "type": "MOVE",
+              "line": 294,
+              "content": "MOVE 'ERROR WHILE READING DATA' TO PATREPMO",
+              "operands": "'ERROR WHILE READING DATA' TO PATREPMO"
+            }
+          ],
+          "end_line": 294
+        },
+        {
+          "name": "EVALUATE",
+          "start_line": 295,
+          "statements": [],
+          "end_line": 295
+        },
+        {
+          "name": "CURSOR",
+          "start_line": 296,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 297,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "OPEN",
+              "line": 298,
+              "content": "OPEN CR1",
+              "file": "CR1"
+            }
+          ],
+          "end_line": 298
+        },
+        {
+          "name": "EXEC",
+          "start_line": 299,
+          "statements": [],
+          "end_line": 299
+        },
+        {
+          "name": "CURSOR",
+          "start_line": 300,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 301,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "CLOSE",
+              "line": 302,
+              "content": "CLOSE CR1",
+              "file": "CR1"
+            }
+          ],
+          "end_line": 302
+        },
+        {
+          "name": "EXEC",
+          "start_line": 303,
+          "statements": [],
+          "end_line": 303
+        },
+        {
+          "name": "PARA",
+          "start_line": 304,
+          "statements": [],
+          "end_line": 304
+        },
+        {
+          "name": "CURSOR",
+          "start_line": 305,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 306,
+              "content": "IF( WS-CURSOR-FLAG = 0) THEN"
+            },
+            {
+              "type": "PERFORM",
+              "line": 307,
+              "content": "PERFORM FETCH-DOCTOR-PARA 5 TIMES",
+              "target": "FETCH"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 308,
+              "content": "ADD 1 TO WS-CURSOR-FLAG"
+            },
+            {
+              "type": "ELSE",
+              "line": 309,
+              "content": "ELSE"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 310,
+              "content": "IF( WS-POS > 0)"
+            },
+            {
+              "type": "PERFORM",
+              "line": 311,
+              "content": "PERFORM SKIP-DOCTOR-PARA WS-CURSOR-FLAG TIMES",
+              "target": "SKIP"
+            },
+            {
+              "type": "IF",
+              "line": 312,
+              "content": "IF ( SQLCODE NOT = 100)",
+              "condition": "( SQLCODE NOT = 100)"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 313,
+              "content": "ADD 1 TO WS-CURSOR-FLAG"
+            },
+            {
+              "type": "END-IF",
+              "line": 314,
+              "content": "END-IF"
+            },
+            {
+              "type": "PERFORM",
+              "line": 315,
+              "content": "PERFORM FETCH-DOCTOR-PARA 5 TIMES",
+              "target": "FETCH"
+            },
+            {
+              "type": "ELSE",
+              "line": 316,
+              "content": "ELSE"
+            },
+            {
+              "type": "MOVE",
+              "line": 317,
+              "content": "MOVE 5 TO WS-POS",
+              "operands": "5 TO WS-POS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 318,
+              "content": "SUBTRACT 1 FROM WS-CURSOR-FLAG"
+            },
+            {
+              "type": "PERFORM",
+              "line": 319,
+              "content": "PERFORM SKIP-DOCTOR-PARA WS-CURSOR-FLAG TIMES",
+              "target": "SKIP"
+            },
+            {
+              "type": "PERFORM",
+              "line": 320,
+              "content": "PERFORM FETCH-DOCTOR-PARA 5 TIMES",
+              "target": "FETCH"
+            }
+          ],
+          "end_line": 320
+        },
+        {
+          "name": "IF",
+          "start_line": 321,
+          "statements": [],
+          "end_line": 321
+        },
+        {
+          "name": "CURSOR",
+          "start_line": 322,
+          "statements": [],
+          "end_line": 322
+        },
+        {
+          "name": "PARA",
+          "start_line": 323,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 324,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 325,
+              "content": "FETCH RELATIVE :WS-POS CR2"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 326,
+              "content": "INTO"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 327,
+              "content": ":DB-DOCTOR-ID,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 328,
+              "content": ":DB-DOCTOR-NAME,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 329,
+              "content": ":DB-DOCTOR-GENDER,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 330,
+              "content": ":DB-DOCTOR-CONTACT-NUM"
+            }
+          ],
+          "end_line": 330
+        },
+        {
+          "name": "EXEC",
+          "start_line": 331,
+          "statements": [],
+          "end_line": 331
+        },
+        {
+          "name": "PARA",
+          "start_line": 332,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 333,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 334,
+              "content": "FETCH CR2"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 335,
+              "content": "INTO"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 336,
+              "content": ":DB-DOCTOR-ID,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 337,
+              "content": ":DB-DOCTOR-NAME,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 338,
+              "content": ":DB-DOCTOR-GENDER,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 339,
+              "content": ":DB-DOCTOR-CONTACT-NUM"
+            }
+          ],
+          "end_line": 339
+        },
+        {
+          "name": "EXEC",
+          "start_line": 340,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 341,
+              "content": "EVALUATE SQLCODE"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 342,
+              "content": "WHEN 0"
+            },
+            {
+              "type": "MOVE",
+              "line": 343,
+              "content": "MOVE DB-DOCTOR-ID TO   WS-ID-TEMP",
+              "operands": "DB-DOCTOR-ID TO   WS-ID-TEMP"
+            },
+            {
+              "type": "MOVE",
+              "line": 344,
+              "content": "MOVE WS-ID-TEMP(4:) TO WS-ID",
+              "operands": "WS-ID-TEMP(4:) TO WS-ID"
+            },
+            {
+              "type": "MOVE",
+              "line": 345,
+              "content": "MOVE DB-DOCTOR-NAME TO   WS-NAME",
+              "operands": "DB-DOCTOR-NAME TO   WS-NAME"
+            },
+            {
+              "type": "MOVE",
+              "line": 346,
+              "content": "MOVE DB-DOCTOR-GENDER TO   WS-GENDER",
+              "operands": "DB-DOCTOR-GENDER TO   WS-GENDER"
+            },
+            {
+              "type": "MOVE",
+              "line": 347,
+              "content": "MOVE DB-DOCTOR-CONTACT-NUM TO   WS-CONTACT",
+              "operands": "DB-DOCTOR-CONTACT-NUM TO   WS-CONTACT"
+            },
+            {
+              "type": "MOVE",
+              "line": 348,
+              "content": "MOVE WS-MAP-DATA TO DOCLINEO(WS-CTR)",
+              "operands": "WS-MAP-DATA TO DOCLINEO(WS-CTR)"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 349,
+              "content": "ADD 1 TO WS-CTR"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 350,
+              "content": "WHEN 100"
+            },
+            {
+              "type": "MOVE",
+              "line": 351,
+              "content": "MOVE 'END OF RECORD' TO DOCREPMO",
+              "operands": "'END OF RECORD' TO DOCREPMO"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 352,
+              "content": "WHEN OTHER"
+            },
+            {
+              "type": "MOVE",
+              "line": 353,
+              "content": "MOVE 'ERROR WHILE READING DATA' TO DOCREPMO",
+              "operands": "'ERROR WHILE READING DATA' TO DOCREPMO"
+            }
+          ],
+          "end_line": 353
+        },
+        {
+          "name": "EVALUATE",
+          "start_line": 354,
+          "statements": [],
+          "end_line": 354
+        },
+        {
+          "name": "CURSOR",
+          "start_line": 355,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 356,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "OPEN",
+              "line": 357,
+              "content": "OPEN CR2",
+              "file": "CR2"
+            }
+          ],
+          "end_line": 357
+        },
+        {
+          "name": "EXEC",
+          "start_line": 358,
+          "statements": [],
+          "end_line": 358
+        },
+        {
+          "name": "CURSOR",
+          "start_line": 359,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 360,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "CLOSE",
+              "line": 361,
+              "content": "CLOSE CR2",
+              "file": "CR2"
+            }
+          ],
+          "end_line": 361
+        },
+        {
+          "name": "EXEC",
+          "start_line": 362,
+          "statements": [],
+          "end_line": 362
+        },
+        {
+          "name": "PARA",
+          "start_line": 363,
+          "statements": [],
+          "end_line": 363
+        },
+        {
+          "name": "CURSOR",
+          "start_line": 364,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 365,
+              "content": "IF( WS-CURSOR-FLAG = 0) THEN"
+            },
+            {
+              "type": "PERFORM",
+              "line": 366,
+              "content": "PERFORM FETCH-DONOR-PARA 5 TIMES",
+              "target": "FETCH"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 367,
+              "content": "ADD 1 TO WS-CURSOR-FLAG"
+            },
+            {
+              "type": "ELSE",
+              "line": 368,
+              "content": "ELSE"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 369,
+              "content": "IF( WS-POS > 0)"
+            },
+            {
+              "type": "PERFORM",
+              "line": 370,
+              "content": "PERFORM SKIP-DONOR-PARA WS-CURSOR-FLAG TIMES",
+              "target": "SKIP"
+            },
+            {
+              "type": "IF",
+              "line": 371,
+              "content": "IF ( SQLCODE NOT = 100)",
+              "condition": "( SQLCODE NOT = 100)"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 372,
+              "content": "ADD 1 TO WS-CURSOR-FLAG"
+            },
+            {
+              "type": "END-IF",
+              "line": 373,
+              "content": "END-IF"
+            },
+            {
+              "type": "PERFORM",
+              "line": 374,
+              "content": "PERFORM FETCH-DONOR-PARA 5 TIMES",
+              "target": "FETCH"
+            },
+            {
+              "type": "ELSE",
+              "line": 375,
+              "content": "ELSE"
+            },
+            {
+              "type": "MOVE",
+              "line": 376,
+              "content": "MOVE 5 TO WS-POS",
+              "operands": "5 TO WS-POS"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 377,
+              "content": "SUBTRACT 1 FROM WS-CURSOR-FLAG"
+            },
+            {
+              "type": "PERFORM",
+              "line": 378,
+              "content": "PERFORM SKIP-DONOR-PARA WS-CURSOR-FLAG TIMES",
+              "target": "SKIP"
+            },
+            {
+              "type": "PERFORM",
+              "line": 379,
+              "content": "PERFORM FETCH-DONOR-PARA 5 TIMES",
+              "target": "FETCH"
+            }
+          ],
+          "end_line": 379
+        },
+        {
+          "name": "IF",
+          "start_line": 380,
+          "statements": [],
+          "end_line": 380
+        },
+        {
+          "name": "CURSOR",
+          "start_line": 381,
+          "statements": [],
+          "end_line": 381
+        },
+        {
+          "name": "PARA",
+          "start_line": 382,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 383,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 384,
+              "content": "FETCH RELATIVE :WS-POS CR3"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 385,
+              "content": "INTO"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 386,
+              "content": ":DB-DONOR-ID,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 387,
+              "content": ":DB-DONOR-NAME,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 388,
+              "content": ":DB-DONOR-GENDER,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 389,
+              "content": ":DB-DONOR-CONTACT-NUM"
+            }
+          ],
+          "end_line": 389
+        },
+        {
+          "name": "EXEC",
+          "start_line": 390,
+          "statements": [],
+          "end_line": 390
+        },
+        {
+          "name": "PARA",
+          "start_line": 391,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 392,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 393,
+              "content": "FETCH CR3"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 394,
+              "content": "INTO"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 395,
+              "content": ":DB-DONOR-ID,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 396,
+              "content": ":DB-DONOR-NAME,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 397,
+              "content": ":DB-DONOR-GENDER,"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 398,
+              "content": ":DB-DONOR-CONTACT-NUM"
+            }
+          ],
+          "end_line": 398
+        },
+        {
+          "name": "EXEC",
+          "start_line": 399,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 400,
+              "content": "EVALUATE SQLCODE"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 401,
+              "content": "WHEN 0"
+            },
+            {
+              "type": "MOVE",
+              "line": 402,
+              "content": "MOVE DB-DONOR-ID TO    WS-ID-TEMP",
+              "operands": "DB-DONOR-ID TO    WS-ID-TEMP"
+            },
+            {
+              "type": "MOVE",
+              "line": 403,
+              "content": "MOVE WS-ID-TEMP(4:) TO WS-ID",
+              "operands": "WS-ID-TEMP(4:) TO WS-ID"
+            },
+            {
+              "type": "MOVE",
+              "line": 404,
+              "content": "MOVE DB-DONOR-NAME TO    WS-NAME",
+              "operands": "DB-DONOR-NAME TO    WS-NAME"
+            },
+            {
+              "type": "MOVE",
+              "line": 405,
+              "content": "MOVE DB-DONOR-GENDER TO    WS-GENDER",
+              "operands": "DB-DONOR-GENDER TO    WS-GENDER"
+            },
+            {
+              "type": "MOVE",
+              "line": 406,
+              "content": "MOVE DB-DONOR-CONTACT-NUM TO    WS-CONTACT",
+              "operands": "DB-DONOR-CONTACT-NUM TO    WS-CONTACT"
+            },
+            {
+              "type": "MOVE",
+              "line": 407,
+              "content": "MOVE WS-MAP-DATA TO DONLINEO(WS-CTR)",
+              "operands": "WS-MAP-DATA TO DONLINEO(WS-CTR)"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 408,
+              "content": "ADD 1 TO WS-CTR"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 409,
+              "content": "WHEN 100"
+            },
+            {
+              "type": "MOVE",
+              "line": 410,
+              "content": "MOVE 'END OF RECORD' TO DONREPMO",
+              "operands": "'END OF RECORD' TO DONREPMO"
+            },
+            {
+              "type": "STATEMENT",
+              "line": 411,
+              "content": "WHEN OTHER"
+            },
+            {
+              "type": "MOVE",
+              "line": 412,
+              "content": "MOVE 'ERROR WHILE READING DATA' TO DONREPMO",
+              "operands": "'ERROR WHILE READING DATA' TO DONREPMO"
+            }
+          ],
+          "end_line": 412
+        },
+        {
+          "name": "EVALUATE",
+          "start_line": 413,
+          "statements": [],
+          "end_line": 413
+        },
+        {
+          "name": "CURSOR",
+          "start_line": 414,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 415,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "OPEN",
+              "line": 416,
+              "content": "OPEN CR3",
+              "file": "CR3"
+            }
+          ],
+          "end_line": 416
+        },
+        {
+          "name": "EXEC",
+          "start_line": 417,
+          "statements": [],
+          "end_line": 417
+        },
+        {
+          "name": "CURSOR",
+          "start_line": 418,
+          "statements": [
+            {
+              "type": "STATEMENT",
+              "line": 419,
+              "content": "EXEC SQL"
+            },
+            {
+              "type": "CLOSE",
+              "line": 420,
+              "content": "CLOSE CR3",
+              "file": "CR3"
+            }
+          ],
+          "end_line": 420
+        },
+        {
+          "name": "EXEC",
+          "start_line": 421,
+          "statements": [],
+          "end_line": 421
+        },
+        {
+          "name": "PARA",
+          "start_line": 422,
+          "statements": [],
+          "end_line": 422
+        },
+        {
+          "name": "MSG",
+          "start_line": 423,
+          "statements": [],
+          "end_line": 423
+        },
+        {
+          "name": "MSG",
+          "start_line": 424,
+          "statements": [],
+          "end_line": 424
+        },
+        {
+          "name": "PARA",
+          "start_line": 425,
+          "statements": [],
+          "end_line": 425
+        },
+        {
+          "name": "PARA",
+          "start_line": 426,
+          "statements": [],
+          "end_line": 426
+        },
+        {
+          "name": "MSG",
+          "start_line": 427,
+          "statements": [],
+          "end_line": 427
+        },
+        {
+          "name": "MSG",
+          "start_line": 428,
+          "statements": [],
+          "end_line": 428
+        },
+        {
+          "name": "PARA",
+          "start_line": 429,
+          "statements": [],
+          "end_line": 429
+        }
+      ],
+      "divisions": {},
+      "end_line": 102
+    }
+  ],
+  "divisions": {
+    "IDENTIFICATION": {
+      "start_line": 1,
+      "sections": {}
+    },
+    "DATA": {
+      "start_line": 3,
+      "sections": {
+        "WORKING-STORAGE": {
+          "start_line": 4
+        },
+        "LINKAGE": {
+          "start_line": 63
+        }
+      }
+    },
+    "PROCEDURE": {
+      "start_line": 68,
+      "sections": {}
+    }
+  },
+  "variables": [
+    {
+      "level": 5,
+      "name": "FILLER",
+      "pic": "X(02) VALUE SPACES.",
+      "line": 53
+    },
+    {
+      "level": 5,
+      "name": "FILLER",
+      "pic": "X(02) VALUE SPACES.",
+      "line": 55
+    },
+    {
+      "level": 5,
+      "name": "FILLER",
+      "pic": "X(02) VALUE SPACES.",
+      "line": 57
+    }
+  ],
+  "procedures": [
+    {
+      "name": "EXEC",
+      "start_line": 7,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 8,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 9,
+          "content": "INCLUDE DOCDCL"
+        }
+      ],
+      "end_line": 9
+    },
+    {
+      "name": "EXEC",
+      "start_line": 10,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 11,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 12,
+          "content": "INCLUDE DONDCL"
+        }
+      ],
+      "end_line": 12
+    },
+    {
+      "name": "EXEC",
+      "start_line": 13,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 14,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 15,
+          "content": "INCLUDE SQLCA"
+        }
+      ],
+      "end_line": 15
+    },
+    {
+      "name": "EXEC",
+      "start_line": 16,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 17,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 18,
+          "content": "DECLARE CR1 SCROLL CURSOR FOR"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 19,
+          "content": "SELECT  PATIENT_ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 20,
+          "content": "PATIENT_NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 21,
+          "content": "PATIENT_GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 22,
+          "content": "PATIENT_CONTACT_NUM"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 23,
+          "content": "FROM PATIENT_DETAIL"
+        }
+      ],
+      "end_line": 23
+    },
+    {
+      "name": "EXEC",
+      "start_line": 24,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 25,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 26,
+          "content": "DECLARE CR2 SCROLL CURSOR FOR"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 27,
+          "content": "SELECT  DOCTOR_ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 28,
+          "content": "DOCTOR_NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 29,
+          "content": "DOCTOR_GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 30,
+          "content": "DOCTOR_CONTACT_NUM"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 31,
+          "content": "FROM DOCTOR_DETAIL"
+        }
+      ],
+      "end_line": 31
+    },
+    {
+      "name": "EXEC",
+      "start_line": 32,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 33,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 34,
+          "content": "DECLARE CR3 SCROLL CURSOR FOR"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 35,
+          "content": "SELECT  DONOR_ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 36,
+          "content": "DONOR_NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 37,
+          "content": "DONOR_GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 38,
+          "content": "DONOR_CONTACT_NUM"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 39,
+          "content": "FROM DONOR_DETAIL"
+        }
+      ],
+      "end_line": 39
+    },
+    {
+      "name": "EXEC",
+      "start_line": 40,
+      "statements": [],
+      "end_line": 40
+    },
+    {
+      "name": "3",
+      "start_line": 41,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 42,
+          "content": "01 WS-END-MSG      PIC X(27) VALUE 'PROGRAM ENDED PLEASE CLEAR'."
+        }
+      ],
+      "end_line": 42
+    },
+    {
+      "name": "27",
+      "start_line": 43,
+      "statements": [],
+      "end_line": 43
+    },
+    {
+      "name": "COMMAREA",
+      "start_line": 44,
+      "statements": [],
+      "end_line": 44
+    },
+    {
+      "name": "0",
+      "start_line": 45,
+      "statements": [],
+      "end_line": 45
+    },
+    {
+      "name": "0",
+      "start_line": 46,
+      "statements": [],
+      "end_line": 46
+    },
+    {
+      "name": "0",
+      "start_line": 47,
+      "statements": [],
+      "end_line": 47
+    },
+    {
+      "name": "COMP",
+      "start_line": 48,
+      "statements": [],
+      "end_line": 48
+    },
+    {
+      "name": "0",
+      "start_line": 49,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 50,
+          "content": "01 WS-ID-TEMP      PIC X(18)."
+        }
+      ],
+      "end_line": 50
+    },
+    {
+      "name": "DATA",
+      "start_line": 51,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 52,
+          "content": "05 WS-ID          PIC X(15)."
+        },
+        {
+          "type": "STATEMENT",
+          "line": 54,
+          "content": "05 WS-NAME        PIC X(30)."
+        },
+        {
+          "type": "STATEMENT",
+          "line": 56,
+          "content": "05 WS-GENDER      PIC X(10)."
+        },
+        {
+          "type": "STATEMENT",
+          "line": 58,
+          "content": "05 WS-CONTACT     PIC X(10)."
+        }
+      ],
+      "end_line": 58
+    },
+    {
+      "name": "1",
+      "start_line": 59,
+      "statements": [],
+      "end_line": 59
+    },
+    {
+      "name": "B18MPS1",
+      "start_line": 60,
+      "statements": [],
+      "end_line": 60
+    },
+    {
+      "name": "DFHAID",
+      "start_line": 61,
+      "statements": [],
+      "end_line": 61
+    },
+    {
+      "name": "DFHBMSCA",
+      "start_line": 62,
+      "statements": [],
+      "end_line": 63
+    },
+    {
+      "name": "DFHCOMMAREA",
+      "start_line": 64,
+      "statements": [],
+      "end_line": 64
+    },
+    {
+      "name": "9",
+      "start_line": 65,
+      "statements": [],
+      "end_line": 65
+    },
+    {
+      "name": "9",
+      "start_line": 66,
+      "statements": [],
+      "end_line": 66
+    },
+    {
+      "name": "9",
+      "start_line": 67,
+      "statements": [],
+      "end_line": 68
+    },
+    {
+      "name": "MAIN",
+      "start_line": 69,
+      "statements": [],
+      "end_line": 69
+    },
+    {
+      "name": "COMMAREA",
+      "start_line": 70,
+      "statements": [],
+      "end_line": 70
+    },
+    {
+      "name": "MENUO",
+      "start_line": 71,
+      "statements": [],
+      "end_line": 71
+    },
+    {
+      "name": "MOPTL",
+      "start_line": 72,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 73,
+          "content": "EVALUATE EIBCALEN"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 74,
+          "content": "WHEN 0"
+        },
+        {
+          "type": "PERFORM",
+          "line": 75,
+          "content": "PERFORM 2000-SEND-MAP-PARA",
+          "target": "2000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 76,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "PERFORM",
+          "line": 77,
+          "content": "PERFORM 3000-KEY-VALIDATION-PARA",
+          "target": "3000"
+        },
+        {
+          "type": "PERFORM",
+          "line": 78,
+          "content": "PERFORM 2000-SEND-MAP-PARA",
+          "target": "2000"
+        }
+      ],
+      "end_line": 78
+    },
+    {
+      "name": "EVALUATE",
+      "start_line": 79,
+      "statements": [],
+      "end_line": 79
+    },
+    {
+      "name": "PARA",
+      "start_line": 80,
+      "statements": [],
+      "end_line": 80
+    },
+    {
+      "name": "PARA",
+      "start_line": 81,
+      "statements": [],
+      "end_line": 81
+    },
+    {
+      "name": "PARA",
+      "start_line": 82,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 83,
+          "content": "EVALUATE  WS-REPORT-TYPE-FLAG"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 84,
+          "content": "WHEN 4"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 85,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 86,
+          "content": "SEND MAP ('PATREPT')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 87,
+          "content": "MAPSET ('B18MPS1')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 88,
+          "content": "ERASE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 89,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 90,
+          "content": "WHEN 5"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 91,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 92,
+          "content": "SEND MAP ('DOCREPT')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 93,
+          "content": "MAPSET ('B18MPS1')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 94,
+          "content": "ERASE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 95,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 96,
+          "content": "WHEN 6"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 97,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 98,
+          "content": "SEND MAP ('DONREPT')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 99,
+          "content": "MAPSET ('B18MPS1')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 100,
+          "content": "ERASE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 101,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 102,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 103,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 104,
+          "content": "SEND MAP ('MENU')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 105,
+          "content": "MAPSET ('B18MPS1')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 106,
+          "content": "CURSOR"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 107,
+          "content": "ERASE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 108,
+          "content": "END-EXEC"
+        }
+      ],
+      "end_line": 108
+    },
+    {
+      "name": "EVALUATE",
+      "start_line": 109,
+      "statements": [],
+      "end_line": 109
+    },
+    {
+      "name": "PARA",
+      "start_line": 110,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 111,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 112,
+          "content": "RECEIVE MAP('MENU')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 113,
+          "content": "MAPSET ('B18MPS1')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 114,
+          "content": "RESP(WS-RESP)"
+        }
+      ],
+      "end_line": 114
+    },
+    {
+      "name": "EXEC",
+      "start_line": 115,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 116,
+          "content": "EVALUATE WS-RESP"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 117,
+          "content": "WHEN DFHRESP(NORMAL)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 118,
+          "content": "CONTINUE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 119,
+          "content": "WHEN DFHRESP(MAPFAIL)"
+        },
+        {
+          "type": "PERFORM",
+          "line": 120,
+          "content": "PERFORM 5000-MAP-FAILED-PARA",
+          "target": "5000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 121,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "PERFORM",
+          "line": 122,
+          "content": "PERFORM 5100-ERROR-MSG-PARA",
+          "target": "5100"
+        }
+      ],
+      "end_line": 122
+    },
+    {
+      "name": "EVALUATE",
+      "start_line": 123,
+      "statements": [],
+      "end_line": 123
+    },
+    {
+      "name": "PARA",
+      "start_line": 124,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 125,
+          "content": "EVALUATE EIBAID"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 126,
+          "content": "WHEN DFHPF2"
+        },
+        {
+          "type": "PERFORM",
+          "line": 127,
+          "content": "PERFORM 2100-RECEIVE-MAP-PARA",
+          "target": "2100"
+        },
+        {
+          "type": "PERFORM",
+          "line": 128,
+          "content": "PERFORM 3100-CHECK-OPTION-PARA",
+          "target": "3100"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 129,
+          "content": "WHEN DFHPF3"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 130,
+          "content": "IF( WS-REPORT-READ-FLAG = 0) THEN"
+        },
+        {
+          "type": "PERFORM",
+          "line": 131,
+          "content": "PERFORM 4200-PROGRAM-END-MSG",
+          "target": "4200"
+        },
+        {
+          "type": "PERFORM",
+          "line": 132,
+          "content": "PERFORM 4000-END-PROGRAM-PARA",
+          "target": "4000"
+        },
+        {
+          "type": "ELSE",
+          "line": 133,
+          "content": "ELSE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 134,
+          "content": "EXEC CICS XCTL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 135,
+          "content": "PROGRAM('B18PGM3')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 136,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "END-IF",
+          "line": 137,
+          "content": "END-IF"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 138,
+          "content": "WHEN DFHPF12"
+        },
+        {
+          "type": "MOVE",
+          "line": 139,
+          "content": "MOVE LOW-VALUES TO MENUO",
+          "operands": "LOW-VALUES TO MENUO"
+        },
+        {
+          "type": "MOVE",
+          "line": 140,
+          "content": "MOVE -1 TO MOPTL",
+          "operands": "-1 TO MOPTL"
+        },
+        {
+          "type": "PERFORM",
+          "line": 141,
+          "content": "PERFORM 2000-SEND-MAP-PARA",
+          "target": "2000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 142,
+          "content": "WHEN DFHPF7"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 143,
+          "content": "IF( WS-REPORT-READ-FLAG = 0)"
+        },
+        {
+          "type": "MOVE",
+          "line": 144,
+          "content": "MOVE 'PLEASE SELECT THE REPORT FIRST' TO MMSGO",
+          "operands": "'PLEASE SELECT THE REPORT FIRST' TO MMSGO"
+        },
+        {
+          "type": "ELSE",
+          "line": 145,
+          "content": "ELSE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 146,
+          "content": "EVALUATE WS-REPORT-TYPE-FLAG"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 147,
+          "content": "WHEN 4"
+        },
+        {
+          "type": "MOVE",
+          "line": 148,
+          "content": "MOVE LOW-VALUES TO PATREPTO",
+          "operands": "LOW-VALUES TO PATREPTO"
+        },
+        {
+          "type": "MOVE",
+          "line": 149,
+          "content": "MOVE -5 TO WS-POS",
+          "operands": "-5 TO WS-POS"
+        },
+        {
+          "type": "PERFORM",
+          "line": 150,
+          "content": "PERFORM 6000-PATIENT-REPORT-PARA",
+          "target": "6000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 151,
+          "content": "WHEN 5"
+        },
+        {
+          "type": "MOVE",
+          "line": 152,
+          "content": "MOVE LOW-VALUES TO PATREPTO",
+          "operands": "LOW-VALUES TO PATREPTO"
+        },
+        {
+          "type": "MOVE",
+          "line": 153,
+          "content": "MOVE -5 TO WS-POS",
+          "operands": "-5 TO WS-POS"
+        },
+        {
+          "type": "PERFORM",
+          "line": 154,
+          "content": "PERFORM 6100-DOCTOR-REPORT-PARA",
+          "target": "6100"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 155,
+          "content": "WHEN 6"
+        },
+        {
+          "type": "MOVE",
+          "line": 156,
+          "content": "MOVE LOW-VALUES TO PATREPTO",
+          "operands": "LOW-VALUES TO PATREPTO"
+        },
+        {
+          "type": "MOVE",
+          "line": 157,
+          "content": "MOVE -5 TO WS-POS",
+          "operands": "-5 TO WS-POS"
+        },
+        {
+          "type": "PERFORM",
+          "line": 158,
+          "content": "PERFORM 6200-DONOR-REPORT-PARA",
+          "target": "6200"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 159,
+          "content": "END-EVALUATE"
+        },
+        {
+          "type": "END-IF",
+          "line": 160,
+          "content": "END-IF"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 161,
+          "content": "WHEN DFHPF8"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 162,
+          "content": "IF( WS-REPORT-READ-FLAG = 0)"
+        },
+        {
+          "type": "MOVE",
+          "line": 163,
+          "content": "MOVE 'PLEASE SELECT THE REPORT FIRST' TO MMSGO",
+          "operands": "'PLEASE SELECT THE REPORT FIRST' TO MMSGO"
+        },
+        {
+          "type": "ELSE",
+          "line": 164,
+          "content": "ELSE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 165,
+          "content": "EVALUATE WS-REPORT-TYPE-FLAG"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 166,
+          "content": "WHEN 4"
+        },
+        {
+          "type": "MOVE",
+          "line": 167,
+          "content": "MOVE LOW-VALUES TO PATREPTO",
+          "operands": "LOW-VALUES TO PATREPTO"
+        },
+        {
+          "type": "MOVE",
+          "line": 168,
+          "content": "MOVE 5 TO WS-POS",
+          "operands": "5 TO WS-POS"
+        },
+        {
+          "type": "PERFORM",
+          "line": 169,
+          "content": "PERFORM 6000-PATIENT-REPORT-PARA",
+          "target": "6000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 170,
+          "content": "WHEN 5"
+        },
+        {
+          "type": "MOVE",
+          "line": 171,
+          "content": "MOVE LOW-VALUES TO DOCREPTO",
+          "operands": "LOW-VALUES TO DOCREPTO"
+        },
+        {
+          "type": "MOVE",
+          "line": 172,
+          "content": "MOVE 5 TO WS-POS",
+          "operands": "5 TO WS-POS"
+        },
+        {
+          "type": "PERFORM",
+          "line": 173,
+          "content": "PERFORM 6100-DOCTOR-REPORT-PARA",
+          "target": "6100"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 174,
+          "content": "WHEN 6"
+        },
+        {
+          "type": "MOVE",
+          "line": 175,
+          "content": "MOVE LOW-VALUES TO DONREPTO",
+          "operands": "LOW-VALUES TO DONREPTO"
+        },
+        {
+          "type": "MOVE",
+          "line": 176,
+          "content": "MOVE 5 TO WS-POS",
+          "operands": "5 TO WS-POS"
+        },
+        {
+          "type": "PERFORM",
+          "line": 177,
+          "content": "PERFORM 6200-DONOR-REPORT-PARA",
+          "target": "6200"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 178,
+          "content": "END-EVALUATE"
+        },
+        {
+          "type": "END-IF",
+          "line": 179,
+          "content": "END-IF"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 180,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "MOVE",
+          "line": 181,
+          "content": "MOVE 'INVALID KEY PRESSED' TO MMSGO",
+          "operands": "'INVALID KEY PRESSED' TO MMSGO"
+        }
+      ],
+      "end_line": 181
+    },
+    {
+      "name": "EVALUATE",
+      "start_line": 182,
+      "statements": [],
+      "end_line": 182
+    },
+    {
+      "name": "PARA",
+      "start_line": 183,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 184,
+          "content": "EVALUATE MOPTI"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 185,
+          "content": "WHEN 1"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 186,
+          "content": "EXEC CICS XCTL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 187,
+          "content": "PROGRAM('B18PGM4')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 188,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 189,
+          "content": "WHEN 2"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 190,
+          "content": "EXEC CICS XCTL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 191,
+          "content": "PROGRAM('B18PGM5')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 192,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 193,
+          "content": "WHEN 3"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 194,
+          "content": "EXEC CICS XCTL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 195,
+          "content": "PROGRAM('B18PGM6')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 196,
+          "content": "END-EXEC"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 197,
+          "content": "WHEN 4"
+        },
+        {
+          "type": "MOVE",
+          "line": 198,
+          "content": "MOVE 1 TO WS-REPORT-READ-FLAG",
+          "operands": "1 TO WS-REPORT-READ-FLAG"
+        },
+        {
+          "type": "MOVE",
+          "line": 199,
+          "content": "MOVE 4 TO WS-REPORT-TYPE-FLAG",
+          "operands": "4 TO WS-REPORT-TYPE-FLAG"
+        },
+        {
+          "type": "MOVE",
+          "line": 200,
+          "content": "MOVE LOW-VALUES TO PATREPTO",
+          "operands": "LOW-VALUES TO PATREPTO"
+        },
+        {
+          "type": "PERFORM",
+          "line": 201,
+          "content": "PERFORM 6000-PATIENT-REPORT-PARA",
+          "target": "6000"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 202,
+          "content": "WHEN 5"
+        },
+        {
+          "type": "MOVE",
+          "line": 203,
+          "content": "MOVE 1 TO WS-REPORT-READ-FLAG",
+          "operands": "1 TO WS-REPORT-READ-FLAG"
+        },
+        {
+          "type": "MOVE",
+          "line": 204,
+          "content": "MOVE 5 TO WS-REPORT-TYPE-FLAG",
+          "operands": "5 TO WS-REPORT-TYPE-FLAG"
+        },
+        {
+          "type": "MOVE",
+          "line": 205,
+          "content": "MOVE LOW-VALUES TO DOCREPTO",
+          "operands": "LOW-VALUES TO DOCREPTO"
+        },
+        {
+          "type": "PERFORM",
+          "line": 206,
+          "content": "PERFORM 6100-DOCTOR-REPORT-PARA",
+          "target": "6100"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 207,
+          "content": "WHEN 6"
+        },
+        {
+          "type": "MOVE",
+          "line": 208,
+          "content": "MOVE 1 TO WS-REPORT-READ-FLAG",
+          "operands": "1 TO WS-REPORT-READ-FLAG"
+        },
+        {
+          "type": "MOVE",
+          "line": 209,
+          "content": "MOVE 6 TO WS-REPORT-TYPE-FLAG",
+          "operands": "6 TO WS-REPORT-TYPE-FLAG"
+        },
+        {
+          "type": "MOVE",
+          "line": 210,
+          "content": "MOVE LOW-VALUES TO DONREPTO",
+          "operands": "LOW-VALUES TO DONREPTO"
+        },
+        {
+          "type": "PERFORM",
+          "line": 211,
+          "content": "PERFORM 6200-DONOR-REPORT-PARA",
+          "target": "6200"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 212,
+          "content": "WHEN LOW-VALUES"
+        },
+        {
+          "type": "MOVE",
+          "line": 213,
+          "content": "MOVE 'OPTION CANNOT BE BLANK' TO MMSGO",
+          "operands": "'OPTION CANNOT BE BLANK' TO MMSGO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 214,
+          "content": "WHEN SPACES"
+        },
+        {
+          "type": "MOVE",
+          "line": 215,
+          "content": "MOVE 'OPTION CANNOT BE BLANK' TO MMSGO",
+          "operands": "'OPTION CANNOT BE BLANK' TO MMSGO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 216,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "MOVE",
+          "line": 217,
+          "content": "MOVE 'ENTER A VALID OPTION'   TO MMSGO",
+          "operands": "'ENTER A VALID OPTION'   TO MMSGO"
+        }
+      ],
+      "end_line": 217
+    },
+    {
+      "name": "EVALUATE",
+      "start_line": 218,
+      "statements": [],
+      "end_line": 218
+    },
+    {
+      "name": "PARA",
+      "start_line": 219,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 220,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 221,
+          "content": "RETURN"
+        }
+      ],
+      "end_line": 221
+    },
+    {
+      "name": "EXEC",
+      "start_line": 222,
+      "statements": [],
+      "end_line": 222
+    },
+    {
+      "name": "PARA",
+      "start_line": 223,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 224,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 225,
+          "content": "RETURN TRANSID('B183')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 226,
+          "content": "COMMAREA(WS-COMMAREA)"
+        }
+      ],
+      "end_line": 226
+    },
+    {
+      "name": "EXEC",
+      "start_line": 227,
+      "statements": [],
+      "end_line": 227
+    },
+    {
+      "name": "MSG",
+      "start_line": 228,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 229,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 230,
+          "content": "SEND FROM(WS-END-MSG)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 231,
+          "content": "LENGTH(WS-END-MSG-LEN)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 232,
+          "content": "ERASE"
+        }
+      ],
+      "end_line": 232
+    },
+    {
+      "name": "EXEC",
+      "start_line": 233,
+      "statements": [],
+      "end_line": 233
+    },
+    {
+      "name": "PARA",
+      "start_line": 234,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 235,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 236,
+          "content": "ASKTIME"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 237,
+          "content": "ABSTIME(WS-DATE-TIME)"
+        }
+      ],
+      "end_line": 237
+    },
+    {
+      "name": "EXEC",
+      "start_line": 238,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 239,
+          "content": "EXEC CICS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 240,
+          "content": "FORMATTIME"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 241,
+          "content": "DDMMYYYY(MDATEO)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 242,
+          "content": "DATESEP('/')"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 243,
+          "content": "ABSTIME(WS-DATE-TIME)"
+        }
+      ],
+      "end_line": 243
+    },
+    {
+      "name": "EXEC",
+      "start_line": 244,
+      "statements": [],
+      "end_line": 244
+    },
+    {
+      "name": "PARA",
+      "start_line": 245,
+      "statements": [],
+      "end_line": 245
+    },
+    {
+      "name": "CURSOR",
+      "start_line": 246,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 247,
+          "content": "IF( WS-CURSOR-FLAG = 0) THEN"
+        },
+        {
+          "type": "PERFORM",
+          "line": 248,
+          "content": "PERFORM FETCH-PATIENT-PARA 5 TIMES",
+          "target": "FETCH"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 249,
+          "content": "ADD 1 TO WS-CURSOR-FLAG"
+        },
+        {
+          "type": "ELSE",
+          "line": 250,
+          "content": "ELSE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 251,
+          "content": "IF( WS-POS > 0)"
+        },
+        {
+          "type": "PERFORM",
+          "line": 252,
+          "content": "PERFORM SKIP-PATIENT-PARA WS-CURSOR-FLAG TIMES",
+          "target": "SKIP"
+        },
+        {
+          "type": "IF",
+          "line": 253,
+          "content": "IF ( SQLCODE NOT = 100)",
+          "condition": "( SQLCODE NOT = 100)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 254,
+          "content": "ADD 1 TO WS-CURSOR-FLAG"
+        },
+        {
+          "type": "END-IF",
+          "line": 255,
+          "content": "END-IF"
+        },
+        {
+          "type": "PERFORM",
+          "line": 256,
+          "content": "PERFORM FETCH-PATIENT-PARA 5 TIMES",
+          "target": "FETCH"
+        },
+        {
+          "type": "ELSE",
+          "line": 257,
+          "content": "ELSE"
+        },
+        {
+          "type": "MOVE",
+          "line": 258,
+          "content": "MOVE 5 TO WS-POS",
+          "operands": "5 TO WS-POS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 259,
+          "content": "SUBTRACT 1 FROM WS-CURSOR-FLAG"
+        },
+        {
+          "type": "PERFORM",
+          "line": 260,
+          "content": "PERFORM SKIP-PATIENT-PARA WS-CURSOR-FLAG TIMES",
+          "target": "SKIP"
+        },
+        {
+          "type": "PERFORM",
+          "line": 261,
+          "content": "PERFORM FETCH-PATIENT-PARA 5 TIMES",
+          "target": "FETCH"
+        }
+      ],
+      "end_line": 261
+    },
+    {
+      "name": "IF",
+      "start_line": 262,
+      "statements": [],
+      "end_line": 262
+    },
+    {
+      "name": "CURSOR",
+      "start_line": 263,
+      "statements": [],
+      "end_line": 263
+    },
+    {
+      "name": "PARA",
+      "start_line": 264,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 265,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 266,
+          "content": "FETCH RELATIVE :WS-POS CR1"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 267,
+          "content": "INTO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 268,
+          "content": ":DB-PATIENT-ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 269,
+          "content": ":DB-PATIENT-NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 270,
+          "content": ":DB-PATIENT-GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 271,
+          "content": ":DB-PATIENT-CONTACT-NUM"
+        }
+      ],
+      "end_line": 271
+    },
+    {
+      "name": "EXEC",
+      "start_line": 272,
+      "statements": [],
+      "end_line": 272
+    },
+    {
+      "name": "PARA",
+      "start_line": 273,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 274,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 275,
+          "content": "FETCH CR1"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 276,
+          "content": "INTO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 277,
+          "content": ":DB-PATIENT-ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 278,
+          "content": ":DB-PATIENT-NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 279,
+          "content": ":DB-PATIENT-GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 280,
+          "content": ":DB-PATIENT-CONTACT-NUM"
+        }
+      ],
+      "end_line": 280
+    },
+    {
+      "name": "EXEC",
+      "start_line": 281,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 282,
+          "content": "EVALUATE SQLCODE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 283,
+          "content": "WHEN 0"
+        },
+        {
+          "type": "MOVE",
+          "line": 284,
+          "content": "MOVE DB-PATIENT-ID TO  WS-ID-TEMP",
+          "operands": "DB-PATIENT-ID TO  WS-ID-TEMP"
+        },
+        {
+          "type": "MOVE",
+          "line": 285,
+          "content": "MOVE WS-ID-TEMP(4:) TO WS-ID",
+          "operands": "WS-ID-TEMP(4:) TO WS-ID"
+        },
+        {
+          "type": "MOVE",
+          "line": 286,
+          "content": "MOVE DB-PATIENT-NAME TO  WS-NAME",
+          "operands": "DB-PATIENT-NAME TO  WS-NAME"
+        },
+        {
+          "type": "MOVE",
+          "line": 287,
+          "content": "MOVE DB-PATIENT-GENDER TO  WS-GENDER",
+          "operands": "DB-PATIENT-GENDER TO  WS-GENDER"
+        },
+        {
+          "type": "MOVE",
+          "line": 288,
+          "content": "MOVE DB-PATIENT-CONTACT-NUM TO  WS-CONTACT",
+          "operands": "DB-PATIENT-CONTACT-NUM TO  WS-CONTACT"
+        },
+        {
+          "type": "MOVE",
+          "line": 289,
+          "content": "MOVE WS-MAP-DATA TO PATLINEO(WS-CTR)",
+          "operands": "WS-MAP-DATA TO PATLINEO(WS-CTR)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 290,
+          "content": "ADD 1 TO WS-CTR"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 291,
+          "content": "WHEN 100"
+        },
+        {
+          "type": "MOVE",
+          "line": 292,
+          "content": "MOVE 'END OF RECORD' TO PATREPMO",
+          "operands": "'END OF RECORD' TO PATREPMO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 293,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "MOVE",
+          "line": 294,
+          "content": "MOVE 'ERROR WHILE READING DATA' TO PATREPMO",
+          "operands": "'ERROR WHILE READING DATA' TO PATREPMO"
+        }
+      ],
+      "end_line": 294
+    },
+    {
+      "name": "EVALUATE",
+      "start_line": 295,
+      "statements": [],
+      "end_line": 295
+    },
+    {
+      "name": "CURSOR",
+      "start_line": 296,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 297,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "OPEN",
+          "line": 298,
+          "content": "OPEN CR1",
+          "file": "CR1"
+        }
+      ],
+      "end_line": 298
+    },
+    {
+      "name": "EXEC",
+      "start_line": 299,
+      "statements": [],
+      "end_line": 299
+    },
+    {
+      "name": "CURSOR",
+      "start_line": 300,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 301,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "CLOSE",
+          "line": 302,
+          "content": "CLOSE CR1",
+          "file": "CR1"
+        }
+      ],
+      "end_line": 302
+    },
+    {
+      "name": "EXEC",
+      "start_line": 303,
+      "statements": [],
+      "end_line": 303
+    },
+    {
+      "name": "PARA",
+      "start_line": 304,
+      "statements": [],
+      "end_line": 304
+    },
+    {
+      "name": "CURSOR",
+      "start_line": 305,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 306,
+          "content": "IF( WS-CURSOR-FLAG = 0) THEN"
+        },
+        {
+          "type": "PERFORM",
+          "line": 307,
+          "content": "PERFORM FETCH-DOCTOR-PARA 5 TIMES",
+          "target": "FETCH"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 308,
+          "content": "ADD 1 TO WS-CURSOR-FLAG"
+        },
+        {
+          "type": "ELSE",
+          "line": 309,
+          "content": "ELSE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 310,
+          "content": "IF( WS-POS > 0)"
+        },
+        {
+          "type": "PERFORM",
+          "line": 311,
+          "content": "PERFORM SKIP-DOCTOR-PARA WS-CURSOR-FLAG TIMES",
+          "target": "SKIP"
+        },
+        {
+          "type": "IF",
+          "line": 312,
+          "content": "IF ( SQLCODE NOT = 100)",
+          "condition": "( SQLCODE NOT = 100)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 313,
+          "content": "ADD 1 TO WS-CURSOR-FLAG"
+        },
+        {
+          "type": "END-IF",
+          "line": 314,
+          "content": "END-IF"
+        },
+        {
+          "type": "PERFORM",
+          "line": 315,
+          "content": "PERFORM FETCH-DOCTOR-PARA 5 TIMES",
+          "target": "FETCH"
+        },
+        {
+          "type": "ELSE",
+          "line": 316,
+          "content": "ELSE"
+        },
+        {
+          "type": "MOVE",
+          "line": 317,
+          "content": "MOVE 5 TO WS-POS",
+          "operands": "5 TO WS-POS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 318,
+          "content": "SUBTRACT 1 FROM WS-CURSOR-FLAG"
+        },
+        {
+          "type": "PERFORM",
+          "line": 319,
+          "content": "PERFORM SKIP-DOCTOR-PARA WS-CURSOR-FLAG TIMES",
+          "target": "SKIP"
+        },
+        {
+          "type": "PERFORM",
+          "line": 320,
+          "content": "PERFORM FETCH-DOCTOR-PARA 5 TIMES",
+          "target": "FETCH"
+        }
+      ],
+      "end_line": 320
+    },
+    {
+      "name": "IF",
+      "start_line": 321,
+      "statements": [],
+      "end_line": 321
+    },
+    {
+      "name": "CURSOR",
+      "start_line": 322,
+      "statements": [],
+      "end_line": 322
+    },
+    {
+      "name": "PARA",
+      "start_line": 323,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 324,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 325,
+          "content": "FETCH RELATIVE :WS-POS CR2"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 326,
+          "content": "INTO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 327,
+          "content": ":DB-DOCTOR-ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 328,
+          "content": ":DB-DOCTOR-NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 329,
+          "content": ":DB-DOCTOR-GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 330,
+          "content": ":DB-DOCTOR-CONTACT-NUM"
+        }
+      ],
+      "end_line": 330
+    },
+    {
+      "name": "EXEC",
+      "start_line": 331,
+      "statements": [],
+      "end_line": 331
+    },
+    {
+      "name": "PARA",
+      "start_line": 332,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 333,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 334,
+          "content": "FETCH CR2"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 335,
+          "content": "INTO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 336,
+          "content": ":DB-DOCTOR-ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 337,
+          "content": ":DB-DOCTOR-NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 338,
+          "content": ":DB-DOCTOR-GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 339,
+          "content": ":DB-DOCTOR-CONTACT-NUM"
+        }
+      ],
+      "end_line": 339
+    },
+    {
+      "name": "EXEC",
+      "start_line": 340,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 341,
+          "content": "EVALUATE SQLCODE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 342,
+          "content": "WHEN 0"
+        },
+        {
+          "type": "MOVE",
+          "line": 343,
+          "content": "MOVE DB-DOCTOR-ID TO   WS-ID-TEMP",
+          "operands": "DB-DOCTOR-ID TO   WS-ID-TEMP"
+        },
+        {
+          "type": "MOVE",
+          "line": 344,
+          "content": "MOVE WS-ID-TEMP(4:) TO WS-ID",
+          "operands": "WS-ID-TEMP(4:) TO WS-ID"
+        },
+        {
+          "type": "MOVE",
+          "line": 345,
+          "content": "MOVE DB-DOCTOR-NAME TO   WS-NAME",
+          "operands": "DB-DOCTOR-NAME TO   WS-NAME"
+        },
+        {
+          "type": "MOVE",
+          "line": 346,
+          "content": "MOVE DB-DOCTOR-GENDER TO   WS-GENDER",
+          "operands": "DB-DOCTOR-GENDER TO   WS-GENDER"
+        },
+        {
+          "type": "MOVE",
+          "line": 347,
+          "content": "MOVE DB-DOCTOR-CONTACT-NUM TO   WS-CONTACT",
+          "operands": "DB-DOCTOR-CONTACT-NUM TO   WS-CONTACT"
+        },
+        {
+          "type": "MOVE",
+          "line": 348,
+          "content": "MOVE WS-MAP-DATA TO DOCLINEO(WS-CTR)",
+          "operands": "WS-MAP-DATA TO DOCLINEO(WS-CTR)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 349,
+          "content": "ADD 1 TO WS-CTR"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 350,
+          "content": "WHEN 100"
+        },
+        {
+          "type": "MOVE",
+          "line": 351,
+          "content": "MOVE 'END OF RECORD' TO DOCREPMO",
+          "operands": "'END OF RECORD' TO DOCREPMO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 352,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "MOVE",
+          "line": 353,
+          "content": "MOVE 'ERROR WHILE READING DATA' TO DOCREPMO",
+          "operands": "'ERROR WHILE READING DATA' TO DOCREPMO"
+        }
+      ],
+      "end_line": 353
+    },
+    {
+      "name": "EVALUATE",
+      "start_line": 354,
+      "statements": [],
+      "end_line": 354
+    },
+    {
+      "name": "CURSOR",
+      "start_line": 355,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 356,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "OPEN",
+          "line": 357,
+          "content": "OPEN CR2",
+          "file": "CR2"
+        }
+      ],
+      "end_line": 357
+    },
+    {
+      "name": "EXEC",
+      "start_line": 358,
+      "statements": [],
+      "end_line": 358
+    },
+    {
+      "name": "CURSOR",
+      "start_line": 359,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 360,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "CLOSE",
+          "line": 361,
+          "content": "CLOSE CR2",
+          "file": "CR2"
+        }
+      ],
+      "end_line": 361
+    },
+    {
+      "name": "EXEC",
+      "start_line": 362,
+      "statements": [],
+      "end_line": 362
+    },
+    {
+      "name": "PARA",
+      "start_line": 363,
+      "statements": [],
+      "end_line": 363
+    },
+    {
+      "name": "CURSOR",
+      "start_line": 364,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 365,
+          "content": "IF( WS-CURSOR-FLAG = 0) THEN"
+        },
+        {
+          "type": "PERFORM",
+          "line": 366,
+          "content": "PERFORM FETCH-DONOR-PARA 5 TIMES",
+          "target": "FETCH"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 367,
+          "content": "ADD 1 TO WS-CURSOR-FLAG"
+        },
+        {
+          "type": "ELSE",
+          "line": 368,
+          "content": "ELSE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 369,
+          "content": "IF( WS-POS > 0)"
+        },
+        {
+          "type": "PERFORM",
+          "line": 370,
+          "content": "PERFORM SKIP-DONOR-PARA WS-CURSOR-FLAG TIMES",
+          "target": "SKIP"
+        },
+        {
+          "type": "IF",
+          "line": 371,
+          "content": "IF ( SQLCODE NOT = 100)",
+          "condition": "( SQLCODE NOT = 100)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 372,
+          "content": "ADD 1 TO WS-CURSOR-FLAG"
+        },
+        {
+          "type": "END-IF",
+          "line": 373,
+          "content": "END-IF"
+        },
+        {
+          "type": "PERFORM",
+          "line": 374,
+          "content": "PERFORM FETCH-DONOR-PARA 5 TIMES",
+          "target": "FETCH"
+        },
+        {
+          "type": "ELSE",
+          "line": 375,
+          "content": "ELSE"
+        },
+        {
+          "type": "MOVE",
+          "line": 376,
+          "content": "MOVE 5 TO WS-POS",
+          "operands": "5 TO WS-POS"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 377,
+          "content": "SUBTRACT 1 FROM WS-CURSOR-FLAG"
+        },
+        {
+          "type": "PERFORM",
+          "line": 378,
+          "content": "PERFORM SKIP-DONOR-PARA WS-CURSOR-FLAG TIMES",
+          "target": "SKIP"
+        },
+        {
+          "type": "PERFORM",
+          "line": 379,
+          "content": "PERFORM FETCH-DONOR-PARA 5 TIMES",
+          "target": "FETCH"
+        }
+      ],
+      "end_line": 379
+    },
+    {
+      "name": "IF",
+      "start_line": 380,
+      "statements": [],
+      "end_line": 380
+    },
+    {
+      "name": "CURSOR",
+      "start_line": 381,
+      "statements": [],
+      "end_line": 381
+    },
+    {
+      "name": "PARA",
+      "start_line": 382,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 383,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 384,
+          "content": "FETCH RELATIVE :WS-POS CR3"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 385,
+          "content": "INTO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 386,
+          "content": ":DB-DONOR-ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 387,
+          "content": ":DB-DONOR-NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 388,
+          "content": ":DB-DONOR-GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 389,
+          "content": ":DB-DONOR-CONTACT-NUM"
+        }
+      ],
+      "end_line": 389
+    },
+    {
+      "name": "EXEC",
+      "start_line": 390,
+      "statements": [],
+      "end_line": 390
+    },
+    {
+      "name": "PARA",
+      "start_line": 391,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 392,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 393,
+          "content": "FETCH CR3"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 394,
+          "content": "INTO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 395,
+          "content": ":DB-DONOR-ID,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 396,
+          "content": ":DB-DONOR-NAME,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 397,
+          "content": ":DB-DONOR-GENDER,"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 398,
+          "content": ":DB-DONOR-CONTACT-NUM"
+        }
+      ],
+      "end_line": 398
+    },
+    {
+      "name": "EXEC",
+      "start_line": 399,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 400,
+          "content": "EVALUATE SQLCODE"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 401,
+          "content": "WHEN 0"
+        },
+        {
+          "type": "MOVE",
+          "line": 402,
+          "content": "MOVE DB-DONOR-ID TO    WS-ID-TEMP",
+          "operands": "DB-DONOR-ID TO    WS-ID-TEMP"
+        },
+        {
+          "type": "MOVE",
+          "line": 403,
+          "content": "MOVE WS-ID-TEMP(4:) TO WS-ID",
+          "operands": "WS-ID-TEMP(4:) TO WS-ID"
+        },
+        {
+          "type": "MOVE",
+          "line": 404,
+          "content": "MOVE DB-DONOR-NAME TO    WS-NAME",
+          "operands": "DB-DONOR-NAME TO    WS-NAME"
+        },
+        {
+          "type": "MOVE",
+          "line": 405,
+          "content": "MOVE DB-DONOR-GENDER TO    WS-GENDER",
+          "operands": "DB-DONOR-GENDER TO    WS-GENDER"
+        },
+        {
+          "type": "MOVE",
+          "line": 406,
+          "content": "MOVE DB-DONOR-CONTACT-NUM TO    WS-CONTACT",
+          "operands": "DB-DONOR-CONTACT-NUM TO    WS-CONTACT"
+        },
+        {
+          "type": "MOVE",
+          "line": 407,
+          "content": "MOVE WS-MAP-DATA TO DONLINEO(WS-CTR)",
+          "operands": "WS-MAP-DATA TO DONLINEO(WS-CTR)"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 408,
+          "content": "ADD 1 TO WS-CTR"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 409,
+          "content": "WHEN 100"
+        },
+        {
+          "type": "MOVE",
+          "line": 410,
+          "content": "MOVE 'END OF RECORD' TO DONREPMO",
+          "operands": "'END OF RECORD' TO DONREPMO"
+        },
+        {
+          "type": "STATEMENT",
+          "line": 411,
+          "content": "WHEN OTHER"
+        },
+        {
+          "type": "MOVE",
+          "line": 412,
+          "content": "MOVE 'ERROR WHILE READING DATA' TO DONREPMO",
+          "operands": "'ERROR WHILE READING DATA' TO DONREPMO"
+        }
+      ],
+      "end_line": 412
+    },
+    {
+      "name": "EVALUATE",
+      "start_line": 413,
+      "statements": [],
+      "end_line": 413
+    },
+    {
+      "name": "CURSOR",
+      "start_line": 414,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 415,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "OPEN",
+          "line": 416,
+          "content": "OPEN CR3",
+          "file": "CR3"
+        }
+      ],
+      "end_line": 416
+    },
+    {
+      "name": "EXEC",
+      "start_line": 417,
+      "statements": [],
+      "end_line": 417
+    },
+    {
+      "name": "CURSOR",
+      "start_line": 418,
+      "statements": [
+        {
+          "type": "STATEMENT",
+          "line": 419,
+          "content": "EXEC SQL"
+        },
+        {
+          "type": "CLOSE",
+          "line": 420,
+          "content": "CLOSE CR3",
+          "file": "CR3"
+        }
+      ],
+      "end_line": 420
+    },
+    {
+      "name": "EXEC",
+      "start_line": 421,
+      "statements": [],
+      "end_line": 421
+    },
+    {
+      "name": "PARA",
+      "start_line": 422,
+      "statements": [],
+      "end_line": 422
+    },
+    {
+      "name": "MSG",
+      "start_line": 423,
+      "statements": [],
+      "end_line": 423
+    },
+    {
+      "name": "MSG",
+      "start_line": 424,
+      "statements": [],
+      "end_line": 424
+    },
+    {
+      "name": "PARA",
+      "start_line": 425,
+      "statements": [],
+      "end_line": 425
+    },
+    {
+      "name": "PARA",
+      "start_line": 426,
+      "statements": [],
+      "end_line": 426
+    },
+    {
+      "name": "MSG",
+      "start_line": 427,
+      "statements": [],
+      "end_line": 427
+    },
+    {
+      "name": "MSG",
+      "start_line": 428,
+      "statements": [],
+      "end_line": 428
+    },
+    {
+      "name": "PARA",
+      "start_line": 429,
+      "statements": [],
+      "end_line": 429
+    }
+  ],
+  "metadata": {
+    "file_path": "/home/ranjan/code/code_analyser/sample_cobol/B18PGM3.cbl",
+    "file_name": "B18PGM3.cbl",
+    "language": "cobol",
+    "content_length": 16422,
+    "preprocessed_length": 12208
+  }
+}
