@@ -91,6 +91,9 @@ python main.py analyze /path/to/cobol/codebase \
     --output-dir ./my_analysis_results \
     --generate-flowcharts \
     --generate-architecture
+python3 main.py analyze ../sample_cobol/ \
+    --generate-flowcharts \
+    --generate-architecture
 ```
 
 ### **4. View Results**
