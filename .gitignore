@@ -130,6 +130,7 @@ dmypy.json
 
 # Project specific
 analysis_results/
+output/
 test_output/
 *.db
 .cache/

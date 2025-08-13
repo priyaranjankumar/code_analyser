@@ -172,6 +172,26 @@ class ReportGenerator:
         .recommendations li {
             margin: 5px 0;
         }
+        .recommendation-tips {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .recommendation-tips h4 {
+            color: #0056b3;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .recommendation-tips ul {
+            color: #0056b3;
+            margin: 10px 0;
+        }
+        .recommendation-tips li {
+            margin: 5px 0;
+            font-size: 0.95em;
+        }
         .footer {
             background: #343a40;
             color: white;
@@ -239,19 +259,7 @@ class ReportGenerator:
         .program-actions {
             margin-top: 10px;
         }
-        .file-section {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .file-section h3 {
-            color: #495057;
-            margin-top: 0;
-            border-bottom: 2px solid #dee2e6;
-            padding-bottom: 10px;
-        }
+
         .program-summaries {
             margin-top: 20px;
         }
@@ -305,34 +313,7 @@ class ReportGenerator:
             border-radius: 12px;
             font-size: 0.8em;
         }
-        .dependency-analysis {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-        .call-graph {
-            margin-top: 15px;
-        }
-        .program-deps {
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 6px;
-            margin: 10px 0;
-            border-left: 4px solid #007bff;
-        }
-        .call-item {
-            background: #e9ecef;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin: 0 5px;
-            font-size: 0.9em;
-        }
-        .call-more {
-            color: #6c757d;
-            font-style: italic;
-            font-size: 0.9em;
-        }
+
         .modal {
             display: none;
             position: fixed;
@@ -399,10 +380,8 @@ class ReportGenerator:
             <!-- Navigation Tabs -->
             <div class="nav-tabs">
                 <button class="nav-tab active" onclick="showTab('overview')">Overview</button>
-                <button class="nav-tab" onclick="showTab('files')">Files</button>
                 <button class="nav-tab" onclick="showTab('programs')">Programs</button>
                 <button class="nav-tab" onclick="showTab('architecture')">Architecture</button>
-                <button class="nav-tab" onclick="showTab('recommendations')">Recommendations</button>
             </div>
             
             <!-- Overview Tab -->
@@ -418,14 +397,6 @@ class ReportGenerator:
                             <div class="stat-number">{{ summary.total_programs }}</div>
                             <div class="stat-label">Programs Found</div>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-number">{{ summary.total_statements }}</div>
-                            <div class="stat-label">Total Statements</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">{{ summary.total_variables }}</div>
-                            <div class="stat-label">Variables</div>
-                        </div>
                     </div>
                 </div>
                 
@@ -435,42 +406,11 @@ class ReportGenerator:
                         <canvas id="overviewComplexityChart" width="400" height="200"></canvas>
                     </div>
                 </div>
+                
+
             </div>
             
-            <!-- Files Tab -->
-            <div id="files" class="tab-content">
-                <div class="section">
-                    <h2>Analyzed Files & Program Summaries</h2>
-                    {% for file in file_analyses %}
-                    <div class="file-section">
-                        <h3>{{ file.file_info.name }}</h3>
-                        <div class="file-info">
-                            Size: {{ file.file_info.size }} bytes | 
-                            Programs: {{ file.programs|length }} |
-                            <a href="{{ file.ast_file }}" class="btn btn-small">View AST</a>
-                            <a href="{{ file.summary_file }}" class="btn btn-small">View File Summary</a>
-                        </div>
-                        
-                        {% if file.programs %}
-                        <div class="program-summaries">
-                            <h4>Program Summaries</h4>
-                            {% for program in file.programs %}
-                            <div class="program-summary-card">
-                                <h5>{{ program.name }}</h5>
-                                <div class="summary-content">
-                                    {{ program.summary | replace('\n', '<br>') | safe }}
-                                </div>
-                                {% if program.flowchart_file %}
-                                <a href="{{ program.flowchart_file }}" class="btn btn-small" target="_blank">View Flowchart</a>
-                                {% endif %}
-                            </div>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
+
             
             <!-- Programs Tab -->
             <div id="programs" class="tab-content">
@@ -492,6 +432,27 @@ class ReportGenerator:
                             </div>
                         </div>
                         {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2>Program Analysis Recommendations</h2>
+                    <div class="recommendations">
+                        <h3>Program-Specific Insights</h3>
+                        <ul>
+                            <li><strong>Flowchart Analysis:</strong> Use interactive flowcharts to understand program logic and identify optimization opportunities</li>
+                            <li><strong>Summary Review:</strong> Click "View Summary" for AI-generated insights about each program's purpose and structure</li>
+                            <li><strong>Dependency Mapping:</strong> Check the Architecture tab to understand program relationships and call patterns</li>
+                            <li><strong>Modernization Priority:</strong> Focus on programs with high complexity or frequent dependencies first</li>
+                        </ul>
+                        <div class="recommendation-tips">
+                            <h4>🔍 Analysis Tips:</h4>
+                            <ul>
+                                <li>Programs with many procedures may benefit from modularization</li>
+                                <li>High statement counts suggest potential for refactoring</li>
+                                <li>Check flowchart patterns for repetitive logic that could be extracted</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -538,34 +499,9 @@ class ReportGenerator:
                     </div>
                 </div>
                 
-                <div class="section">
-                    <h2>Program Dependencies</h2>
-                    <div class="dependency-analysis">
-                        {% if architecture_data.dependencies.call_graph %}
-                        <h3>Call Graph</h3>
-                        <div class="call-graph">
-                            {% for program, calls in architecture_data.dependencies.call_graph.items() %}
-                            <div class="program-deps">
-                                <strong>{{ program }}</strong> calls:
-                                {% for call in calls[:5] %}
-                                <span class="call-item">{{ call }}</span>
-                                {% endfor %}
-                                {% if calls|length > 5 %}
-                                <span class="call-more">... and {{ calls|length - 5 }} more</span>
-                                {% endif %}
-                            </div>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
+
                 
-                <div class="section">
-                    <h2>Complexity Analysis</h2>
-                    <div class="chart-container">
-                        <canvas id="complexityChart" width="400" height="300"></canvas>
-                    </div>
-                </div>
+
                 
                 <div class="section">
                     <h2>Statement Type Distribution</h2>
@@ -573,6 +509,8 @@ class ReportGenerator:
                         <canvas id="patternChart" width="400" height="200"></canvas>
                     </div>
                 </div>
+                
+
                 {% else %}
                 <div class="section">
                     <h2>Architecture Analysis</h2>
@@ -581,20 +519,7 @@ class ReportGenerator:
                 {% endif %}
             </div>
             
-            <!-- Recommendations Tab -->
-            <div id="recommendations" class="tab-content">
-                <div class="section">
-                    <h2>Modernization Recommendations</h2>
-                    <div class="recommendations">
-                        <h3>Key Recommendations</h3>
-                        <ul>
-                            {% for recommendation in recommendations %}
-                            <li>{{ recommendation }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
+
         </div>
         
         <!-- Summary Modal -->
@@ -660,29 +585,7 @@ class ReportGenerator:
                 });
             }
             
-            // Architecture Complexity Chart
-            const complexityCtx = document.getElementById('complexityChart');
-            if (complexityCtx) {
-                new Chart(complexityCtx.getContext('2d'), {
-                    type: 'bar',
-                    data: {
-                        labels: ['Low', 'Medium', 'High', 'Very High'],
-                        datasets: [{
-                            label: 'Programs by Complexity',
-                            data: {{ complexity_distribution | safe }},
-                            backgroundColor: ['#28a745', '#ffc107', '#fd7e14', '#dc3545']
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-            }
+
             
             // Pattern Chart
             const patternCtx = document.getElementById('patternChart');
@@ -773,9 +676,7 @@ class ReportGenerator:
                 'generation_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 'summary': {
                     'total_files': len(file_analyses),
-                    'total_programs': len(programs_data),
-                    'total_statements': sum(len(fa.get('ast_data', {}).get('statements', [])) for fa in file_analyses),
-                    'total_variables': sum(len(fa.get('ast_data', {}).get('variables', [])) for fa in file_analyses)
+                    'total_programs': len(programs_data)
                 },
                 'file_analyses': file_analyses,
                 'programs_data': programs_data,

@@ -70,4 +70,4 @@ class ConfigManager:
     
     def get_default_output_dir(self) -> str:
         """Get default output directory from config"""
-        return self.get('output_dir', './analysis_results') 
+        return self.get('output_dir', './output') 

@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 from tqdm import tqdm
+from datetime import datetime
 
 from .ast_generator import ASTGenerator
 from .storage import DataStorage
@@ -42,9 +43,12 @@ class CodeAnalyzer:
         """
         self.llm_provider = llm_provider
         self.api_key = api_key
-        self.output_dir = Path(output_dir) if output_dir else Path('./analysis_results')
+        self.base_output_dir = Path(output_dir) if output_dir else Path('./output')
         self.language = language.lower()
         self.verbose = verbose
+        
+        # Create timestamp-segregated output directory
+        self.output_dir = self._create_timestamped_output_dir()
         
         # Initialize components
         self.llm_client = LLMFactory.create_client(llm_provider, api_key)
@@ -63,8 +67,26 @@ class CodeAnalyzer:
             'flowcharts_generated': 0,
             'architecture_report': None,
             'html_report': None,
-            'errors': []
+            'errors': [],
+            'analysis_timestamp': datetime.now().isoformat(),
+            'output_directory': str(self.output_dir)
         }
+    
+    def _create_timestamped_output_dir(self) -> Path:
+        """
+        Create a timestamp-segregated output directory
+        
+        Returns:
+            Path to the timestamped output directory
+        """
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        timestamped_dir = self.base_output_dir / f"analysis_{timestamp}"
+        timestamped_dir.mkdir(parents=True, exist_ok=True)
+        
+        if self.verbose:
+            print(f"📁 Created timestamped output directory: {timestamped_dir}")
+        
+        return timestamped_dir
     
     def analyze_codebase(self, 
                         codebase_path: Path,

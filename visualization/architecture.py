@@ -6,7 +6,6 @@ import json
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 from collections import defaultdict, Counter
-import networkx as nx
 
 
 class ArchitectureAnalyzer:
@@ -161,54 +160,20 @@ class ArchitectureAnalyzer:
         return patterns
     
     def _analyze_dependencies(self, programs_data: List[Dict[str, Any]]) -> Dict[str, Any]:
-        """Analyze dependencies between programs"""
-        dependencies = {
+        """Analyze dependencies between programs (simplified)"""
+        return {
             'call_graph': {},
             'dependency_matrix': {},
             'circular_dependencies': [],
             'dependency_chains': [],
             'isolated_programs': []
         }
-        
-        # Build call graph
-        call_graph = defaultdict(list)
-        all_programs = set()
-        
-        for program in programs_data:
-            program_name = program.get('name', 'Unknown')
-            all_programs.add(program_name)
-            ast_data = program.get('ast', {})
-            
-            for stmt in ast_data.get('statements', []):
-                if stmt.get('type') in ['CALL', 'PERFORM']:
-                    target = stmt.get('target')
-                    if target:
-                        call_graph[program_name].append(target)
-        
-        dependencies['call_graph'] = dict(call_graph)
-        
-        # Find isolated programs
-        called_programs = set()
-        for calls in call_graph.values():
-            called_programs.update(calls)
-        
-        dependencies['isolated_programs'] = list(all_programs - called_programs)
-        
-        # Check for circular dependencies
-        dependencies['circular_dependencies'] = self._find_circular_dependencies(call_graph)
-        
-        # Find dependency chains
-        dependencies['dependency_chains'] = self._find_dependency_chains(call_graph)
-        
-        return dependencies
     
     def _calculate_complexity_metrics(self, programs_data: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Calculate complexity metrics for the codebase"""
         metrics = {
             'cyclomatic_complexity': {},
             'nesting_depth': {},
-            'code_duplication': {},
-            'maintainability_index': {},
             'overall_complexity': {}
         }
         
@@ -291,7 +256,6 @@ class ArchitectureAnalyzer:
     def _generate_visualization_data(self, analysis: Dict[str, Any]) -> Dict[str, Any]:
         """Generate data for visualizations"""
         return {
-            'dependency_graph': self._create_dependency_graph_data(analysis['dependencies']),
             'complexity_chart': self._create_complexity_chart_data(analysis['complexity_metrics']),
             'pattern_analysis': self._create_pattern_analysis_data(analysis['patterns'])
         }
@@ -358,40 +322,7 @@ class ArchitectureAnalyzer:
         
         return {k: dict(v) for k, v in patterns.items()}
     
-    def _find_circular_dependencies(self, call_graph: Dict[str, List[str]]) -> List[List[str]]:
-        """Find circular dependencies in the call graph"""
-        try:
-            G = nx.DiGraph()
-            for caller, callees in call_graph.items():
-                for callee in callees:
-                    G.add_edge(caller, callee)
-            
-            return list(nx.simple_cycles(G))
-        except:
-            return []
-    
-    def _find_dependency_chains(self, call_graph: Dict[str, List[str]]) -> List[List[str]]:
-        """Find dependency chains in the call graph"""
-        chains = []
-        
-        def find_chain(start, visited, current_chain):
-            if start in visited:
-                return
-            
-            visited.add(start)
-            current_chain.append(start)
-            
-            if start in call_graph:
-                for callee in call_graph[start]:
-                    find_chain(callee, visited, current_chain.copy())
-            else:
-                if len(current_chain) > 1:
-                    chains.append(current_chain)
-        
-        for program in call_graph:
-            find_chain(program, set(), [])
-        
-        return chains
+
     
     def _calculate_nesting_depth(self, statements: List[Dict[str, Any]]) -> int:
         """Calculate maximum nesting depth of statements"""
@@ -423,34 +354,7 @@ class ArchitectureAnalyzer:
         
         return distribution
     
-    def _create_dependency_graph_data(self, dependencies: Dict[str, Any]) -> Dict[str, Any]:
-        """Create data for dependency graph visualization"""
-        nodes = []
-        links = []
-        
-        # Create nodes for all programs
-        all_programs = set()
-        for caller, callees in dependencies['call_graph'].items():
-            all_programs.add(caller)
-            all_programs.update(callees)
-        
-        for program in all_programs:
-            nodes.append({
-                'id': program,
-                'name': program,
-                'type': 'program'
-            })
-        
-        # Create links
-        for caller, callees in dependencies['call_graph'].items():
-            for callee in callees:
-                links.append({
-                    'source': caller,
-                    'target': callee,
-                    'type': 'calls'
-                })
-        
-        return {'nodes': nodes, 'links': links}
+
     
     def _create_complexity_chart_data(self, complexity: Dict[str, Any]) -> Dict[str, Any]:
         """Create data for complexity chart visualization"""

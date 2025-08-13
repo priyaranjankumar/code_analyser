@@ -8,6 +8,7 @@ import click
 import os
 import sys
 from pathlib import Path
+from datetime import datetime
 
 # Add the project root to Python path
 sys.path.insert(0, str(Path(__file__).parent))
@@ -15,6 +16,11 @@ sys.path.insert(0, str(Path(__file__).parent))
 from core.analyzer import CodeAnalyzer
 from utils.config import ConfigManager
 from utils.file_utils import validate_codebase_path
+
+
+def get_timestamp():
+    """Get current timestamp in a readable format"""
+    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 
 @click.group()
@@ -43,7 +49,7 @@ def cli():
               help='API key for the LLM provider')
 @click.option('--output-dir', '-o', 
               type=click.Path(file_okay=False, dir_okay=True),
-              default='./analysis_results',
+              default='./output',
               help='Output directory for analysis results')
 @click.option('--language', '-lang',
               type=click.Choice(['cobol']),
@@ -94,10 +100,12 @@ def analyze(codebase_path, llm, api_key, output_dir, language,
             click.echo(f"❌ Error: Invalid codebase path or no {language.upper()} files found.", err=True)
             sys.exit(1)
         
+        timestamp = get_timestamp()
         click.echo(f"🚀 Starting analysis of {codebase_path}")
         click.echo(f"📊 Output directory: {output_dir}")
         click.echo(f"🤖 LLM Provider: {llm}")
         click.echo(f"🔤 Language: {language.upper()}")
+        click.echo(f"⏰ Analysis started at: {timestamp}")
         
         # Create output directory
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -120,24 +128,43 @@ def analyze(codebase_path, llm, api_key, output_dir, language,
         )
         
         # Display results
-        click.echo("\n✅ Analysis completed successfully!")
-        click.echo(f"📁 Results saved to: {output_dir}")
+        end_timestamp = get_timestamp()
+        click.echo("\n" + "="*60)
+        click.echo("🎉 ANALYSIS COMPLETED SUCCESSFULLY!")
+        click.echo("="*60)
+        click.echo(f"📁 Results saved to: {results.get('output_directory', output_dir)}")
         click.echo(f"📄 Files analyzed: {results['files_analyzed']}")
         click.echo(f"🔍 Programs found: {results['programs_found']}")
         click.echo(f"📊 Flowcharts generated: {results['flowcharts_generated']}")
         click.echo(f"🏗️  Architecture report: {results['architecture_report']}")
+        click.echo(f"⏰ Analysis completed at: {end_timestamp}")
+        click.echo(f"⏱️  Total analysis time: {results.get('analysis_time', 'N/A')} seconds")
+        click.echo(f"🆔 Analysis ID: {results.get('analysis_timestamp', 'N/A')}")
+        
+        # Show what was generated
+        click.echo("\n📋 Generated Files:")
+        if results.get('html_report'):
+            click.echo(f"  🌐 Main Report: {results['html_report']}")
+        if results['flowcharts_generated'] > 0:
+            click.echo(f"  📊 Interactive Flowcharts: {results['flowcharts_generated']} files")
+        if results.get('architecture_report'):
+            click.echo(f"  🏗️  Architecture Analysis: {results['architecture_report']}")
         
         # Open results in browser if available
         if results.get('html_report'):
-            click.echo(f"🌐 Opening report in browser: {results['html_report']}")
+            click.echo(f"\n🌐 Opening report in browser...")
             try:
                 import webbrowser
                 webbrowser.open(f"file://{results['html_report']}")
-            except:
-                pass
+                click.echo("✅ Report opened in your default browser!")
+            except Exception as e:
+                click.echo(f"⚠️  Could not open browser automatically. Please open: {results['html_report']}")
+        
+        click.echo("\n" + "="*60)
                 
     except Exception as e:
-        click.echo(f"❌ Error during analysis: {str(e)}", err=True)
+        error_timestamp = get_timestamp()
+        click.echo(f"❌ Error during analysis at {error_timestamp}: {str(e)}", err=True)
         if verbose:
             import traceback
             traceback.print_exc()
@@ -153,7 +180,10 @@ def analyze(codebase_path, llm, api_key, output_dir, language,
 @click.option('--show', '-s',
               is_flag=True,
               help='Show current configuration')
-def config(set_llm, set_api_key, show):
+@click.option('--help-examples', '-h',
+              is_flag=True,
+              help='Show usage examples')
+def config(set_llm, set_api_key, show, help_examples):
     """
     Manage configuration settings.
     """
@@ -161,19 +191,47 @@ def config(set_llm, set_api_key, show):
     
     if show:
         config = config_manager.get_config()
-        click.echo("Current Configuration:")
+        timestamp = get_timestamp()
+        click.echo(f"Current Configuration (as of {timestamp}):")
         click.echo(f"  LLM Provider: {config.get('llm_provider', 'Not set')}")
         click.echo(f"  API Key: {'*' * 10 if config.get('api_key') else 'Not set'}")
         click.echo(f"  Default Language: {config.get('language', 'cobol')}")
-        click.echo(f"  Default Output Dir: {config.get('output_dir', './analysis_results')}")
+        click.echo(f"  Default Output Dir: {config.get('output_dir', './output')}")
     
     if set_llm:
         config_manager.set_config('llm_provider', set_llm)
-        click.echo(f"✅ Default LLM provider set to: {set_llm}")
+        timestamp = get_timestamp()
+        click.echo(f"✅ Default LLM provider set to: {set_llm} at {timestamp}")
     
     if set_api_key:
         config_manager.set_config('api_key', set_api_key)
-        click.echo("✅ API key saved to configuration")
+        timestamp = get_timestamp()
+        click.echo(f"✅ API key saved to configuration at {timestamp}")
+    
+    if help_examples:
+        click.echo("\n📚 USAGE EXAMPLES:")
+        click.echo("="*50)
+        click.echo("1. Basic analysis:")
+        click.echo("   python main.py analyze sample_cobol")
+        click.echo()
+        click.echo("2. Full analysis with visualizations:")
+        click.echo("   python main.py analyze sample_cobol --generate-flowcharts --generate-architecture")
+        click.echo()
+        click.echo("3. Parse single file:")
+        click.echo("   python main.py parse sample_cobol/B18PGM1.cbl --output ast.json")
+        click.echo()
+        click.echo("4. Generate summary from AST:")
+        click.echo("   python main.py summarize ast.json")
+        click.echo()
+        click.echo("5. Set up configuration:")
+        click.echo("   python main.py config --set-llm openai --set-api-key YOUR_API_KEY")
+        click.echo()
+        click.echo("6. View current config:")
+        click.echo("   python main.py config --show")
+        click.echo()
+        click.echo("7. List previous analyses:")
+        click.echo("   python main.py history --list-analyses")
+        click.echo("="*50)
 
 
 @cli.command()
@@ -197,21 +255,76 @@ def parse(file_path, language, output):
         file_path = Path(file_path)
         ast_generator = ASTGenerator(language)
         
-        click.echo(f"🔍 Parsing {file_path}...")
+        timestamp = get_timestamp()
+        click.echo(f"🔍 Parsing {file_path} at {timestamp}...")
         ast_data = ast_generator.parse_file(file_path)
         
         if output:
             import json
             with open(output, 'w') as f:
                 json.dump(ast_data, f, indent=2)
-            click.echo(f"✅ AST saved to: {output}")
+            end_timestamp = get_timestamp()
+            click.echo(f"✅ AST saved to: {output} at {end_timestamp}")
         else:
             import json
             click.echo(json.dumps(ast_data, indent=2))
             
     except Exception as e:
-        click.echo(f"❌ Error parsing file: {str(e)}", err=True)
+        error_timestamp = get_timestamp()
+        click.echo(f"❌ Error parsing file at {error_timestamp}: {str(e)}", err=True)
         sys.exit(1)
+
+
+@cli.command()
+@click.option('--list-analyses', '-l',
+              is_flag=True,
+              help='List previous analysis runs')
+def history(list_analyses):
+    """
+    Manage analysis history and previous runs.
+    """
+    if list_analyses:
+        base_output_dir = Path('./output')
+        if not base_output_dir.exists():
+            click.echo("No previous analyses found.")
+            return
+        
+        # Find all analysis directories
+        analysis_dirs = []
+        for item in base_output_dir.iterdir():
+            if item.is_dir() and item.name.startswith('analysis_'):
+                analysis_dirs.append(item)
+        
+        if not analysis_dirs:
+            click.echo("No previous analyses found.")
+            return
+        
+        # Sort by creation time (newest first)
+        analysis_dirs.sort(key=lambda x: x.stat().st_ctime, reverse=True)
+        
+        click.echo(f"\n📋 Previous Analysis Runs (found {len(analysis_dirs)}):")
+        click.echo("="*60)
+        
+        for i, analysis_dir in enumerate(analysis_dirs[:10], 1):  # Show last 10
+            timestamp = analysis_dir.name.replace('analysis_', '')
+            # Convert timestamp to readable format
+            try:
+                dt = datetime.strptime(timestamp, '%Y%m%d_%H%M%S')
+                readable_time = dt.strftime('%Y-%m-%d %H:%M:%S')
+            except:
+                readable_time = timestamp
+            
+            # Check if report exists
+            report_file = analysis_dir / 'html' / 'comprehensive_report.html'
+            has_report = "✅" if report_file.exists() else "❌"
+            
+            click.echo(f"{i:2d}. {has_report} {readable_time}")
+            click.echo(f"    📁 {analysis_dir}")
+        
+        if len(analysis_dirs) > 10:
+            click.echo(f"\n... and {len(analysis_dirs) - 10} more analyses")
+        
+        click.echo("\n💡 Tip: Use 'python main.py history --list-analyses' to see this list again")
 
 
 @cli.command()
@@ -242,7 +355,8 @@ def summarize(ast_file, llm, api_key):
         with open(ast_file, 'r') as f:
             ast_data = json.load(f)
         
-        click.echo("🤖 Generating summary...")
+        timestamp = get_timestamp()
+        click.echo(f"🤖 Generating summary at {timestamp}...")
         summary = llm_client.analyze_code(ast_data)
         
         click.echo("\n📝 Code Summary:")
@@ -250,7 +364,8 @@ def summarize(ast_file, llm, api_key):
         click.echo(summary)
         
     except Exception as e:
-        click.echo(f"❌ Error generating summary: {str(e)}", err=True)
+        error_timestamp = get_timestamp()
+        click.echo(f"❌ Error generating summary at {error_timestamp}: {str(e)}", err=True)
         sys.exit(1)
 
 

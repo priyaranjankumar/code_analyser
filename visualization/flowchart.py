@@ -69,21 +69,7 @@ class FlowchartGenerator:
             margin: 10px 0 0 0;
             font-size: 1.1em;
         }
-        .flow-description {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 4px solid #007bff;
-        }
-        .flow-description h3 {
-            margin-top: 0;
-            color: #495057;
-        }
-        .flow-description p {
-            margin: 10px 0;
-            line-height: 1.6;
-        }
+
         .flowchart-container {
             width: 100%;
             height: 700px;
@@ -241,21 +227,7 @@ class FlowchartGenerator:
             <p>Program Flowchart - Interactive Visualization</p>
         </div>
         
-        {% if flow_description %}
-        <div class="flow-description">
-            <h3>Program Flow Overview</h3>
-            <p><strong>Main Flow:</strong> {{ flow_description.main_flow }}</p>
-            {% if flow_description.decision_points %}
-            <p><strong>Key Decision Points:</strong> {{ flow_description.decision_points }}</p>
-            {% endif %}
-            {% if flow_description.loops %}
-            <p><strong>Loops and Iterations:</strong> {{ flow_description.loops }}</p>
-            {% endif %}
-            {% if flow_description.error_handling %}
-            <p><strong>Error Handling:</strong> {{ flow_description.error_handling }}</p>
-            {% endif %}
-        </div>
-        {% endif %}
+
         
         <div class="legend">
             <h4>Node Types</h4>

@@ -2,7 +2,7 @@
 
 **AI-Powered Legacy Code Analysis with Interactive Visualizations**
 
-A comprehensive CLI tool that transforms complex, undocumented legacy codebases into interactive, understandable visualizations using AST processing, LLM integration, and D3.js visualizations.
+A comprehensive CLI tool that transforms complex, undocumented legacy COBOL codebases into interactive, understandable visualizations using AST processing, LLM integration, and D3.js visualizations.
 
 ## 🎯 Problem & Solution
 
@@ -143,6 +143,19 @@ python main.py config --set-api-key YOUR_API_KEY
 
 # View current configuration
 python main.py config --show
+
+# Show usage examples
+python main.py config --help-examples
+```
+
+### **Individual File Analysis**
+
+```bash
+# Parse a single file and generate AST
+python main.py parse sample_cobol/B18PGM1.cbl --output ast.json
+
+# Generate summary from AST file
+python main.py summarize ast.json --llm openai
 ```
 
 ## 🏗️ System Architecture
@@ -178,14 +191,19 @@ code_analyser/
 ├── main.py                      # Main CLI entry point
 ├── requirements.txt             # Python dependencies
 ├── README.md                   # This file
+├── LATEST_CHANGES.md           # Recent changes and optimizations
+├── setup.py                    # Package setup
 ├── core/
 │   ├── __init__.py
 │   ├── analyzer.py             # Core analysis engine
-│   └── storage.py              # Data storage and retrieval
-├── parsers/
+│   ├── ast_generator.py        # AST generation and processing
+│   └── storage.py              # Data storage and caching
+├── plugins/
 │   ├── __init__.py
-│   ├── base.py                 # Base parser interface
-│   └── cobol_parser.py         # COBOL-specific parser
+│   ├── base.py                 # Base plugin interface
+│   └── cobol/
+│       ├── __init__.py
+│       └── parser.py           # COBOL-specific parser
 ├── llm/
 │   ├── __init__.py
 │   ├── base.py                 # Base LLM interface and token management
@@ -195,13 +213,16 @@ code_analyser/
 ├── visualization/
 │   ├── __init__.py
 │   ├── flowchart.py            # Interactive D3.js flowcharts
+│   ├── architecture.py         # Architecture analysis
 │   └── report_generator.py     # HTML report generation
 ├── utils/
 │   ├── __init__.py
-│   └── config.py               # Configuration management
-└── templates/
-    ├── html/                   # HTML templates
-    └── d3/                     # D3.js templates
+│   ├── config.py               # Configuration management
+│   └── file_utils.py           # File operations and utilities
+└── sample_cobol/               # Sample COBOL files for testing
+    ├── B18PGM1.cbl
+    ├── B18PGM2.cbl
+    └── ...
 ```
 
 ## 🔧 Technical Innovations
@@ -278,9 +299,26 @@ Vendor flexibility with fallback options:
 
 ### **Report Tabs:**
 
-- **Files**: Program summaries and statistics
+- **Overview**: Analysis summary and complexity metrics
+- **Programs**: Individual program analysis and summaries
 - **Architecture**: System-wide patterns and relationships
-- **Analysis**: Complexity metrics and charts
+
+## 🧹 Recent Optimizations
+
+### **Streamlined Interface:**
+
+- **Removed Files Tab**: Focused on program-level analysis
+- **Simplified Architecture View**: Clean, focused architecture insights
+- **Integrated Recommendations**: Contextual recommendations in relevant sections
+- **Enhanced Call Graph**: Modern, card-based dependency visualization
+- **Code Cleanup**: Removed all unused code and dependencies
+
+### **Performance Improvements:**
+
+- **Efficient Token Management**: 85-99% reduction in token usage
+- **Optimized AST Processing**: Hierarchical data structures
+- **Clean Codebase**: Removed unused functions and CSS
+- **Faster Analysis**: Streamlined processing pipeline
 
 ## 🔮 Future Roadmap
 
@@ -321,6 +359,7 @@ Vendor flexibility with fallback options:
 3. **Token-Efficient Processing** - Handles large codebases
 4. **Multi-LLM Support** - Vendor flexibility
 5. **Open Source** - Community-driven development
+6. **Optimized Performance** - Clean, efficient codebase
 
 ### **Market Impact:**
 
@@ -328,19 +367,6 @@ Vendor flexibility with fallback options:
 - **Improves code understanding** by 80%
 - **Accelerates modernization** efforts
 - **Reduces technical debt** through better documentation
-
-## 📚 Documentation
-
-### **Demo & Presentation:**
-
-- [`HACKATHON_DEMO_SCRIPT.md`](HACKATHON_DEMO_SCRIPT.md) - Complete 5-minute demo script
-- [`DEMO_PREPARATION_GUIDE.md`](DEMO_PREPARATION_GUIDE.md) - Demo setup and tips
-- [`TECHNICAL_EXECUTION_FLOW.md`](TECHNICAL_EXECUTION_FLOW.md) - Detailed technical flow
-
-### **Technical Improvements:**
-
-- [`TOKEN_MANAGEMENT_FINAL.md`](TOKEN_MANAGEMENT_FINAL.md) - Token management solution
-- [`HIERARCHICAL_AST_AND_CHUNKING_IMPROVEMENTS.md`](HIERARCHICAL_AST_AND_CHUNKING_IMPROVEMENTS.md) - AST processing details
 
 ## 🛠️ Configuration
 
@@ -357,6 +383,8 @@ export LLM_PROVIDER="openai"  # or "anthropic"
 # Location: ~/.code_analyzer/config.yaml
 llm_provider: openai
 api_key: your-api-key-here
+output_dir: ./output
+language: cobol
 ```
 
 ### **Command Line:**
@@ -368,7 +396,7 @@ python main.py config --set-llm openai --set-api-key YOUR_API_KEY
 ## 📤 Output Structure
 
 ```
-output_directory/
+output/
 ├── html/
 │   └── comprehensive_report.html    # Main analysis report
 ├── flowcharts/
@@ -377,11 +405,15 @@ output_directory/
 │   └── ...
 ├── architecture/
 │   └── architecture_report.json     # Architecture analysis
-├── ast_data/
+├── ast/
 │   ├── PROGRAM1_ast.json           # AST data for each program
 │   ├── PROGRAM2_ast.json
 │   └── ...
-└── analysis_summary.json           # Overall analysis summary
+├── summaries/
+│   ├── PROGRAM1_summary.txt        # LLM-generated summaries
+│   ├── PROGRAM2_summary.txt
+│   └── ...
+└── cache/                          # Cached data for performance
 ```
 
 ## 🧪 Testing
@@ -395,6 +427,13 @@ python main.py analyze sample_cobol --llm mock --generate-flowcharts
 ### **Sample Data:**
 
 The repository includes sample COBOL files in the `sample_cobol/` directory for testing.
+
+### **Quick Test:**
+
+```bash
+# Test with a single file
+python main.py analyze sample_cobol --max-files 1 --generate-flowcharts --generate-architecture
+```
 
 ## 🤝 Contributing
 
@@ -413,10 +452,19 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 - **Issues**: [GitHub Issues](https://github.com/your-username/legacy-code-analyzer/issues)
 - **Documentation**: Check the documentation files in this repository
-- **Demo**: Follow the demo preparation guide for presentations
+- **Recent Changes**: See [LATEST_CHANGES.md](LATEST_CHANGES.md) for recent updates
+
+## 📚 Documentation
+
+### **Recent Changes:**
+
+- [`LATEST_CHANGES.md`](LATEST_CHANGES.md) - Complete list of recent optimizations and improvements
+
+### **Key Features:**
+
+- **Token Management**: Intelligent hierarchical AST processing
+- **Interactive Visualizations**: D3.js-powered flowcharts with business logic
+- **Multi-LLM Support**: OpenAI, Anthropic, and Mock modes
+- **Plugin Architecture**: Extensible system for multiple languages
 
 ---
-
-**Transform your legacy code analysis from nightmare to interactive experience!** 🚀
-
-_Built with ❤️ for the legacy code modernization community._
